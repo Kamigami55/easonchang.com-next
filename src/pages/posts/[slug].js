@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
+import prism from 'remark-prism'
 
 import CustomLink from '../../components/CustomLink'
 import Layout from '../../components/Layout'
@@ -67,7 +68,7 @@ export const getStaticProps = async ({ params }) => {
   const mdxSource = await serialize(content, {
     // Optionally pass remark/rehype plugins
     mdxOptions: {
-      remarkPlugins: [],
+      remarkPlugins: [prism],
       rehypePlugins: [],
     },
     scope: data,
