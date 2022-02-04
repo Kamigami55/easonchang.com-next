@@ -40,5 +40,6 @@ module.exports = {
         aspects: ['invalidHref', 'preferButton'],
       },
     ],
+    'tailwindcss/classnames-order': 'off',
   },
 }

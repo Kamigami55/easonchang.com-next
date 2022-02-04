@@ -1,3 +1,3 @@
 export default function IndexHeading() {
-  return <h1 className="text-4xl text-center my-4">Awesome Next.js starter template</h1>
+  return <h1 className="my-4 text-center text-4xl">Awesome Next.js starter template</h1>
 }

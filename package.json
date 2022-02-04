@@ -50,6 +50,7 @@
     "lint-staged": "^11.2.3",
     "postcss": "^8.4.6",
     "prettier": "^2.4.1",
+    "prettier-plugin-tailwindcss": "^0.1.4",
     "sass-loader": "10",
     "storybook-dark-mode": "^1.0.8",
     "tailwindcss": "^3.0.18"
