@@ -4,7 +4,17 @@ import Head from 'next/head'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
+import rehypeSlug from 'rehype-slug'
 import prism from 'remark-prism'
+
+import {
+  CustomH1,
+  CustomH2,
+  CustomH3,
+  CustomH4,
+  CustomH5,
+  CustomH6,
+} from '@/components/CustomHeading'
 
 import CustomLink from '../../components/CustomLink'
 import Layout from '../../components/Layout'
@@ -16,6 +26,12 @@ import { postFilePaths, POSTS_PATH } from '../../utils/mdxUtils'
 // here.
 const components = {
   a: CustomLink,
+  h1: CustomH1,
+  h2: CustomH2,
+  h3: CustomH3,
+  h4: CustomH4,
+  h5: CustomH5,
+  h6: CustomH6,
   // It also works with dynamically-imported components, which is especially
   // useful for conditionally loading components for certain routes.
   // See the notes in README.md for more details.
@@ -43,7 +59,7 @@ export const getStaticProps = async ({ params }) => {
     // Optionally pass remark/rehype plugins
     mdxOptions: {
       remarkPlugins: [prism],
-      rehypePlugins: [],
+      rehypePlugins: [rehypeSlug],
     },
     scope: data,
   })
