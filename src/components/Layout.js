@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
-import Footer from '@/components/organisms/Footer'
 import Meta from '@/components/Meta'
+import Footer from '@/components/organisms/Footer'
 
 export default function Layout({ children }) {
   return (

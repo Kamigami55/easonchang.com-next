@@ -41,5 +41,7 @@ module.exports = {
       },
     ],
     'tailwindcss/classnames-order': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
   },
 }
