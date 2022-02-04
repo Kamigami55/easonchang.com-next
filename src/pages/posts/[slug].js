@@ -2,7 +2,6 @@ import fs from 'fs'
 import matter from 'gray-matter'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import path from 'path'
@@ -28,33 +27,10 @@ const components = {
 export default function PostPage({ source, frontMatter }) {
   return (
     <Layout>
-      <header>
-        <nav>
-          <Link href="/">
-            <a>👈 Go back home</a>
-          </Link>
-        </nav>
-      </header>
-      <div className="post-header">
+      <main className="container prose mx-auto p-8 lg:prose-lg">
         <h1>{frontMatter.title}</h1>
-        {frontMatter.description && <p className="description">{frontMatter.description}</p>}
-      </div>
-      <main className="prose lg:prose-lg">
         <MDXRemote {...source} components={components} />
       </main>
-
-      <style jsx>{`
-        .post-header h1 {
-          margin-bottom: 0;
-        }
-
-        .post-header {
-          margin-bottom: 2rem;
-        }
-        .description {
-          opacity: 0.6;
-        }
-      `}</style>
     </Layout>
   )
 }
