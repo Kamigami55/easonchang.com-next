@@ -1,0 +1,126 @@
+---
+title: 【專案】SigmaGO 智慧導盲犬
+author: Eason Chang
+tags:
+  - Project
+  - Arduino
+  - SigmaGO
+  - Hackathon
+  - RaspberryPi
+  - Olami
+  - HackNTU
+category: Project
+socialImage: '/images/sigmago/sigmago-cover.png'
+date: 2018-03-30 16:40
+template: 'post'
+draft: false
+description: '專案目的是開發低成本的智慧導盲犬，取代需要龐大成本訓練的傳統導盲犬，造福盲人朋友的生活。'
+redirect_from:
+  - /2018/03/30/sigmago/
+---
+
+相關連結：
+
+- 專案介紹（HackMD 版本）：[SigmaGO 智慧導盲犬 - HackMD](https://hackmd.io/s/Skcy2I1L-)
+- 程式碼（Github）：[Kamigami55/SigmaGo](https://github.com/Kamigami55/SigmaGo)
+
+## 簡介
+
+**「SigmaGO 智慧導盲犬」**，是我們在 2017 年 7 月時參加 **[2017 臺大黑客松 HackNTU](https://hackntu.tumblr.com/tagged/intro)** 時，開發的軟硬整合專案。
+
+專案目的是開發低成本的智慧導盲犬，取代需要龐大成本訓練的傳統導盲犬，造福盲人朋友的生活。
+
+技術上使用了 **Raspberry Pi 3** 做運算，串接威盛電子提供的 **[Olami 中文語意辨識平台](https://tw.olami.ai/open/website/home/home_show)**，即時辨識使用者的語音命令，**Arduino** 小車車（機械導盲犬的 Prototype）就會帶使用者前往目標地點。
+
+這個專案最後拿下了**威盛電子超級黑客獎**和**大會技術人氣獎**。
+
+團隊成員：**[Eugene](https://github.com/eugenejahn)、Shang、Jamie、Eason、Howard**
+
+## SigmaGO 成品
+
+![](https://i.imgur.com/8E5onDg.jpg)
+
+## 實際操作 Demo 影片
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube-nocookie.com/embed/ZKRa4QlMXMs"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## 大會 DEMO 簡報
+
+<iframe
+  src="//www.slideshare.net/slideshow/embed_code/key/7zndtymOdt9mrI"
+  width="595"
+  height="485"
+  frameborder="0"
+  marginwidth="0"
+  marginheight="0"
+  scrolling="no"
+  style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;"
+  allowfullscreen
+>
+  {' '}
+</iframe> <div style="margin-bottom:5px">
+  {' '}
+  <strong>
+    {' '}
+    <a
+      href="//www.slideshare.net/ssuser524a9d/sigma-go"
+      title="Sigma go 智慧導盲犬"
+      target="_blank"
+    >
+      Sigma go 智慧導盲犬
+    </a>{' '}
+  </strong> from <strong>
+    <a href="https://www.slideshare.net/ssuser524a9d" target="_blank">
+      楹翔 張
+    </a>
+  </strong>{' '}
+</div>
+
+## 細節介紹
+
+### 緣起：為什麼世界需要 SigmaGO
+
+從挑選、訓練到配對、服役，導盲犬為人類奉獻牠的一生，但其實可以不必這樣辛苦。
+我們運用智慧科技，讓盲人在擁有另一雙眼睛的同時，也讓狗兒可以擁有更自由的生活。
+
+> SigmaGO, Go For It!
+
+### SigmaGO 使用方法
+
+1. 打開電源開關！
+2. 向 SigmaGo 下指令！
+3. 牠將帶你到你要去的地方
+4. 94 這麼簡單！
+
+### 系統架構
+
+使用威盛電子提供的 [OLAMI 中文語意分析平台](https://tw.olami.ai/open/website/home/home_show)及現場提供的 Raspberry Pi 3 硬體開發套件，連結自製的 Arduino 機械犬，讓盲胞可以自然地使用中文向機械犬下指令，機械犬就會引導盲胞前往想去的地點，改善盲人的生活！
+
+![](https://i.imgur.com/7thls3j.jpg)
+
+### 程式碼
+
+SigmaGo 程式碼（Github）：[Kamigami55/SigmaGo](https://github.com/Kamigami55/SigmaGo)
+
+內含：Arduino 機械犬韌體程式碼、樹莓派串接程式、Olami 規則檔
+
+### 獎項
+
+[威盛電子超級黑客獎](https://www.facebook.com/hackNTU/photos/a.1442005269218025.1073741850.457953580956537/1442006189217933/?type=3&theater)：
+![upload successful](/images/sigmago/pasted-0.png)
+
+[大會技術人氣獎](https://www.facebook.com/hackNTU/photos/a.1442005269218025.1073741850.457953580956537/1442005299218022/?type=3&theater)：
+![upload successful](/images/sigmago/pasted-2.png)
+
+## 後續開發
+
+我的夥伴有 Eugene 有繼續開發 **SigmaGO 智慧導盲犬 2.0**，他的開發記錄在這裡，歡迎移駕前往看看：
+
+[SigmaGo 智慧導盲犬 2.0 強勢出擊](https://tw.olami.ai/blog/article/34)

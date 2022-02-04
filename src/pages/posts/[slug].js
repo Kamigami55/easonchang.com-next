@@ -1,6 +1,5 @@
 import fs from 'fs'
 import matter from 'gray-matter'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { MDXRemote } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
@@ -20,7 +19,6 @@ const components = {
   // It also works with dynamically-imported components, which is especially
   // useful for conditionally loading components for certain routes.
   // See the notes in README.md for more details.
-  TestComponent: dynamic(() => import('../../components/TestComponent')),
   Head,
 }
 
