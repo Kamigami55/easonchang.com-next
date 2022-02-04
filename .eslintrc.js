@@ -14,6 +14,12 @@ module.exports = {
     react: {
       version: 'detect', // Automatically detect the react version
     },
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.js', '.jsx'],
+      },
+    },
   },
   env: {
     browser: true, // Enables browser globals like window and document
@@ -25,10 +31,11 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
+    'plugin:import/recommended',
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
   ],
-  plugins: ['simple-import-sort', 'tailwindcss'],
+  plugins: ['simple-import-sort', 'tailwindcss', 'import'],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source
     'react/react-in-jsx-scope': 'off',
