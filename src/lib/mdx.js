@@ -29,8 +29,12 @@ import getAllFilesRecursively from './utils/files'
 
 const root = process.cwd()
 
-export function getFiles() {
-  const prefixPaths = path.join(root, 'posts')
+export const CONTENT_ROOT_FOLDER = 'content'
+export const POSTS_FOLDER = 'posts'
+export const AUTHORS_FOLDER = 'authors'
+
+export function getFiles(folder) {
+  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder)
   const files = getAllFilesRecursively(prefixPaths)
   // Only want to return blog/path and ignore root, replace is needed to work on Windows
   return files.map((file) => file.slice(prefixPaths.length + 1).replace(/\\/g, '/'))
@@ -46,9 +50,9 @@ export function dateSortDesc(a, b) {
   return 0
 }
 
-export async function getFileBySlug(slug) {
-  const mdxPath = path.join(root, 'posts', `${slug}.mdx`)
-  const mdPath = path.join(root, 'posts', `${slug}.md`)
+export async function getFileBySlug(folder, slug) {
+  const mdxPath = path.join(root, CONTENT_ROOT_FOLDER, folder, `${slug}.mdx`)
+  const mdPath = path.join(root, CONTENT_ROOT_FOLDER, folder, `${slug}.md`)
   const source = fs.existsSync(mdxPath)
     ? fs.readFileSync(mdxPath, 'utf8')
     : fs.readFileSync(mdPath, 'utf8')
@@ -135,8 +139,8 @@ export async function getFileBySlug(slug) {
   }
 }
 
-export async function getAllFilesFrontMatter() {
-  const prefixPaths = path.join(root, 'posts')
+export async function getAllFilesFrontMatter(folder) {
+  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder)
 
   const files = getAllFilesRecursively(prefixPaths)
 

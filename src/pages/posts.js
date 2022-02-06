@@ -1,9 +1,9 @@
 import { POSTS_PER_PAGE } from '@/constants/siteMeta'
 import ListLayout from '@/layouts/ListLayout'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getAllFilesFrontMatter, POSTS_FOLDER } from '@/lib/mdx'
 
 export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter()
+  const posts = await getAllFilesFrontMatter(POSTS_FOLDER)
   const initialDisplayPosts = posts.slice(0, POSTS_PER_PAGE)
   const pagination = {
     currentPage: 1,

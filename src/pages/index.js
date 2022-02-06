@@ -1,6 +1,6 @@
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getAllFilesFrontMatter, POSTS_FOLDER } from '@/lib/mdx'
 import formatDate from '@/lib/utils/formatDate'
 
 const MAX_DISPLAY = 5
@@ -83,7 +83,7 @@ export default function Index({ posts }) {
 }
 
 export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter()
+  const posts = await getAllFilesFrontMatter(POSTS_FOLDER)
 
   return { props: { posts } }
 }

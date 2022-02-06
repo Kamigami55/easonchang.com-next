@@ -1,9 +1,9 @@
 import { POSTS_PER_PAGE } from '@/constants/siteMeta'
 import ListLayout from '@/layouts/ListLayout'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { getAllFilesFrontMatter, POSTS_FOLDER } from '@/lib/mdx'
 
 export async function getStaticPaths() {
-  const totalPosts = await getAllFilesFrontMatter()
+  const totalPosts = await getAllFilesFrontMatter(POSTS_FOLDER)
   const totalPages = Math.ceil(totalPosts.length / POSTS_PER_PAGE)
   const paths = Array.from({ length: totalPages }, (_, i) => ({
     params: { page: (i + 1).toString() },
@@ -19,7 +19,7 @@ export async function getStaticProps(context) {
   const {
     params: { page },
   } = context
-  const posts = await getAllFilesFrontMatter()
+  const posts = await getAllFilesFrontMatter(POSTS_FOLDER)
   const pageNumber = parseInt(page)
   const initialDisplayPosts = posts.slice(
     POSTS_PER_PAGE * (pageNumber - 1),

@@ -15,7 +15,13 @@ import {
 import PageTitle from '@/components/PageTitle'
 import PostLayout from '@/layouts/PostLayout'
 // import generateRss from '@/lib/generate-rss'
-import { formatSlug, getAllFilesFrontMatter, getFileBySlug, getFiles } from '@/lib/mdx'
+import {
+  formatSlug,
+  getAllFilesFrontMatter,
+  getFileBySlug,
+  getFiles,
+  POSTS_FOLDER,
+} from '@/lib/mdx'
 
 import CustomLink from '../../components/CustomLink'
 
@@ -34,7 +40,7 @@ const components = {
 }
 
 export async function getStaticPaths() {
-  const posts = getFiles()
+  const posts = getFiles(POSTS_FOLDER)
   return {
     paths: posts.map((p) => ({
       params: {
@@ -46,11 +52,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter()
+  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER)
   const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
-  const post = await getFileBySlug(params.slug.join('/'))
+  const post = await getFileBySlug(POSTS_FOLDER, params.slug.join('/'))
   // const authorList = post.frontMatter.authors || ['default']
   // const authorPromise = authorList.map(async (author) => {
   //   const authorResults = await getFileBySlug('authors', [author])

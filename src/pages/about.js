@@ -1,22 +1,37 @@
-// import { MDXLayoutRenderer } from '@/components/MDXComponents'
-// import { getFileBySlug } from '@/lib/mdx'
+import { MDXRemote } from 'next-mdx-remote'
 
-// const DEFAULT_LAYOUT = 'AuthorLayout'
+import {
+  CustomH1,
+  CustomH2,
+  CustomH3,
+  CustomH4,
+  CustomH5,
+  CustomH6,
+} from '@/components/CustomHeading'
+import CustomLink from '@/components/CustomLink'
+import AuthorLayout from '@/layouts/AuthorLayout'
+import { AUTHORS_FOLDER, getFileBySlug } from '@/lib/mdx'
 
+const components = {
+  a: CustomLink,
+  h1: CustomH1,
+  h2: CustomH2,
+  h3: CustomH3,
+  h4: CustomH4,
+  h5: CustomH5,
+  h6: CustomH6,
+}
 export async function getStaticProps() {
-  // const authorDetails = await getFileBySlug('authors', ['default'])
-  // return { props: { authorDetails } }
+  const authorDetails = await getFileBySlug(AUTHORS_FOLDER, ['easonchang'])
+  return { props: { authorDetails } }
 }
 
 export default function About({ authorDetails }) {
-  // const { mdxSource, frontMatter } = authorDetails
+  const { mdxSource, frontMatter } = authorDetails
 
-  // return (
-  //   <MDXLayoutRenderer
-  //     layout={frontMatter.layout || DEFAULT_LAYOUT}
-  //     mdxSource={mdxSource}
-  //     frontMatter={frontMatter}
-  //   />
-  // )
-  return <p>Hi I am Eason</p>
+  return (
+    <AuthorLayout frontMatter={frontMatter}>
+      <MDXRemote {...mdxSource} components={components} />
+    </AuthorLayout>
+  )
 }
