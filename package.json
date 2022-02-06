@@ -33,7 +33,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "rehype-slug": "^5.0.1",
-    "remark-prism": "^1.3.6"
+    "remark-prism": "^1.3.6",
+    "smoothscroll-polyfill": "^0.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.0",
