@@ -1,8 +1,8 @@
 // import fs from 'fs'
 // import path from 'path'
 
-// import { TagSEO } from '@/components/SEO'
-// import siteMetadata from '@/data/siteMetadata'
+import { TagSEO } from '@/components/SEO'
+import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 // import generateRss from '@/lib/generate-rss'
 import { getAllFilesFrontMatter, POSTS_FOLDER } from '@/lib/mdx'
@@ -47,10 +47,10 @@ export default function Tag({ posts, tag }) {
   const title = tag[0].toUpperCase() + tag.split(' ').join('-').slice(1)
   return (
     <>
-      {/* <TagSEO
-        title={`${tag} - ${siteMetadata.author}`}
-        description={`${tag} tags - ${siteMetadata.author}`}
-      /> */}
+      <TagSEO
+        title={`${tag} - ${siteMetadata.title}`}
+        description={`${tag} tags - ${siteMetadata.title}`}
+      />
       <ListLayout posts={posts} title={title} />
     </>
   )
