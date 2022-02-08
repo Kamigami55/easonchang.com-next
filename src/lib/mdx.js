@@ -32,6 +32,7 @@ const root = process.cwd()
 export const CONTENT_ROOT_FOLDER = 'content'
 export const POSTS_FOLDER = 'posts'
 export const AUTHORS_FOLDER = 'authors'
+export const PROJECTS_FOLDER = 'projects'
 
 export function getFiles(folder) {
   const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder)
