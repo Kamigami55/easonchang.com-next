@@ -1,4 +1,7 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
+// import Script from 'next/script'
+
+// import { NEXT_PUBLIC_GOOGLE_ANALYTICS } from '@/constants/envValues'
 
 class MyDocument extends Document {
   render() {
@@ -13,6 +16,33 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+
+          {/* Global site tag (gtag.js) - Google Analytics */}
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-61KDXTZL1Q"></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-61KDXTZL1Q');
+            `,
+            }}
+          />
+          {/* <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${NEXT_PUBLIC_GOOGLE_ANALYTICS}');
+            `}
+          </Script> */}
         </Head>
         <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
           <Main />
