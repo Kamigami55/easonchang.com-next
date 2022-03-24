@@ -38,3 +38,5 @@ schema.graphql
 
 # Chromatic storybook build log
 build-storybook.log
+
+posts-draft/
