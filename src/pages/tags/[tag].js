@@ -1,5 +1,6 @@
 // import fs from 'fs'
 // import path from 'path'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { TagSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
@@ -24,8 +25,8 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER)
+export async function getStaticProps({ params, locale }) {
+  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER, locale)
   const filteredPosts = allPosts.filter(
     (post) => post.draft !== true && post.tags.map((t) => kebabCase(t)).includes(params.tag)
   )
@@ -38,7 +39,13 @@ export async function getStaticProps({ params }) {
   //   fs.writeFileSync(path.join(rssPath, 'feed.xml'), rss)
   // }
 
-  return { props: { posts: filteredPosts, tag: params.tag } }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      posts: filteredPosts,
+      tag: params.tag,
+    },
+  }
 }
 
 export default function Tag({ posts, tag }) {

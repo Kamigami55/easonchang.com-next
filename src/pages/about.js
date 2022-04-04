@@ -1,3 +1,4 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { MDXRemote } from 'next-mdx-remote'
 
 import {
@@ -21,9 +22,15 @@ const components = {
   h5: CustomH5,
   h6: CustomH6,
 }
-export async function getStaticProps() {
-  const authorDetails = await getFileBySlug(AUTHORS_FOLDER, ['easonchang'])
-  return { props: { authorDetails } }
+
+export async function getStaticProps({ locale }) {
+  const authorDetails = await getFileBySlug(AUTHORS_FOLDER, ['easonchang'], locale)
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      authorDetails,
+    },
+  }
 }
 
 export default function About({ authorDetails }) {

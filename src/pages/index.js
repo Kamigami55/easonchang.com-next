@@ -1,3 +1,6 @@
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
@@ -8,13 +11,15 @@ import formatDate from '@/lib/utils/formatDate'
 const MAX_DISPLAY = 5
 
 export default function Index({ posts }) {
+  const { t } = useTranslation()
+
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Latest
+            {t('latest')}
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">Hi, I am Eason!</p>
         </div>
@@ -85,8 +90,13 @@ export default function Index({ posts }) {
   )
 }
 
-export async function getStaticProps() {
-  const posts = await getAllFilesFrontMatter(POSTS_FOLDER)
+export async function getStaticProps({ locale }) {
+  const posts = await getAllFilesFrontMatter(POSTS_FOLDER, locale)
 
-  return { props: { posts } }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      posts,
+    },
+  }
 }
