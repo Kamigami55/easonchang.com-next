@@ -1,3 +1,5 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 import Link from '@/components/Link'
 
 export default function FourZeroFour() {
@@ -21,4 +23,12 @@ export default function FourZeroFour() {
       </div>
     </div>
   )
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  }
 }

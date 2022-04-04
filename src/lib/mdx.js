@@ -8,6 +8,8 @@ import path from 'path'
 import rehypeSlug from 'rehype-slug'
 import prism from 'remark-prism'
 
+import { LOCALES } from '@/constants/siteMeta'
+
 // import readingTime from 'reading-time'
 // import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 // import rehypeCitation from 'rehype-citation'
@@ -35,10 +37,17 @@ export const AUTHORS_FOLDER = 'authors'
 export const PROJECTS_FOLDER = 'projects'
 
 export function getFiles(folder) {
-  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder)
-  const files = getAllFilesRecursively(prefixPaths)
-  // Only want to return blog/path and ignore root, replace is needed to work on Windows
-  return files.map((file) => file.slice(prefixPaths.length + 1).replace(/\\/g, '/'))
+  let filesOfAllLocales = []
+  LOCALES.forEach((locale) => {
+    const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale)
+    const files = getAllFilesRecursively(prefixPaths).map((file) => ({
+      slug: file.slice(prefixPaths.length + 1).replace(/\\/g, '/'),
+      locale: locale,
+    }))
+    // Only want to return blog/path and ignore root, replace is needed to work on Windows
+    filesOfAllLocales = [...filesOfAllLocales, ...files]
+  })
+  return filesOfAllLocales
 }
 
 export function formatSlug(slug) {
@@ -51,9 +60,9 @@ export function dateSortDesc(a, b) {
   return 0
 }
 
-export async function getFileBySlug(folder, slug) {
-  const mdxPath = path.join(root, CONTENT_ROOT_FOLDER, folder, `${slug}.mdx`)
-  const mdPath = path.join(root, CONTENT_ROOT_FOLDER, folder, `${slug}.md`)
+export async function getFileBySlug(folder, slug, locale) {
+  const mdxPath = path.join(root, CONTENT_ROOT_FOLDER, folder, locale, `${slug}.mdx`)
+  const mdPath = path.join(root, CONTENT_ROOT_FOLDER, folder, locale, `${slug}.md`)
   const source = fs.existsSync(mdxPath)
     ? fs.readFileSync(mdxPath, 'utf8')
     : fs.readFileSync(mdPath, 'utf8')
@@ -140,8 +149,8 @@ export async function getFileBySlug(folder, slug) {
   }
 }
 
-export async function getAllFilesFrontMatter(folder) {
-  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder)
+export async function getAllFilesFrontMatter(folder, locale) {
+  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale)
 
   const files = getAllFilesRecursively(prefixPaths)
 
@@ -161,6 +170,7 @@ export async function getAllFilesFrontMatter(folder) {
         ...frontmatter,
         slug: formatSlug(fileName),
         date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+        locale: locale,
       })
     }
   })

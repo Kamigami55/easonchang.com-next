@@ -1,5 +1,6 @@
 // import fs from 'fs'
 
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { MDXRemote } from 'next-mdx-remote'
 
 // const DEFAULT_LAYOUT = 'PostLayout'
@@ -44,22 +45,23 @@ export async function getStaticPaths() {
   return {
     paths: posts.map((p) => ({
       params: {
-        slug: formatSlug(p).split('/'),
+        slug: formatSlug(p.slug).split('/'),
       },
+      locale: p.locale,
     })),
     fallback: false,
   }
 }
 
-export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER)
+export async function getStaticProps({ params, locale }) {
+  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER, locale)
   const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
-  const post = await getFileBySlug(POSTS_FOLDER, params.slug.join('/'))
+  const post = await getFileBySlug(POSTS_FOLDER, params.slug.join('/'), locale)
   // const authorList = post.frontMatter.authors || ['default']
   // const authorPromise = authorList.map(async (author) => {
-  //   const authorResults = await getFileBySlug('authors', [author])
+  //   const authorResults = await getFileBySlug('authors', [author], locale)
   //   return authorResults.frontMatter
   // })
   // const authorDetails = await Promise.all(authorPromise)
@@ -70,7 +72,14 @@ export async function getStaticProps({ params }) {
   //   fs.writeFileSync('./public/feed.xml', rss)
   // }
 
-  return { props: { post, prev, next } }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      post,
+      prev,
+      next,
+    },
+  }
 }
 
 export default function Blog({ post, prev, next }) {

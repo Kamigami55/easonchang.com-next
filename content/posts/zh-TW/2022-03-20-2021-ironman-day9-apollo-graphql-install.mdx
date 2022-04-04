@@ -1,0 +1,163 @@
+---
+title: Day9 在 Next.js 安裝 apollo-graphql，串接 WordPress GraphQL API（上）
+author: Eason Chang
+description: '在 Next.js 安裝 apollo-graphql package，將用來串接 WordPress 的 GraphQL API'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+  - GraphQL
+  - WPGraphQL
+  - Apollo
+socialImage: ''
+date: 2022-03-20 15:10
+template: 'post'
+meta:
+  title: Day9 在 Next.js 安裝 apollo-graphql，串接 WordPress GraphQL API（上）
+---
+
+上一篇文章我們成功在 WordPress 安裝 WPGraphQL plugin，啟動了 GraphQL API，現在我們要來在 Next.js 部落格前端串接它，抓取文章列表資料，並呈現在首頁。
+
+## 參照 Next.js 官方範例
+
+這部分實作我們會參照 Next.js 官方這 2 套 sample code：
+
+1. [cms-wordpress](https://github.com/vercel/next.js/tree/canary/examples/cms-wordpress)
+2. [with-apollo](https://github.com/vercel/next.js/tree/canary/examples/with-apollo)
+
+第一個 **cms-wordpress** 是 demo 如何在 Next.js 串接 WordPress GraphQL API，裡面使用 fetch function 呼叫 GraphQL API 抓取文章資料，用來顯示首頁的文章列表、及文章細節頁的文章內容。我們可以參考這範例裡用到哪些 GraphQL 欄位，我們也將用差不多的欄位來實作各頁面。
+
+而因為第一個範例是使用單純 fetch 函式來呼叫 GraphQL API，功能上稍嫌不足，後續若要加入更多判斷或功能，像是 pagination 分頁功能（一頁顯示 10 篇文章之類）的話，需要自己實作重造輪子，所以這部分我們會參考第二個 **with-apollo** 範例，改安裝 apollo-client 來執行 GraphQL API call，裡面就幫我們處理了很多常見功能，像是 loading state、error state、client-side cache、fetch more function 等等，讓我們能用更多元的方式使用 GraphQL API。
+
+## 實作：安裝 apollo client
+
+這部分我們參照 [with-apollo](https://github.com/vercel/next.js/tree/canary/examples/with-apollo) 範例來安裝，主要安裝 **@apollo/client**、**graphql** 這兩個套件當作 GraphQL client，並且額外安裝 **deepmerge**、**lodash** 來處理資料
+
+```
+yarn add @apollo/client graphql deepmerge lodash
+```
+
+接著新建 **/lib/apolloClient.js** 檔案，它提供了 useApollo function，讓我們等等能在整個 Next.js 專案套上 ApolloClient：
+
+```javascript
+// Mainly follow this example
+// https://github.com/vercel/next.js/tree/canary/examples/with-apollo
+import { useMemo } from 'react'
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
+import { concatPagination } from '@apollo/client/utilities'
+import merge from 'deepmerge'
+import isEqual from 'lodash/isEqual'
+
+import { NEXT_PUBLIC_GRAPHQL_ENDPOINT } from '../constants/envValues'
+
+export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
+
+let apolloClient
+
+function createApolloClient() {
+  return new ApolloClient({
+    ssrMode: typeof window === 'undefined',
+    link: new HttpLink({
+      uri: NEXT_PUBLIC_GRAPHQL_ENDPOINT, // Server URL (must be absolute)
+      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+    }),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            posts: concatPagination(),
+          },
+        },
+      },
+    }),
+  })
+}
+
+export function initializeApollo(initialState = null) {
+  const _apolloClient = apolloClient ?? createApolloClient()
+
+  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
+  // gets hydrated here
+  if (initialState) {
+    // Get existing cache, loaded during client side data fetching
+    const existingCache = _apolloClient.extract()
+
+    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
+    const data = merge(initialState, existingCache, {
+      // combine arrays using object equality (like in sets)
+      arrayMerge: (destinationArray, sourceArray) => [
+        ...sourceArray,
+        ...destinationArray.filter((d) => sourceArray.every((s) => !isEqual(d, s))),
+      ],
+    })
+
+    // Restore the cache with the merged data
+    _apolloClient.cache.restore(data)
+  }
+  // For SSG and SSR always create a new Apollo Client
+  if (typeof window === 'undefined') return _apolloClient
+  // Create the Apollo Client once in the client
+  if (!apolloClient) apolloClient = _apolloClient
+
+  return _apolloClient
+}
+
+export function addApolloState(client, pageProps) {
+  if (pageProps?.props) {
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
+  }
+
+  return pageProps
+}
+
+export function useApollo(pageProps) {
+  const state = pageProps[APOLLO_STATE_PROP_NAME]
+  const store = useMemo(() => initializeApollo(state), [state])
+  return store
+}
+```
+
+接著修改 **/pages/\_app.js**，用剛剛的 useApollo 以及 @apollo/client package 提供的 ApolloProvider 包住整個 Next.js app，這樣之後才能在各個 page 或 component 內呼叫 GraphQL API：
+
+```javascript
+import { ApolloProvider } from '@apollo/client'
+
+import { useApollo } from '../lib/apolloClient'
+
+import '../styles/globals.css'
+
+export default function App({ Component, pageProps }) {
+  const apolloClient = useApollo(pageProps)
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
+}
+```
+
+在先前的 **apolloClient.js** 裡，建立 client 時需指定 GraphQL API endpoint，常規做法是會把路徑抽成環境變數，在這個專案我把它命名成 NEXT_PUBLIC_GRAPHQL_ENDPOINT。
+
+注意它有 NEXT_PUBLIC\_ 這個前綴，這是因為我們希望這個環境變數在瀏覽器端也能看到，因為在後面幾篇文章我們要實作分頁功能時，抓取第二頁的文章列表，這動作是做在 client-side 的，因此瀏覽器也要知道我們 API_ENDPOINT 為何。在 Next.js 就是透過前綴決定瀏覽器是否看得到，可參閱[相關文件](https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser)，類似 Create-react-app 的 REACT_APP\_ 前綴
+
+我習慣將環境變數集中到一支 JavaScript 檔案，集中 export 出去，這樣方便我們一眼看出專案有哪些環境變數，在這裡我們建立 **/constants/envValues.js**：
+
+```javascript
+export const NEXT_PUBLIC_GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT
+```
+
+再來在 Next.js local 開發過程，環境變數設定通常是用建立**環境變數檔**方式設定的，啟動 Next.js dev server 時會自動來讀取特定名稱的檔案，通常叫做 **.env.local**，所以讓我們建立 **/.env.local**，後面 endpoint 網址替換成你自己的網址，通常用 WPGraphQL 啟用的話都會是在你的 WordPress domain 裡的 /graphql 路徑：
+
+```
+NEXT_PUBLIC_GRAPHQL_ENDPOINT=https://xxxxxx.mybluehost.me/graphql
+```
+
+## 下一篇：抓取文章列表資料
+
+到此我們成功在 Next.js 安裝 ApolloClient 了，不過還沒完，下一篇文章我們會繼續使用剛安裝的 ApolloClient 從 WordPress 抓取文章資料，在首頁顯示文章列表！
+
+關於這篇文章的改動可以參考這支 [commit](https://github.com/Kamigami55/oh-so-pro-blog/commit/be0fc629e5e67d97ef68856c7540cb5bcb82e80f)
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10270795)

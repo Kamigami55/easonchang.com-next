@@ -3,6 +3,7 @@ import '@/styles/prism-dracula.css'
 import '@fontsource/inter/variable-full.css'
 
 import Head from 'next/head'
+import { appWithTranslation } from 'next-i18next'
 // import { useRouter } from 'next/router'
 import { ThemeProvider } from 'next-themes'
 
@@ -16,7 +17,7 @@ import siteMetadata from '@/data/siteMetadata'
 // const isDevelopment = process.env.NODE_ENV === 'development'
 // const isSocket = process.env.SOCKET
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   // const router = useRouter()
 
   // useEffect(() => {
@@ -43,3 +44,5 @@ export default function App({ Component, pageProps }) {
     </ThemeProvider>
   )
 }
+
+export default appWithTranslation(App)

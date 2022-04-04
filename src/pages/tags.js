@@ -1,3 +1,5 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
@@ -5,10 +7,15 @@ import siteMetadata from '@/data/siteMetadata'
 import { getAllTags } from '@/lib/tags'
 import kebabCase from '@/lib/utils/kebabCase'
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }) {
   const tags = await getAllTags()
 
-  return { props: { tags } }
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      tags,
+    },
+  }
 }
 
 export default function Tags({ tags }) {

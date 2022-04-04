@@ -2,6 +2,7 @@ import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
 
 import Footer from './Footer'
+import LanguageSwitch from './LanguageSwitch'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SectionContainer from './SectionContainer'
@@ -37,6 +38,7 @@ const LayoutWrapper = ({ children }) => {
                 </Link>
               ))}
             </div>
+            <LanguageSwitch />
             <ThemeSwitch />
             <MobileNav />
           </div>

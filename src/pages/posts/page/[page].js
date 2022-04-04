@@ -1,11 +1,12 @@
 import { PageSEO } from '@/components/SEO'
-import { POSTS_PER_PAGE } from '@/constants/siteMeta'
+import { DEFAULT_LOCALE, POSTS_PER_PAGE } from '@/constants/siteMeta'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 import { getAllFilesFrontMatter, POSTS_FOLDER } from '@/lib/mdx'
 
 export async function getStaticPaths() {
-  const totalPosts = await getAllFilesFrontMatter(POSTS_FOLDER)
+  // TODO might have problem in the future if totalPosts in en and zh-TW are different
+  const totalPosts = await getAllFilesFrontMatter(POSTS_FOLDER, DEFAULT_LOCALE)
   const totalPages = Math.ceil(totalPosts.length / POSTS_PER_PAGE)
   const paths = Array.from({ length: totalPages }, (_, i) => ({
     params: { page: (i + 1).toString() },
@@ -20,8 +21,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const {
     params: { page },
+    locale,
   } = context
-  const posts = await getAllFilesFrontMatter(POSTS_FOLDER)
+  const posts = await getAllFilesFrontMatter(POSTS_FOLDER, locale)
   const pageNumber = parseInt(page)
   const initialDisplayPosts = posts.slice(
     POSTS_PER_PAGE * (pageNumber - 1),
