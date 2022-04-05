@@ -8,7 +8,7 @@ import { getAllTags } from '@/lib/tags'
 import kebabCase from '@/lib/utils/kebabCase'
 
 export async function getStaticProps({ locale }) {
-  const tags = await getAllTags()
+  const tags = getAllTags(locale)
 
   return {
     props: {

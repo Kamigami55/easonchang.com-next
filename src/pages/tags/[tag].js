@@ -3,6 +3,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { TagSEO } from '@/components/SEO'
+import { LOCALES } from '@/constants/siteMeta'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 // import generateRss from '@/lib/generate-rss'
@@ -13,14 +14,21 @@ import kebabCase from '@/lib/utils/kebabCase'
 // const root = process.cwd()
 
 export async function getStaticPaths() {
-  const tags = await getAllTags()
+  let paths = []
 
-  return {
-    paths: Object.keys(tags).map((tag) => ({
+  LOCALES.forEach((locale) => {
+    const tags = getAllTags(locale)
+    const pathsToAppend = Object.keys(tags).map((tag) => ({
       params: {
         tag: kebabCase(tag),
       },
-    })),
+      locale: locale,
+    }))
+    paths = [...paths, ...pathsToAppend]
+  })
+
+  return {
+    paths,
     fallback: false,
   }
 }
