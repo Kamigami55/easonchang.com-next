@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import ScrollTop from '@/components/ScrollTop'
+import SectionContainer from '@/components/SectionContainer'
 import { BlogSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import formatDate from '@/lib/utils/formatDate'
@@ -14,14 +15,20 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
   const { locale } = useRouter()
 
   return (
-    <>
+    <SectionContainer>
       <BlogSEO url={`${siteMetadata.siteUrl}/posts/${frontMatter.slug}`} {...frontMatter} />
+
       <ScrollTop />
+
       <article>
-        <div>
-          <header>
-            <div className="space-y-1 border-b border-gray-200 pb-10 text-center dark:border-gray-700">
-              <dl>
+        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
+          <header className="pt-6 xl:pb-6">
+            <div className="space-y-1 text-center">
+              <div className="mb-4">
+                <PageTitle>{title}</PageTitle>
+              </div>
+
+              <dl className="space-y-10">
                 <div>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
@@ -29,23 +36,24 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
                   </dd>
                 </div>
               </dl>
-              <div>
-                <PageTitle>{title}</PageTitle>
-              </div>
             </div>
           </header>
+
           <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0 "
+            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
+            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:pb-0">
+              <div className="prose mx-auto pt-10 pb-8 dark:prose-dark">{children}</div>
             </div>
-            {/* <Comments frontMatter={frontMatter} /> */}
+
             <footer>
-              <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+              <div className="flex flex-col gap-4 pt-4 text-sm font-medium sm:flex-row sm:justify-between sm:text-base xl:gap-8 xl:pt-8">
                 {prev && (
-                  <div className="pt-4 xl:pt-8">
+                  <div className="basis-6/12">
+                    <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                      Previous Article
+                    </h2>
                     <Link
                       href={`/posts/${prev.slug}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
@@ -55,7 +63,10 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
                   </div>
                 )}
                 {next && (
-                  <div className="pt-4 xl:pt-8">
+                  <div className="basis-6/12">
+                    <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 sm:text-right">
+                      Next Article
+                    </h2>
                     <Link
                       href={`/posts/${next.slug}`}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
@@ -69,6 +80,6 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
           </div>
         </div>
       </article>
-    </>
+    </SectionContainer>
   )
 }

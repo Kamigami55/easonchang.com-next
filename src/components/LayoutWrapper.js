@@ -5,11 +5,12 @@ import Footer from './Footer'
 import LanguageSwitch from './LanguageSwitch'
 import Link from './Link'
 import MobileNav from './MobileNav'
+import SectionContainer from './SectionContainer'
 import ThemeSwitch from './ThemeSwitch'
 
 const LayoutWrapper = ({ children }) => {
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6">
+    <SectionContainer>
       <div className="flex h-screen flex-col justify-between">
         <header className="flex items-center justify-between py-10">
           <div>
@@ -25,7 +26,7 @@ const LayoutWrapper = ({ children }) => {
               </div>
             </Link>
           </div>
-          <div className="flex items-center gap-1 text-base leading-5">
+          <div className="flex items-center text-base leading-5 sm:gap-1">
             <div className="hidden gap-1 sm:flex">
               {headerNavLinks.map((link) => (
                 <Link
@@ -45,7 +46,7 @@ const LayoutWrapper = ({ children }) => {
         <main className="mb-auto">{children}</main>
         <Footer />
       </div>
-    </div>
+    </SectionContainer>
   )
 }
 
