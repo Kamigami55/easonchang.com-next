@@ -9,7 +9,7 @@ function CustomHeading({ Component, id, children, ...otherProps }) {
         aria-label="Anchor"
       >
         {'​'}
-        <div className="flex h-6 w-6 items-center justify-center rounded-md text-slate-400 shadow-sm ring-1 ring-slate-900/5 hover:text-slate-700 hover:shadow hover:ring-slate-900/10">
+        <div className="flex h-6 w-6 items-center justify-center rounded-md text-slate-400 shadow-sm ring-1 ring-slate-900/5 transition-all hover:bg-slate-100 hover:text-slate-700 hover:shadow hover:ring-slate-900/10 dark:ring-slate-400/20">
           <HashtagIcon className="h-4 w-4" />
         </div>
       </a>
