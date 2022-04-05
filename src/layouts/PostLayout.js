@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router'
 
 import Link from '@/components/Link'
+import PostBody from '@/components/organisms/PostBody'
 import PageTitle from '@/components/PageTitle'
 import ScrollTop from '@/components/ScrollTop'
 import SectionContainer from '@/components/SectionContainer'
@@ -44,7 +45,7 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:pb-0">
-              <div className="prose mx-auto pt-10 pb-8 dark:prose-dark">{children}</div>
+              <PostBody>{children}</PostBody>
             </div>
 
             <footer>
