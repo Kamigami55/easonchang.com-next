@@ -23,7 +23,7 @@ const MobileNav = () => {
     <div className="sm:hidden">
       <button
         type="button"
-        className="mx-1 h-8 w-8 rounded py-1"
+        className="h-10 w-10 rounded p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 sm:h-12 sm:w-12 sm:p-3"
         aria-label="Toggle Menu"
         onClick={onToggleNav}
       >
@@ -59,17 +59,16 @@ const MobileNav = () => {
           className="fixed h-full w-full cursor-auto focus:outline-none"
           onClick={onToggleNav}
         ></button>
-        <nav className="fixed mt-8 h-full">
+        <nav className="fixed mt-8 h-full w-full">
           {headerNavLinks.map((link) => (
-            <div key={link.title} className="px-12 py-4">
-              <Link
-                href={link.href}
-                className="text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
-                onClick={onToggleNav}
-              >
-                {link.title}
-              </Link>
-            </div>
+            <Link
+              href={link.href}
+              key={link.title}
+              className="block px-12 py-4 text-2xl font-bold tracking-widest text-gray-900 hover:bg-gray-300 dark:text-gray-100 dark:hover:bg-gray-700"
+              onClick={onToggleNav}
+            >
+              {link.title}
+            </Link>
           ))}
         </nav>
       </div>

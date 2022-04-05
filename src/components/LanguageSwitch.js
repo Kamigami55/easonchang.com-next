@@ -8,7 +8,10 @@ const LanguageSwitch = () => {
 
   return (
     <Link locale={nextLocale} href={{ pathname, query }}>
-      <a aria-label="Toggle Language" className="mx-1 rounded p-1 text-2xl sm:ml-4">
+      <a
+        aria-label="Toggle Language"
+        className="rounded p-2 text-2xl leading-6 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 sm:p-3"
+      >
         {router.locale === 'en' ? '🇺🇸' : '🇹🇼'}
       </a>
     </Link>
