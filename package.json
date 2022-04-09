@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint --fix .",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
@@ -62,6 +63,7 @@
     "husky": "^7.0.2",
     "hygen": "^6.1.0",
     "lint-staged": "^11.2.3",
+    "next-sitemap": "^2.5.19",
     "postcss": "^8.4.6",
     "prettier": "^2.4.1",
     "prettier-plugin-tailwindcss": "^0.1.4",
