@@ -11,7 +11,8 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook",
-    "new-component": "hygen component new"
+    "new-component": "hygen component new",
+    "new-post": "hygen post new"
   },
   "husky": {
     "hooks": {
