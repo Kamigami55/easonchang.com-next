@@ -15,3 +15,5 @@ template: 'post'
 meta:
   title: ''
 ---
+
+<!-- ![](/images/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>/.jpg) -->
