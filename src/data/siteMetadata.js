@@ -12,7 +12,7 @@ const siteMetadata = {
   socialBanner: '/og-easonchang.png',
   email: 'eason@easonchang.com',
   github: 'https://github.com/Kamigami55',
-  twitter: 'https://twitter.com/EasonChang_me',
+  twitter: '@EasonChang_me',
   // facebook: 'https://facebook.com',
   // youtube: 'https://youtube.com',
   linkedin: 'https://www.linkedin.com/in/easonchang101',
