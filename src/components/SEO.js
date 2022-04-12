@@ -3,59 +3,39 @@ import { useRouter } from 'next/router'
 
 import siteMetadata from '@/data/siteMetadata'
 
-const CommonSEO = ({ title, description, ogType, ogImage, twImage }) => {
+const CommonSEO = ({ title, description, ogType, ogImage }) => {
   const router = useRouter()
   return (
     <Head>
       <title>{title}</title>
       <meta name="robots" content="follow, index" />
-      <meta name="description" content={description} />
-      <meta property="og:url" content={`${siteMetadata.siteUrl}${router.asPath}`} />
-      <meta property="og:type" content={ogType} />
-      <meta property="og:site_name" content={siteMetadata.title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:title" content={title} />
-      {ogImage.constructor.name === 'Array' ? (
-        ogImage.map(({ url }) => <meta property="og:image" content={url} key={url} />)
-      ) : (
-        <meta property="og:image" content={ogImage} key={ogImage} />
-      )}
+      <meta name="description" key="description" content={description} />
+      <meta property="og:url" key="og:url" content={`${siteMetadata.siteUrl}${router.asPath}`} />
+      <meta property="og:type" key="og:type" content={ogType} />
+      <meta property="og:site_name" key="og:site_name" content={siteMetadata.title} />
+      <meta property="og:description" key="og:description" content={description} />
+      <meta property="og:title" key="og:title" content={title} />
+      <meta property="og:image" key="og:image" content={ogImage} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={siteMetadata.twitter} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={twImage} />
+      <meta name="twitter:title" key="twitter:title" content={title} />
+      <meta name="twitter:description" key="twitter:description" content={description} />
+      <meta name="twitter:image" key="twitter:image" content={ogImage} />
     </Head>
   )
 }
 
 export const PageSEO = ({ title, description }) => {
-  const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
-  const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
-  return (
-    <CommonSEO
-      title={title}
-      description={description}
-      ogType="website"
-      ogImage={ogImageUrl}
-      twImage={twImageUrl}
-    />
-  )
+  const ogImage = siteMetadata.siteUrl + siteMetadata.socialBanner
+  return <CommonSEO title={title} description={description} ogType="website" ogImage={ogImage} />
 }
 
 export const TagSEO = ({ title, description }) => {
-  const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
-  const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner
+  const ogImage = siteMetadata.siteUrl + siteMetadata.socialBanner
   const router = useRouter()
   return (
     <>
-      <CommonSEO
-        title={title}
-        description={description}
-        ogType="website"
-        ogImage={ogImageUrl}
-        twImage={twImageUrl}
-      />
+      <CommonSEO title={title} description={description} ogType="website" ogImage={ogImage} />
       <Head>
         <link
           rel="alternate"
@@ -68,7 +48,27 @@ export const TagSEO = ({ title, description }) => {
   )
 }
 
-export const BlogSEO = ({ authorDetails, title, description, date, lastmod, url, images = [] }) => {
+const getPostOGImage = (socialImage) => {
+  if (socialImage) {
+    if (socialImage.startsWith('http')) {
+      return socialImage
+    } else {
+      return siteMetadata.siteUrl + socialImage
+    }
+  }
+  return siteMetadata.siteUrl + siteMetadata.socialBanner
+}
+
+export const BlogSEO = ({
+  authorDetails,
+  title,
+  description,
+  date,
+  lastmod,
+  url,
+  images = [],
+  socialImage,
+}) => {
   const router = useRouter()
   const publishedAt = new Date(date).toISOString()
   const modifiedAt = new Date(lastmod || date).toISOString()
@@ -79,6 +79,7 @@ export const BlogSEO = ({ authorDetails, title, description, date, lastmod, url,
       ? [images]
       : images
 
+  // TODO get images from post content
   const featuredImages = imagesArr.map((img) => {
     return {
       '@type': 'ImageObject',
@@ -124,17 +125,11 @@ export const BlogSEO = ({ authorDetails, title, description, date, lastmod, url,
     description: description,
   }
 
-  const twImageUrl = featuredImages[0].url
+  const ogImage = getPostOGImage(socialImage)
 
   return (
     <>
-      <CommonSEO
-        title={title}
-        description={description}
-        ogType="article"
-        ogImage={featuredImages}
-        twImage={twImageUrl}
-      />
+      <CommonSEO title={title} description={description} ogType="article" ogImage={ogImage} />
       <Head>
         {date && <meta property="article:published_time" content={publishedAt} />}
         {lastmod && <meta property="article:modified_time" content={modifiedAt} />}
