@@ -102,5 +102,5 @@ export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post, Page],
   // markdown: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
-  mdx: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
+  markdown: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
 })
