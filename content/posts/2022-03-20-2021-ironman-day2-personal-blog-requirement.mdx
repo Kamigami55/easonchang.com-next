@@ -1,0 +1,53 @@
+---
+title: Day2 個人部落格需求規劃 - Next.js Frontend + Headless WordPress
+description: '這系列文章我們會實作個人部落格，使用 Next.js 前端搭配 Headless WordPress as CMS 後端。改善 DX 開發者體驗、編輯者體驗、UX 讀者體驗、SEO 搜尋引擎優化'
+slug: '2021-ironman-day2-personal-blog-requirement'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+socialImage: ''
+date: 2022-03-20 14:00
+type: Post
+meta:
+  title: Day2 個人部落格需求規劃 - Next.js Frontend + Headless WordPress
+---
+
+這系列我們會以實作「個人部落格」為主題，希望兼顧以下項目：
+
+- 開發者體驗：加功能調 UI 時有版本控制、能使用 React、Next.js 生態系各種最新功能
+- 編輯者體驗：不會寫 code 也能用 WordPress 後台編輯器改文章
+- 讀者體驗：網頁讀取速度要快、要有 RWD 支援手機和電腦版閱讀
+- 搜尋引擎優化 SEO：網頁讀取速度要快、各種 meta tag 要加好
+
+因此我們會使用「Next.js Frontend + Headless WordPress as CMS」這套方案，滿足以上需求。
+
+## Next.js 前端頁面
+
+前端會有的頁面滿單純的，基本上就是復刻原生 WordPress 會有的頁面，包含以下頁面：
+
+- 首頁 IndexPage：列出所有文章，依照發文時間新到舊排序，並且有 Pagination 分頁機制，一頁列出 10 篇文章，每篇文章會顯示縮圖、簡介文字、所屬分類、發文時間，首頁也會包含搜尋框能搜尋文章
+- 文章細節頁 PostPage：完整文章內容，所屬分類、所屬 Tag、相關文章列表
+- 類別頁 CategoryPage：列出屬於某個 Category 的所有文章
+- 標籤頁 TagPage：列出屬於某個 Tag 的所有文章
+- 搜尋頁 SearchPage：搜尋文章後會在這頁顯示 Match 的文章列表
+
+# 其他隱性功能需求
+
+除了比較明顯能看到的頁面，完整的網站也應該有下面這些設計：
+
+- Favicon：就是會顯示在瀏覽器 tab 裡的網站 Logo，之後會有一篇專門文章教你如何生成它並埋入網站
+- 404 NotFoundPage：讀者不小心進到錯的畫面時，我們也該設計專門錯誤頁面顯示給讀者，讓他不要太緊張，並導引他回到正確的畫面
+- Sitemap：這是個專門給搜尋引擎爬蟲例如 Google 看的隱藏頁面，用來告訴爬蟲我們網站有哪些頁面，因為我們要做 SEO，因此也必須在 Next.js 前端實現 Sitemap 生成
+
+# 更多酷炫功能！
+
+我們是誰？我們是開發者！我們最喜歡的就是嘗試新技術！有什麼比個人部落格更適合導入新技術來玩玩呢？因此我們這系列也會嘗試在新 Next.js 前端導入各種有趣的技術，包含：
+
+- Storybook：一套很棒的 UI component 開發環境，能大幅加速我們刻 UI 的速度和驗證 component 在不同條件下的樣式
+- TailwindCSS：現在最熱門的 CSS utility-first 框架，切版速度神快，我們會用它來刻上面提到的各種頁面
+- RSS Feed：我們也希望熟悉 RSS 工具的讀者能用 RSS 方式訂閱我們部落格，因此我們也會讓部落格支援 RSS！
+- PWA：既然都用到了這麼多酷東西，怎麼少的了 PWA（Progressive Web App）呢？這是一套新的網頁設定方法，設定完成後就能讓讀者能以 App 的方式安裝我們的網站到他的手機或電腦桌面，用起來會跟原生 App 非常相近！
+
+以上我們講完了這 30 天我們會做出來的個人部落格需求規劃，下一篇會開始實際架站！我們會先從 WordPress 開始架設！！

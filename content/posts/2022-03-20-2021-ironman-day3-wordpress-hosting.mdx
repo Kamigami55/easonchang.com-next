@@ -1,0 +1,62 @@
+---
+title: Day3 WordPress 架設 - 尋找最適合我們的 WordPress 架站平台 BlueHost
+description: '為我們的個人部落格尋找 WordPress CMS 託管平台，選擇 CP 值最高的 BlueHost 實作，手把手完成架設'
+slug: '2021-ironman-day3-wordpress-hosting'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+  - BlueHost
+socialImage: ''
+date: 2022-03-20 14:10
+type: Post
+meta:
+  title: Day3 WordPress 架設 - 尋找最適合我們的 WordPress 架站平台 BlueHost
+---
+
+首先我們要找一個地方架設 WordPress 作為內容管理系統 (CMS)。
+
+因為是開發階段，暫時不需要太好效能，不需要花大錢一次衝很高級的平台，所以我們會優先尋找價格便宜的架站平台來開發。而因為我們需要支援以 Next.js 作為前端，需要裝很多 plugin 來客製化各種功能，因此找架站平台時也要選擇能讓我們安裝 plugin 的平台。
+
+我一開始在找完全免費的平台，但網路上逛了一輪沒找到看的喜歡的，有嘗試註冊過一兩個完全免費的，但可能運氣不好吧，註冊時遇到各種 bug，無法成功架起 WordPress。
+
+最後我選擇架設在 [BlueHost](https://www.bluehost.com/) 平台上。我主要是被這兩篇文章推坑（[文章 1](https://wpointer.com/wordpress-tutorials/wordpress-development/newbie/hosting-recommendation/)、[文章 2](https://frankknow.com/wordpress-hosting/)），研究後發現 BlueHost 確實是付費主機裡面 CP 值很棒的選擇。雖然還是要付些錢，但這些錢能幫助我完成鐵人賽系列文章、得到一個自己開發的部落格，並且過程中不用擔心 WordPress 穩定性，我覺得還是滿划算的。
+
+你不一定要跟我一樣選擇 BlueHost，任何能架設 WordPress 的地方都可以，或是你有現成的 WordPress 網站也可以直接拿來改，依照你的需求來選吧！
+
+# 在 BlueHost 建立 WordPress CMS
+
+![Imgur](https://i.imgur.com/wNfaWo8.png)
+
+下面簡單介紹一下如何在 BlueHost 建立 WordPress 網站，當作我們未來的 CMS 使用。
+
+首先你可以點進上面兩篇推坑我的文章，裡面可以找到他們的推薦連結用來購買，據說價格會比較低，但我自己測試好像不是用推薦連結價格也一樣，也可以直連 BlueHost 官網點註冊按鈕：
+
+https://www.bluehost.com/
+
+你會看到下圖的價格表，因為還在開發階段，我選擇最便宜的左邊的方案，一個月大約 3 塊美金，但這個價格是要一次買三年才有的價格，如果一次只買一年的話則是一個月約 5 塊美金。我自己的購買狀況是買到一半在付款前反悔關掉網頁，過一陣子他們會寄 email 來，給你更優惠一點點的價格吸引你完成購買，想要更低價的話可以參考看看，我是買完才收到信來不及了。
+
+![Imgur](https://i.imgur.com/LYgh51s.png)
+
+付款完後就會寄信給你，以及一些教學告訴你如何啟用 WordPress 網站，基本上就是照著指令一步一步做就好。
+
+其中一個步驟是設定 domain，由於我們的 WordPress 只當作 CMS 來使用，正常訪客不會直連 WordPress 的 domain，因此 domain 是否好看不是很重要，這邊可以看你的需求決定要不要綁自訂網域，如果不綁的話 BlueHost 也會發給你一個預設的網域。
+
+![Imgur](https://i.imgur.com/DdqUGbt.png)
+
+後面有另一個步驟是問你要選左邊建立原生 WordPress 環境，還是 BlueHost 特化版的 WordPress 環境，因為考量到後續我們會做很多客製化，因此我選擇左邊方案：
+
+![Imgur](https://i.imgur.com/vLue3Sk.png)
+
+最後繼續照著步驟設定，就會來到這 WordPress 後台，此時點上方工具列左邊房屋 icon，再點選彈出來的「Visit Site」連結，就會把你導向到 WordPress 網站首頁，當你看到這個畫面時，就代表 WordPress 網站建立完成了！恭喜你！
+
+![Imgur](https://i.imgur.com/HrYw69a.png)
+
+這就是 WordPress 生成的前端畫面，到此你其實就已經做出了一個能運作的部落格了！如果你沒有要繼續建立 Next.js 專案的話，你可以就此打住，去玩各種 WordPress 設定了。
+
+但這系列重點是把 WordPress 前端拆出來用 Next.js 自己做，實現更高的客製化程度和更好的效能，因此這個系列會繼續下去！
+
+下一篇會介紹到底什麼是 WordPress，以及我們會發一些文章，供後續 Next.js 有資料能串接。
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10266441)

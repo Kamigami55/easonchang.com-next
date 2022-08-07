@@ -1,0 +1,79 @@
+---
+title: Day1 用 Next.js 拆分 Wordpress 前端 - 系列簡介
+description: '這系列文章我會詳實紀錄我用 Next.js 拆分 WordPress 前端的過程，比重大概 30% 會在 WordPress 調整，70% 會在 Next.js 新專案建立、畫面切版、功能實現。會以建立個人部落格為主題，從最初 WordPress 架設，到 Next.js 優化'
+slug: '2021-ironman-day1-nextjs-wordpress-intro'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+socialImage: ''
+date: 2021-10-17 14:54
+type: Post
+meta:
+  title: Day1 用 Next.js 拆分 Wordpress 前端 - 系列簡介
+---
+
+哈囉，我是 Eason，歡迎來到我的 **「WordPress 再進化，用 Next.js 拆分前端，實現 UI 完全客製化及優化效能與 SEO」** 30 天鐵人賽系列文章。
+
+## 源起：需要改善現存 WordPress 專案
+
+最近做專案需要，接手了一個舊有 WordPress 部落格網站的維護與開發，需要改善它的效能、增進使用者體驗、套版全新的 UI 樣式，加新功能等等。
+
+由於我不熟 WordPress 開發，套 UI 時要硬改原本 theme 的 UI block 符合新樣式很痛苦，追效能問題時改底層 php code 也很痛苦，我們 WordPress 沒有使用版本控制，要回朔以前改過哪些東西很痛苦，改完要從測試環境 deploy 到正式環境時也很痛苦，整個開發者體驗非常差。
+
+也由於 WordPress 是架構滿完整的整包 PHP-based 網頁應用，如果不去魔改底層 php code 的話，優化效能常規手段就是裝 WordPress plugin 來加速，但裝 plugin 的動作又會增加 WordPress 的頁面 size，好的 plugin 很多也要收費，很難在購買之前先試用知道有沒有效，也由於 plugin 封裝了很多功能在裡頭，對我來說滿黑箱的，比較難知道裡頭做了哪些事情，不利於個人知識累積，要客製化的話也無從改起，掌握度不夠高。
+
+## 方法：導入 Next.js，將 WordPress 前端拆分出來
+
+所以為了提升自己開發者體驗、前端客製化的掌握度、以及能更大程度的提升效能，不要受限於 WordPress 各種限制，我的解法是「導入 Next.js，將 WordPress 前端拆分出來」，將原本只有 WordPress 的單體架構，變成前端是 Next.js，後端是 WordPress 的前後端分離架構。WordPress 只當作後端使用的這個情境有個專有名詞叫 Headless WordPress。
+
+現存 WordPress 裡面的文章內容和各種設定依然有效，編輯文章時依然能用 WordPress 的所見即所得編輯器去編輯，繼續發揮他 CMS（Content Management System）的功能，而前端實際呈現給使用者的畫面則交由新建立的 Next.js 專案負責，透過 API 跟 WordPress 抓取內容來呈現。
+
+## 系列內容
+
+目前我自己的 WordPress 專案已經完成 Next.js 導入了，確實在開發者體驗、效能與使用者體驗、客製化掌握度都有了很大的進步。
+
+Next.js Frontend + Headless WordPress 這個使用情境比較少見，是這一兩年才流行起來的做法，網路上中文的教學文章比較少，實作過程也遇過滿多坑，以及需要考量的部分。所以我希望能貢獻一點我的研究成果給大家參考。
+
+這篇系列文章我會詳實紀錄我的整個拆分過程，比重大概 30% 會在 WordPress 調整，70% 會在 Next.js 新專案建立、畫面切版、功能實現。
+
+會以建立個人部落格為主題，從最初 WordPress 架設，到 Next.js 優化，整套流程都會一起走過。
+
+此系列預計會涵蓋以下主題：
+
+1. 簡介（You are here!!）
+2. 網站需求規劃
+3. WordPress 架設，host 平台選擇
+4. WordPress 版本控制
+5. WordPress 基本設定，基本文章內容
+6. Nextjs 介紹
+7. 各種 render 方式 CSR、SSG、SSR、ISR 介紹
+8. Nextjs 專案建立，使用 cms-wordpress 當模板
+9. Nextjs 架站，使用 vercel
+10. GraphQL 介紹、wpgraphql 安裝
+11. 前端 apollo graphql 串接
+12. preview 功能實作
+13. TailwindCSS 簡單 UI 切版
+14. 復刻 category、tag 頁
+15. Dynamic page 串接 & preview
+16. Navigation graphql relay
+17. WordPress menu 串接
+18. 換頁進度條 nprogress
+19. YoastSEO meta 串接
+20. Favicon
+21. Custom 404 500 error page
+22. Sitemap 建立
+23. RSS feed 建立
+24. PWA 優化
+25. 圖片優化
+26. 搜尋功能
+27. Google page insight 效能量測
+28. Vscode 編輯器設定、Eslint, Prettier
+29. GA 追蹤
+30. 功能驗收
+31. 結語
+
+今年沒有囤稿，上面這些文章都還沒寫 QAQ，內容會根據之後撰寫狀況動態調整，如果你有特別對哪部分有興趣，或是有任何回饋和話想說，歡迎在底下留言告訴我～～
+
+準備好了嗎？那我們就出發囉！下一篇讓我們一起來做「個人部落格」的需求規劃。

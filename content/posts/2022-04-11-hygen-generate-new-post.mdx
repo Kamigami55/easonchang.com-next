@@ -1,0 +1,282 @@
+---
+title: '不要再從舊檔案複製貼上了！使用 Hygen 快速建立 Blog 新文章 Markdown 檔案'
+description: '我在個人部落格導入了 Hygen 程式碼產生器，讓我能使用 hygen post new 指令，快速建立新文章草稿 .mdx 檔案，簡化繁瑣步驟。'
+slug: 'hygen-generate-new-post'
+category: 'Frontend'
+tags:
+  - Hygen
+  - Blog
+  - Markdown
+  - MDX
+  - CodeGenerator
+socialImage: ''
+date: 2022-04-11 20:44
+type: Post
+meta:
+  title: '不要再從舊檔案複製貼上了！使用 Hygen 快速建立 Blog 新文章 Markdown 檔案'
+---
+
+## TL;DR
+
+我在個人部落格導入了 [Hygen](https://www.hygen.io/) 程式碼產生器，讓我能使用 `hygen post new` 指令，快速建立新文章草稿 **.md** 檔案。
+
+## 寫部落格的痛點：建立新文章
+
+以我目前個人部落格的架構，要開始寫一篇新文章時，需要很多步驟。
+
+拿建立你現在看到的這篇文章為例，需要以下步驟：
+
+1. 在 **/content/posts/en/** 資料夾內，隨便挑選一篇文章原始檔（例如：**2022-04-07-product-hunt-today.mdx**），將他複製一份。
+2. 查看今天日期（2022/04/11），將剛複製的新檔案改名成 **2022-04-11-hygen-generate-new-post.mdx**。
+3. 移除新檔案內所有內容，只保留最上方文章 meta data 資訊（見下方範例）。
+4. 把新文章的 date 改成現在的時間。
+5. 在 **/content/posts/zh-TW/** 資料夾內重做一次步驟 1 ~ 4
+6. 在 **/public/images/** 資料夾內，建立 **2022-04-11-hygen-generate-new-post/** 資料夾，要用來放這篇文章用到的圖片。
+
+新文章 **.mdx** 檔基本架構：
+
+```js
+---
+title: ''
+author: Eason Chang
+description: ''
+category: ''
+tags:
+  - ''
+socialImage: ''
+date: 2022-04-11 20:44
+template: 'post'
+meta:
+  title: ''
+---
+
+```
+
+步驟挺繁瑣且耗費心力，身為一位工程師，我決定自動化這些步驟！
+
+## 導入 Hygen，用一條指令產生新文章模板檔案
+
+在 JavaScript 世界，有一個工具叫做 [Hygen](https://www.hygen.io/)，它就是專為這個目的而生的。
+
+Hygen 是一個簡單好用的程式碼產生器（Code Generator），可以透過 homebrew 或 npm 安裝。安裝後在專案內建立幾個 **.ejs** 模板檔，接著就能用 CLI 終端機下一行指令，一次生成你要的模板檔案。
+
+![Hygen homepage](/images/2022-04-11-hygen-generate-new-post/hygen-homepage.jpg)
+
+> Hygen 官網：https://www.hygen.io/
+
+我決定使用 Hygen 來幫我產生檔案！
+
+### 安裝 Hygen
+
+我使用 yarn 安裝 hygen 到我的部落格專案，安裝指令如下：
+
+```shell
+yarn add --dev hygen
+```
+
+你也可以使用 homebrew、npm、安裝，或不想安裝的話，使用 npx 在用到時一次性下載來執行也行，可以參考官方 [Quick Start](https://www.hygen.io/docs/quick-start) 頁面。
+
+### 我的 Hygen 模板架構
+
+我希望 Hygen 幫我產生 2 個 .mdx 檔案，和 1 個資料夾：
+
+1. /content/posts/zh-TW/[date]-[slug].mdx
+2. /content/posts/zh-TW/[date]-[slug].mdx
+3. /public/images/[date]-[slug]/
+
+以樹狀圖表示的話如下：
+
+```js
+<ProjectRoot>
+├── content/
+│   └── posts/
+│       ├── en/
+│       │   └── [date]-[slug].mdx
+│       └── zh-TW/
+│           └── [date]-[slug].mdx
+└── public/
+    └── images/
+        └── [date]-[slug]/
+```
+
+Hygen 的邏輯是每個要建立的檔案，對應到一個 .ejs.t 模板檔，模板檔預設是在 \_templates/ 資料夾底下，而底下每層子資料夾會決定將來 CLI 指令時要如何使用。
+
+我希望我用來建新文章的指令是 `hygen post new`，因此我們 template 模板檔案，樹狀圖如下：
+
+```js
+<ProjectRoot>
+└── _templates
+    └── post
+        └── new
+            ├── images-folder.ejs.t
+            ├── post-en.ejs.t
+            ├── post-zh.ejs.t
+            └── prompt.js
+```
+
+其中包含 3 個 .ejs.t 模板檔案，以及一個 prompt.js 檔。
+
+### 用 prompt.js 讓 Hygen CLI 支援動態參數
+
+我們可以透過建立 prompt.js 檔，讓用 Hygen 生成模板時支援動態參數。
+
+我希望我在下 `hygen post new` 指令時，能再輸入文章 slug，代表這篇文章獨一無二的網址名稱，用來決定 3 個生成出來的檔案名稱。
+
+因此我需要建立 prompt.js，內容如下：
+
+**prompt.js**
+
+```js
+module.exports = [
+  {
+    type: 'input',
+    name: 'slug',
+    message: 'Enter slug (ex: "my-post"): ',
+  },
+]
+```
+
+這定義了我這個指令需接收一個 slug 參數，下了 `hygen post new` 指令後，Hygen 就會請我再輸入 slug：
+
+![Hygen terminal](/images/2022-04-11-hygen-generate-new-post/hygen-terminal.jpg)
+
+或是我也可以直接在指令後面指定 slug，例如：`hygen post new --slug a-brand-new-post`。
+
+更多 Hygen prompt 用法，可以參考官方 document：
+
+https://www.hygen.io/docs/generators#interactive-prompt
+
+### 新增 helper 函式 `getDateTime(formatStr)` 用來取得現在時間
+
+Hygen 內建提供了一些字串格式化的工具函式 (helper)，幫我們做簡單字串轉換。
+
+例如要將吃進來的 slug 參數轉成全大寫的話，能透過在 ejs 模板檔內，使用 `<%= h.capitalize(slug) %>` 達成。
+
+[官網 helper function document](https://www.hygen.io/docs/templates/#helpers-and-inflections)
+
+但我有個需求是取得現在時間，並且要能轉成不同格式，Hygen 內建沒有這個函式可用，好在 Hygen 支援了客製化功能，我們能擴充自己的 helper function。
+
+方法是在專案根目錄，新增 **.hygen.js** 檔案：
+
+```js
+const { format } = require('date-fns')
+
+module.exports = {
+  helpers: {
+    getDateTime: function (formatStr) {
+      return format(new Date(), formatStr)
+    },
+  },
+}
+```
+
+上面設定的功用是，我新增了 `getDateTime(formatStr)` 這個 helper 函式，讓我們取得現在時間，並轉成想要的格式。
+
+[官網擴充 helper function document](https://www.hygen.io/docs/extensibility#helpers)
+
+### .ejs.t 模板檔案內容
+
+最後進入真正的重點， **ejs.t** 模板檔案。
+
+ejs 是 Embedded JavaScript 的意思，在純文字模板裡，能嵌入簡單 JS 語法，動態注入內容。
+
+每個想要建立的目標檔案，都需要一個對應的 .ejs.t 模板檔案。.ejs.t 檔案檔名可以隨意取，不影響目標檔案的生成。
+
+首先是 2 個目標 .mdx 檔案，內容都一樣，如下：
+
+```js
+---
+title: ''
+author: Eason Chang
+description: ''
+category: ''
+tags:
+  - ''
+socialImage: ''
+date: 2022-04-11 20:44
+template: 'post'
+meta:
+  title: ''
+---
+
+```
+
+所以我建立了兩個模板檔案，**post-zh.ejs.t** 和 **post-en.ejs.t**，內容如下：
+
+**post-zh.ejs.t**
+
+```js
+---
+to: content/posts/zh-TW/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>.mdx
+---
+
+---
+title: ''
+author: Eason Chang
+description: ''
+category: 'Project'
+tags:
+  - Project
+socialImage: ''
+date: <%= h.getDateTime('yyyy-MM-dd HH:mm') %>
+template: 'post'
+meta:
+  title: ''
+---
+```
+
+**post-en.ejs.t**
+
+```js
+---
+to: content/posts/en/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>.mdx
+---
+
+---
+title: ''
+author: Eason Chang
+description: ''
+category: 'Project'
+tags:
+  - Project
+socialImage: ''
+date: <%= h.getDateTime('yyyy-MM-dd HH:mm') %>
+template: 'post'
+meta:
+  title: ''
+---
+```
+
+裡面有兩點值得注意。第一個是檔案前三行橫線區塊：
+
+```js
+---
+to: content/posts/en/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>.mdx
+---
+```
+
+三條槓分割的區塊，這種格式叫做 Frontmatter，用來告訴 Hygen 這個模板的 meta data，在這邊我用 `to:` 跟 Hygen 説目標檔案要建立在哪裡。
+
+第二點是 `<%= %>` 這類語法，這是 ejs 裡面塞入 JS 語法的固定格式，我用來動態塞入 slug 參數內容，以及呼叫剛剛定義的 `h.getDateTime()`，取得格式化後的時間。
+
+更多教學請參閱 [Hygen 官網 Templates doc 頁面](https://www.hygen.io/docs/templates)
+
+最後我還需要建立放圖片用的資料夾。
+
+我希望建立後我能在 git 裡馬上看到這個資料夾，因此需要在裡面放入一個 .keep 空檔案。
+
+所以最後的最後，我建立了 **images-folder.ejs.t** 模板，來生成資料夾及其 .keep 檔：
+
+```js
+---
+to: public/images/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>/.keep
+---
+```
+
+## 成果
+
+That's it!
+
+我不用再花許多時間建立新文章了！現在我只要下 `hygen post new` 指令，就能讓 Hygen 替我代勞，我能把重要的時間放在內容產出！
+
+![Hygen terminal](/images/2022-04-11-hygen-generate-new-post/hygen-terminal.jpg)

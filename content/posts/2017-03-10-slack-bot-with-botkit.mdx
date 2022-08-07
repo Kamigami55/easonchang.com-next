@@ -1,0 +1,107 @@
+---
+title: Botkit初體驗，寫一隻Slack聊天機器人吧！
+tags:
+  - Botkit
+  - Chatbot
+  - Slack
+category: Chatbot
+socialImage: 'https://imgur.com/wnDgpFG.png'
+date: 2017-03-10 02:57
+type: Post
+slug: 'slack-bot-with-botkit'
+description: ''
+redirect_from:
+  - /2017/03/10/slack-bot-with-botkit/
+---
+
+# Botkit 初體驗，寫一隻 Slack 聊天機器人吧！
+
+目標：寫出一隻能運作的 Slack 聊天機器人(Chatbot)
+
+需要的資源：
+
+- 連網的可執行 Node.js 的電腦（我使用 Arch Linux）
+- 可供測試的 Slack team（可以自己建立或使用現有的 team）
+
+# 什麼是 Botkit
+
+[Botkit](https://www.botkit.ai/)是一套開源的聊天機器人開發工具，目前已支援[Slack](https://slack.com/)、[Facebook Messenger](https://www.messenger.com/)、[Cisco Spark](https://www.ciscospark.com/)、[Twilio IP Messaging](https://www.twilio.com/chat)、[Microsoft Bot Framework](https://dev.botframework.com/)等平台。
+
+Botkit 的 Github 連結：[https://github.com/howdyai/botkit](https://github.com/howdyai/botkit)
+
+# 下載 Botkit 與 Node.js
+
+## 下載 Node.js (如果之前沒裝過才需要裝)
+
+Node.js 是一套開源、跨平台輕量化的 JavaScript 執行環境，常用來開發各式網路服務。
+
+Botkit 使用 Node.js 來運行，所以要使用 Botkit 你必須先安裝 Node.js
+
+你可以在 Node.js 的官網上找到個平台的安裝方法：
+https://nodejs.org/en/
+
+而在 Arch Linux 上，只要輸入以下指令，就可使用系統內建的 pacman 套件管理軟體輕鬆安裝 Node.js：
+
+```bash
+sudo pacman -S nodejs npm
+```
+
+## 下載 Botkit
+
+Botkit 官方提供了兩種下載方式：透過 Git 與透過 npm。
+
+這裡我們使用 Git 來下載，這樣可以連範例程式碼也一起載下來。
+
+在你的電腦終端機中輸入以下指令：
+
+```bash
+git clone https://github.com/howdyai/botkit
+```
+
+這會將 botkit 下載至你的當前目錄裡，裡頭包含了 botkit 函式庫與範例程式。
+
+接著下載 Botkit 所需的 Node.js 模組檔案：
+
+```bash
+cd botkit/
+npm install
+```
+
+# 設置你的第一隻 Slack 聊天機器人
+
+下載完成後，我們就要在你的 Slack team 裡頭放入聊天機器人 Chatbot 了！
+
+## Slack 端設定
+
+用瀏覽器開啟 https://my.slack.com/services/new/bot （請將**my**置換成你的**Slack team 專屬的 URL 連結**）。
+
+這連結用來在你的 Slack team 裡頭新增 Chatbot，在**@username**的欄位輸入你想為 bot 取的名字，然後按下**Add bot integration**來新增，這裡我將我的機器人取名為**mmbot**
+
+![](https://imgur.com/erLvNAU.png)
+
+Chatbot 新增成功！接著你會在它的設定頁面看到一串**API Token 金鑰**，把它**複製起來**，下一步會用到。
+
+待會你將執行的 Chatbot 後端程式，必須有這串 Token，才能連結上你剛剛設定的 Slack bot。
+
+![](https://imgur.com/W6FAR8S.png)
+
+## Botkit 程式後端運行
+
+最後我們使用 botkit 提供的 slack-bot.js 範例來測試！輸入指令來執行它，記得將`token=your-token`換成你剛剛複製起來的 API Token
+
+```bash
+token=your-token node slack-bot.js
+```
+
+# 完成！跟你的新 Bot 打聲招呼吧！
+
+至此你的新聊天機器人就設置完成了！趕快打開 Slack 跟他講講話吧！！
+
+slack-bot.js 範例支援幾句非常簡單的對話，試著跟他說以下的話：
+
+- Hello
+- What is your name?
+- Who am I?
+- Call me Eason!
+
+![](https://imgur.com/6VI5HdN.png)

@@ -45,3 +45,5 @@ posts-draft/
 /public/robots.txt
 /public/sitemap*.xml
 
+# Contentlayer
+.contentlayer

@@ -1,0 +1,79 @@
+---
+title: Day6 建立 Next.js 專案 - 使用 create-next-app
+description: '使用 create-next-app 建立 Next.js 專案，目標是能在自己電腦上成功開啟 Next.js 網頁。'
+slug: '2021-ironman-day6-create-next-app'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - Create Next App
+socialImage: ''
+date: 2022-03-20 14:40
+type: Post
+meta:
+  title: Day6 建立 Next.js 專案 - 使用 create-next-app
+---
+
+今天我們要來建立 Next.js 專案，目標是能在自己電腦上成功開啟 Next.js 網頁。
+
+我預設你跟我一樣，是使用 MacOS 之類的 Unix 作業系統開發，知道如何開啟終端機打指令，並且電腦上已經安裝好 Yarn 這個 node.js 套件管理工具，我們會使用 Yarn 上面的 create-next-app 指令來建立 Next.js 專案。如果還沒安裝 Yarn 的話，可以上網找一下其他教學，根據你的環境把它裝起來。
+
+# 讓我們 create-next-app
+
+大部分情況下，開發 React 專案時，我們都會使用 [Create-react-app](https://create-react-app.dev/) 這套工具來幫我們建立專案基礎框架，他幫我們處理了非常多常見設定，像是安裝了支援 hot-reload 的 local dev server 讓我們能快速在本機端開發並看到結果、安裝了 babel 讓我們可以寫最新版的 JS 語法，又不用擔心兼容性問題、安裝了 eslint 幫我們檢查基礎語法錯誤等等，非常方便。
+
+Next.js 生態系也有類似的工具，就叫做 [create-next-app](https://nextjs.org/docs/api-reference/create-next-app)，這也是 Next.js 官方建議的啟動方式。那就讓我們開始吧！
+
+步驟非常簡單，首先開啟終端機，cd 到你要放專案的位置，輸入以下指令：
+
+```bash
+yarn create next-app
+```
+
+指令執行到中途時，會請你輸入你新專案要叫什麼名字？以下圖為例我將我的專案取名為 `oh-so-pro-blog`，**就。很。Pro 部落格**
+
+![Imgur](https://i.imgur.com/eynhAuj.png)
+
+他就會幫你建立一個同名資料夾，放置所有專案檔案在裡頭，完成畫面會長這樣：
+
+![Imgur](https://i.imgur.com/0QfwD4J.png)
+
+我們就可以 cd 進去看一下裡面的檔案結構，我使用我常用的編輯器 VSCode 開啟它，你也可以使用任何你習慣的編輯器來修改你的專案：
+
+![Imgur](https://i.imgur.com/d9Z1Kpl.png)
+
+![Imgur](https://i.imgur.com/tR5YfgL.png)
+
+# 啟動本機開發伺服器
+
+觀察 package.json 的 scripts 區塊，這邊列出的是常用的可執行的指令，其中最常用的就是 `yarn dev`，這可以在我們電腦上開啟開發用伺服器，所以讓我們叫出 VSCode 終端機，並且執行它：
+
+![Imgur](https://i.imgur.com/QCcz4jE.png)
+
+執行後他會跟你說我們的本機伺服器開設在 http://localhost:3000/ 這個位置，於是我們用瀏覽器開啟他，你應該會看到下面的畫面：
+
+![Imgur](https://i.imgur.com/Lb226nb.png)
+
+看到這個畫面就代表你成功建立起了可以運作的 Next.js 專案了！
+
+# 嘗試修改點東西
+
+你可以嘗試改改看首頁的文字，體驗看看 Next.js 專案裡內建 hot-reload 功能帶來的優良開發者體驗。
+
+例如讓我們修改 `/pages/index.js`，這個檔案是在描述首頁要顯示的內容。我們把第 16 行標題改一下，改成**就。很。Pro blog**：
+
+修改同時你會發現下方終端機一直在重新 compile 最新的 code，這就是 hot-reload 功能，local dev server 會偵測專案程式碼的任何改動，並即時編譯出最新結果，呈現在畫面上。
+
+![Imgur](https://i.imgur.com/EQmHFhd.png)
+
+改完後再切回瀏覽器，你會發現你不需要重新整理畫面，也能及時看到程式碼最新的改動效果，非常方便！
+
+![Imgur](https://i.imgur.com/NxUDQl4.png)
+
+建立完了 Next.js 專案，下一篇讓我們將它部署到官方的 Vercel 平台上吧！
+
+# 參考資料：
+
+- Next.js 官方 Doc：https://nextjs.org/docs/getting-started
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10268691)

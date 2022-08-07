@@ -1,0 +1,104 @@
+---
+title: 設定 Gatsby 部落格文章的舊路徑重導向，使用 gatsby-redirect-from 插件
+description: '新的 Gatsby 部落格有自己一套路由設定，與原先 Hexo 不同。於是我使用 gatsby-redirect-from plugin 將文章舊路徑重導向。'
+slug: 'gatsby-redirect-from'
+category: 'Blog'
+tags:
+  - Blog
+  - Gatsby
+socialImage: '/images/2021-02-14-gatsby-redirect-from/gatsby-redirect-from.png'
+date: 2021-02-14 13:23
+type: Post
+---
+
+新的 Gatsby 部落格有自己一套路由設定，與原先 Hexo 不同。
+
+例如原先 Hexo 版的 [【專案】科幻風造型獎盃](https://www.easonchang.com/posts/scifi-trophy/) 文章的網址是：
+
+```
+https://www.easonchang.com/2018/04/04/scifi-trophy/
+```
+
+而將文章搬移到 Gatsby 後，網址變成了：
+
+```
+https://www.easonchang.com/posts/scifi-trophy/
+```
+
+因為我部落格是在原網址整個重架，若有讀者將原本的網址存為書籤，再次連回來時會找不到那篇文章，因此我需要對舊文章做特殊處理，有兩種方法：
+
+1. 調整 Gatsby 路由生成設定，讓舊文章維持使用舊網址（依然使用 `/2018/04/04/scifi-trophy/`）
+2. 設定重導向規則，將舊網址 `/2018/04/04/scifi-trophy/` 重導向到新網址 `/posts/scifi-trophy/`
+
+我選擇走第二條路，因為我覺得新網址的比舊網址簡潔，將文章全集結到 `/posts` 路由底下，挺順眼的。
+
+而且若我未來要開新專案取名叫 **2018** ，想架設在 `https://www.easonchang.com/2018/` ，也可以避免路徑衝突。
+
+## 使用 gatsby-redirect-from 插件實現重導向
+
+我找到了一個 Gatsby 的 plugin，叫做 [gatsby-redirect-from](https://www.gatsbyjs.com/plugins/gatsby-redirect-from/) 。
+
+它的功用是可以在每篇文章的 .md 原始檔裡設定多個路徑別名，讀者用別的路徑進站時，就會被重導向到正確的文章。
+
+![](/images/2021-02-14-gatsby-redirect-from/gatsby-redirect-from.png)
+
+### 安裝
+
+在終端機指令輸入下面指令安裝相關 node 套件，我使用 yarn 來安裝：
+
+```shell
+yarn add gatsby-redirect-from gatsby-plugin-meta-redirect
+```
+
+然後修改 `gatsby-config.js` 檔案，啟動這兩個 plugin：
+
+```js
+// ...
+plugins: [
+  // ...
+  // 加入下面兩行
+  'gatsby-redirect-from',
+  'gatsby-plugin-meta-redirect', // make sure this is always the last one
+]
+// ...
+```
+
+### 對每篇文章設定要重導向的路徑
+
+接著修改要設定重導向的文章 .md 檔。
+
+在最上方 yaml 區塊加入 `redirect_from` key，裡面是一個 array，可以針對一篇文章設定 1 到多個重導向路徑。設定完後會長這樣：
+
+```markdown
+---
+title: 【專案】科幻風造型獎盃
+redirect_from:
+  - /2018/04/04/scifi-trophy/
+---
+
+## 簡介
+
+（下略...）
+```
+
+這樣就大功告成了！
+
+重新執行 `yarn deploy` 更新部落格後，讀者即便連到舊的文章網址，也會自動被重導向到新文章連結了！
+
+## 原理
+
+我觀察了一下此 plugin 是如何做重導向的，發現他是在 build 完後的靜態檔裡頭，會建立多個類似下面的 `index.html` 檔，放在要被重導向的舊路徑裡（ /2018/04/04/scifi-trophy/ ）：
+
+```html
+<meta http-equiv="refresh" content="0; URL='/posts/scifi-trophy/'" />
+```
+
+用一個帶有 URL 的 refresh meta tag 來做 client-side 的重導向，content 裡的 0 代表 0 秒後要重導向，也就是立刻馬上。挺聰明的！
+
+這個方法的關鍵字是 **[Meta Refresh](https://en.wikipedia.org/wiki/Meta_refresh)** ，是滿常用的重導向實作方法，但有些瀏覽器因為安全性考量，會擋掉重導向動作，所以很多網站要做重導向時，才會同時附帶一個按鈕，說「若 5 秒內沒有重導向的話，請按我」。
+
+## 感想
+
+這次一次性設定 30 篇舊文章的路徑，滿費工的。要一直從瀏覽器點舊文章，複製舊網址，在切換到編輯器將舊網址貼到 md 檔，並補上 redirect_from key，重複整套動作 30 次。
+
+這套流程應該要是能被自動化的，但我目前功夫還不到家，所以先手動完成了。希望以後做類似事情時，我能更像個工程師寫個小 script 自動完成它！

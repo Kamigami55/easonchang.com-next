@@ -1,6 +1,8 @@
+const { withContentlayer } = require('next-contentlayer')
+
 const { i18n } = require('./next-i18next.config')
 
-module.exports = {
+module.exports = withContentlayer({
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
@@ -8,4 +10,4 @@ module.exports = {
     ignoreDuringBuilds: true,
   },
   i18n,
-}
+})
