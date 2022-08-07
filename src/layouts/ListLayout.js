@@ -3,7 +3,6 @@ import { useState } from 'react'
 
 import Link from '@/components/Link'
 import Pagination from '@/components/Pagination'
-import Tag from '@/components/Tag'
 import formatDate from '@/lib/utils/formatDate'
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
@@ -53,7 +52,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
         <ul>
           {!filteredBlogPosts.length && 'No posts found.'}
           {displayPosts.map((post) => {
-            const { slug, date, title, description, tags } = post
+            const { slug, date, title, description } = post
             return (
               <li key={slug} className="py-4">
                 <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
@@ -70,11 +69,6 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
                           {title}
                         </Link>
                       </h3>
-                      <div className="flex flex-wrap">
-                        {tags.map((tag) => (
-                          <Tag key={tag} text={tag} />
-                        ))}
-                      </div>
                     </div>
                     <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                       {description}
