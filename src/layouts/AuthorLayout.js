@@ -3,12 +3,13 @@ import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 // import SocialIcon from '@/components/social-icons'
 
-export default function AuthorLayout({ children, frontMatter }) {
-  const { name, avatar, occupation, company, email, twitter, linkedin, github } = frontMatter
-
+export default function AuthorLayout({ children }) {
   return (
     <>
-      <PageSEO title={`About - ${siteMetadata.title}`} description={`About me - ${name}`} />
+      <PageSEO
+        title={`About - ${siteMetadata.title}`}
+        description={`About me - ${siteMetadata.author}`}
+      />
       <div className="divide-y">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">

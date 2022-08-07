@@ -1,5 +1,5 @@
+import { allPages } from 'contentlayer/generated'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { MDXRemote } from 'next-mdx-remote'
 
 import {
   CustomH1,
@@ -11,7 +11,6 @@ import {
 } from '@/components/CustomHeading'
 import CustomLink from '@/components/CustomLink'
 import AuthorLayout from '@/layouts/AuthorLayout'
-import { AUTHORS_FOLDER, getFileBySlug } from '@/lib/mdx'
 
 const components = {
   a: CustomLink,
@@ -23,22 +22,25 @@ const components = {
   h6: CustomH6,
 }
 
+const LOCALE_TO_PAGE_NAME = {
+  en: 'about-en',
+  'zh-TW': 'about-zh',
+}
+
 export async function getStaticProps({ locale }) {
-  const authorDetails = await getFileBySlug(AUTHORS_FOLDER, ['easonchang'], locale)
+  const aboutPage = allPages.find((page) => page.name === LOCALE_TO_PAGE_NAME[locale])
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
-      authorDetails,
+      aboutPage,
     },
   }
 }
 
-export default function About({ authorDetails }) {
-  const { mdxSource, frontMatter } = authorDetails
-
+export default function About({ aboutPage }) {
   return (
-    <AuthorLayout frontMatter={frontMatter}>
-      <MDXRemote {...mdxSource} components={components} />
+    <AuthorLayout>
+      <div dangerouslySetInnerHTML={{ __html: aboutPage.body.html }} />
     </AuthorLayout>
   )
 }

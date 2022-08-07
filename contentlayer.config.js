@@ -77,12 +77,12 @@ export const Post = defineDocumentType(() => ({
 
 export const Page = defineDocumentType(() => ({
   name: 'Page',
-  filePathPattern: `content/**/*.mdx`,
+  filePathPattern: `content/pages/**/*.mdx`,
   // contentType: 'mdx',
   fields: {
-    title: {
+    name: {
       type: 'string',
-      description: 'The title of the post',
+      description: 'The name of page',
       required: true,
     },
     redirect_from: {
@@ -90,12 +90,12 @@ export const Page = defineDocumentType(() => ({
       of: { type: 'string' },
     },
   },
-  computedFields: {
-    url: {
-      type: 'string',
-      resolve: (post) => `/posts/${post._raw.flattenedPath}`,
-    },
-  },
+  // computedFields: {
+  //   url: {
+  //     type: 'string',
+  //     resolve: (post) => `/posts/${post._raw.flattenedPath}`,
+  //   },
+  // },
 }))
 
 export default makeSource({
