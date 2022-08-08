@@ -34,7 +34,7 @@ const components = {
 export async function getStaticPaths() {
   const paths = []
   LOCALES.forEach((locale) => {
-    paths.push(...allPosts.map((post) => `/${locale}/posts/${post.slug}`))
+    paths.push(...allPosts.map((post) => `/${locale}${post.path}`))
   })
   return {
     paths,
