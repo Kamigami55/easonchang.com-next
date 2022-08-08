@@ -14,7 +14,7 @@ const Meta = defineNestedType(() => ({
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `content/posts/**/*.mdx`,
-  // contentType: 'mdx',
+  contentType: 'mdx',
   fields: {
     title: {
       type: 'string',
@@ -78,7 +78,7 @@ export const Post = defineDocumentType(() => ({
 export const Page = defineDocumentType(() => ({
   name: 'Page',
   filePathPattern: `content/pages/**/*.mdx`,
-  // contentType: 'mdx',
+  contentType: 'mdx',
   fields: {
     name: {
       type: 'string',
@@ -101,6 +101,5 @@ export const Page = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post, Page],
-  // markdown: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
-  markdown: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
+  mdx: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
 })

@@ -1,4 +1,5 @@
 import { allPages } from 'contentlayer/generated'
+import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
@@ -39,9 +40,11 @@ export async function getStaticProps({ locale }) {
 }
 
 export default function About({ projectsPage }) {
+  const MDXContent = useMDXComponent(projectsPage.body.code)
+
   return (
     <ProjectLayout>
-      <div dangerouslySetInnerHTML={{ __html: projectsPage.body.html }} />
+      <MDXContent />
     </ProjectLayout>
   )
 }

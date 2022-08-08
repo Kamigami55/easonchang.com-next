@@ -1,5 +1,6 @@
 import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
+import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
@@ -67,11 +68,13 @@ export async function getStaticProps({ params, locale }) {
 }
 
 export default function Blog({ post, prev, next }) {
+  const MDXContent = useMDXComponent(post.body.code)
+
   return (
     <>
       {post.isDraft !== true ? (
         <PostLayout post={post} prev={prev} next={next}>
-          <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
+          <MDXContent />
         </PostLayout>
       ) : (
         <div className="mt-24 text-center">
