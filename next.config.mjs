@@ -1,8 +1,9 @@
-const { withContentlayer } = require('next-contentlayer')
+import { withContentlayer } from 'next-contentlayer'
 
-const { i18n } = require('./next-i18next.config')
+import i18nConfig from './next-i18next.config.js'
+const { i18n } = i18nConfig
 
-module.exports = withContentlayer({
+export default withContentlayer({
   reactStrictMode: true,
   eslint: {
     // Warning: This allows production builds to successfully complete even if
