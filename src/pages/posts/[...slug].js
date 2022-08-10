@@ -14,6 +14,8 @@ import {
 import PageTitle from '@/components/PageTitle'
 import { LOCALES } from '@/constants/siteMeta'
 import PostLayout from '@/layouts/PostLayout'
+import { unifyPath } from '@/utils/unifyPath'
+import { allRedirects } from '@/utils/getAllRedirects'
 
 import CustomLink from '../../components/CustomLink'
 
@@ -38,15 +40,32 @@ export async function getStaticPaths() {
   })
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps({ params, locale }) {
+  // Handle post redirect logic
+  const path = unifyPath('/posts/' + params.slug.join('/'))
+  const matchedRedirectRule = allRedirects.find((rule) => rule.source === path)
+  if (matchedRedirectRule) {
+    return {
+      redirect: {
+        destination: matchedRedirectRule.destination,
+        permanent: matchedRedirectRule.permanent,
+      },
+    }
+  }
+
   const posts = allPosts.sort((a, b) => {
     return compareDesc(new Date(a.date), new Date(b.date))
   })
   const postIndex = allPosts.findIndex((post) => post.slug === params.slug.join('/'))
+  if (postIndex === -1) {
+    return  {
+      notFound: true,
+    }
+  }
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
   const post = posts[postIndex]

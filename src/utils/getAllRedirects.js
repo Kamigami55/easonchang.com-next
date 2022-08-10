@@ -1,0 +1,22 @@
+import { allPosts } from 'contentlayer/generated'
+
+import { unifyPath } from './unifyPath'
+
+export const getAllRedirects = () => {
+  const redirects = []
+  allPosts.forEach((post) => {
+    const allRedirectFrom = (post.redirect_from?.map((from) => unifyPath(from)) || []).concat(
+      unifyPath('/posts/' + post._raw.sourceFileName.replace(/\.mdx?$/, ''))
+    )
+    allRedirectFrom.forEach((from) => {
+      redirects.push({
+        source: from,
+        destination: post.path,
+        permanent: false,
+      })
+    })
+  })
+  return redirects
+}
+
+export const allRedirects = getAllRedirects()
