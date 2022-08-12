@@ -14,6 +14,9 @@ socialImage: ''
 date: <%= h.getDateTime('yyyy-MM-dd HH:mm') %>
 type: Post
 isDraft: true
+meta:
+  - title: ''
+  - description: ''
 ---
 
 <!-- ![](/images/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>/.jpg) -->
