@@ -2,11 +2,9 @@ import { unifyPath } from '@/utils/unifyPath'
 import { allRedirects } from '@/utils/getAllRedirects'
 
 export async function getStaticPaths() {
-  const paths = allRedirects.map((rule) => rule.source)
-
   return {
-    paths,
-    fallback: false,
+    paths: [],
+    fallback: 'blocking',
   }
 }
 
