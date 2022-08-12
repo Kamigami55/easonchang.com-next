@@ -85,17 +85,15 @@ export const Page = defineDocumentType(() => ({
       description: 'The name of page',
       required: true,
     },
+    path: {
+      type: 'string',
+      required: true,
+    },
     redirect_from: {
       type: 'list',
       of: { type: 'string' },
     },
   },
-  // computedFields: {
-  //   url: {
-  //     type: 'string',
-  //     resolve: (post) => `/posts/${post._raw.flattenedPath}`,
-  //   },
-  // },
 }))
 
 export default makeSource({

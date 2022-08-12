@@ -6,6 +6,8 @@ import { PageSEO } from '@/components/SEO'
 import { LOCALES, POSTS_PER_PAGE } from '@/constants/siteMeta'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
+import { allRedirects } from '@/utils/getAllRedirects'
+import { unifyPath } from '@/utils/unifyPath'
 
 export async function getStaticPaths() {
   const posts = allPosts.sort((a, b) => {
@@ -28,6 +30,19 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params, locale }) {
   const { page } = params
+
+  // Handle redirect logic
+  const path = unifyPath('/page/' + page)
+  const matchedRedirectRule = allRedirects.find((rule) => rule.source === path)
+  if (matchedRedirectRule) {
+    return {
+      redirect: {
+        destination: matchedRedirectRule.destination,
+        permanent: matchedRedirectRule.permanent,
+      },
+    }
+  }
+
   const posts = allPosts.sort((a, b) => {
     return compareDesc(new Date(a.date), new Date(b.date))
   })
