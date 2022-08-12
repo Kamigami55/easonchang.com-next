@@ -1,0 +1,201 @@
+---
+title: '解決 CORS 跨域請求問題，使用 Create React App 內建 Proxy 繞過它'
+description: '如何設定 Create React App 內建的 Proxy server，來在開發階段繞過呼叫 API 遇到的 Cross-Origin Resource Sharing (CORS) 問題'
+slug: 'create-react-app-proxy'
+category: 'Frontend'
+tags:
+  - Frontend
+language: zh-TW
+socialImage: ''
+date: 2022-08-12 20:58
+type: Post
+isDraft: false
+meta:
+  - title: '解決 CORS 跨域請求問題，使用 Create React App 內建 Proxy 繞過它'
+  - description: '如何設定 Create React App 內建的 Proxy server，來在開發階段繞過呼叫 API 遇到的 Cross-Origin Resource Sharing (CORS) 問題'
+---
+
+開發 [Create React App](https://create-react-app.dev/) 專案時，開開心心刻完畫面後，要串接後端 API 時，你是否常看到這樣的錯誤訊息：
+
+```
+Fetch API cannot load https://example.com/api/todos. No `Access-Control-Allow-Origin` header is present on the requested resource. Origin `http://localhost:3000` is therefore not allowed access. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+```
+
+恭喜你碰上 CORS 問題了！
+
+## 簡介 CORS 跨站資源共享
+
+[跨來源資源共用（Cross-Origin Resource Sharing (CORS)）]((https://developer.mozilla.org/zh-TW/docs/Web/HTTP/CORS))，是瀏覽器的安全機制，用來決定 A 網站能否使用 B 網站的資源。
+
+例如能否從 A 網站呼叫 B 網站的 API，或嵌入 B 網站的圖片。
+
+預設狀態下，各個網站之間都不能共享資源，所以從你的 React 專案呼叫外部 API 時，才會看到 CORS 錯誤訊息。
+
+## 處理 CORS 正確方法：由後端設定 CORS Headers
+
+如果情境是你的 A 網站要呼叫 B 網站 API，你**沒辦法**只改 A 網站就解決 CORS。
+
+你必須修改 B 網站的設定，在 API Response 新增 **Access-Control-Allow-Origin** header，在裡面允許從 A 網站呼叫此 API，設定方法不同後端有不同方法，本文重點不在這兒，就不展開了。
+
+---
+
+## 開發時繞過 CORS 的方法：使用 Create React App 的 Proxy！
+
+在後端還沒設定 CORS Header 前，你可以使用 [Create React App 的 Proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/) 代理伺服器功能，繞過 CORS 限制！
+
+（以下簡稱 **Create React App** 為 **CRA**）
+
+這個方法只在使用 `npm start` 在 local 開發時有效，不能用在網站部署後，所以最終還是必須請後端設定 Header。
+
+## CRA 的 Proxy 原理
+
+假設你在 `http://localhost:3000` 開發 A 網站，要呼叫 `https://example.com/api`。
+
+你應該會這樣寫：
+
+```js
+fetch('https://example.com/api')
+```
+
+直接呼叫會遇到 CORS 問題，那我們不要直接呼叫就好了啊！此時就可以透過 Proxy server 來過一手。
+
+當我們設定完 CRA 的 Proxy 後（後面會講怎麼設定），CRA 會在 `http://localhost:3000` 同時開啟一個 **Proxy server**，此時當你改寫 fetct 的 API 路徑，改成向 localhost:3000 呼叫時：
+
+```js
+fetch('http://localhost:3000/api')
+// 或更簡單
+fetch('/api')
+```
+
+CRA Proxy 伺服器收到 API 請求後，會把 request 原封不動拿去呼叫真正的 API `https://example.com/api`，得到結果後再回傳給你。
+
+經過 Proxy 過一手後，就不會有 CORS 問題了。
+
+因為你呼叫的 API 不再是 `example.com` 了，而是 `localhost:3000`，而你的網頁也在 `localhost:3000`，對瀏覽器來說呼叫自己是很安全的。
+
+而從 CRA Proxy 呼叫 `example.com` 這段是從伺服器端呼叫的，伺服器端不會有 CORS 問題。
+
+---
+
+## 設定 CRA Proxy 的方法
+
+有兩種方法能開啟 CRA 的 Proxy，一個簡單，一個複雜但更有彈性。
+
+### 簡單方法 1：在 package.json 加入 "proxy" 來設定
+
+一樣的情境，我們目標是把 `http://localhost:3000/api` proxy 到 `https://example.com/api`
+
+只需要在專案的 **packaga.json 新增 `proxy` 屬性**就好，內容填上目標 API 網域，像這樣：
+
+```json
+"proxy": "https://example.com/api"
+```
+
+接著重新執行 `npm start` 後就生效了，對 `localhost:3000` 的任何 API request 都會被 proxy 到 `example.com`。
+
+所以這樣寫就能成功呼叫 `https://example.com/api`：
+
+```js
+fetch('/api')
+```
+
+### 複雜但彈性的方法 2：新增 src/setupProxy.js 來客製化邏輯
+
+如果你同時有多個 API 需要 proxy、需要把 API 路徑放到環境變數，或有更複雜的需求，那你需要方法 2。
+
+方法 2 **不用改 package.json**，而是需要先安裝 **http-proxy-middleware** package：
+
+```bash
+$ npm install http-proxy-middleware --save
+```
+
+接著新增一個檔案 **src/setupProxy.js**，內容如下：
+
+```js
+const { createProxyMiddleware } = require('http-proxy-middleware')
+
+module.exports = function (app) {
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'https://example.com',
+      changeOrigin: true,
+    })
+  )
+}
+```
+
+接著重新 `npm start` 就完成了！效果一樣是把 `http://localhost:3000/api` proxy 到 `https://example.com/api`
+
+原理是 npm start 是用 Express 開啟 local server，setupProxy.js 讓我們能**安插一小段自訂邏輯（middleware）進去，達成 proxy 效果**。
+
+#### 方法 2 延伸：Proxy 多個 API
+
+如果你同時要呼叫多個 API，都有 CORS 問題的話，用方法 2 就能同時做設定，擴充的寫法如下，修改 **setupProxy.js**：
+
+```js
+const { createProxyMiddleware } = require('http-proxy-middleware')
+
+module.exports = function (app) {
+  app.use(
+    '/api',
+    createProxyMiddleware({
+      target: 'https://example.com',
+      changeOrigin: true,
+    })
+  )
+
+  app.use(
+    '/my-api-2',
+    createProxyMiddleware({
+      target: 'https://another-remote-api.com',
+      changeOrigin: true,
+    })
+  )
+}
+```
+
+這樣除了原先 `http://localhost:3000/api` 會 proxy 到 `https://example.com/api`，
+
+`http://localhost:3000/my-api-2` 也會 proxy 到 `https://another-remote-api.com/my-api-2`！
+
+#### 方法 2 延伸：將 API 路徑放到環境變數
+
+你可能已經將 API 路徑寫在環境變數了（參照 [CRA 環境變數文件](https://create-react-app.dev/docs/adding-custom-environment-variables/#expanding-environment-variables-in-env)），像下面這樣：
+
+**.env**
+
+```bash
+REACT_APP_API_DOMAIN = 'https://example.com'
+REACT_APP_API_PATH = '/api'
+```
+
+在 **setupProxy.js** 裡就能這樣使用：
+
+```js
+const { createProxyMiddleware } = require('http-proxy-middleware')
+
+module.exports = function (app) {
+  app.use(
+    process.env.REACT_APP_API_PATH,
+    createProxyMiddleware({
+      target: process.env.REACT_APP_API_DOMAIN,
+      changeOrigin: true,
+    })
+  )
+}
+```
+
+That's all！現在你知道怎麼使用 Create React App 的 Proxy 來在開發時繞過 CORS 問題了！
+
+---
+
+## Trouble Shooting：讓 setupProxy.js 支援 TypeScript？
+
+我嘗試把 setupProxy.js 改成 setupProxy.ts，並把裡面語法改成 TypeScript，但一直無法成功跑起來，目前研究下來應該是 CRA Proxy 不支援 TypeScript，[CRA 官方 Proxy 文件](https://create-react-app.dev/docs/proxying-api-requests-in-development/#configuring-the-proxy-manually) 最下面說了 setupProxy.js 只支援 Node.js 的 JavaScript ES5 前語法，也有找到相關 [issue](https://github.com/facebook/create-react-app/issues/6794) 在詢問它是否支援 TypeScript，但沒有結果。如果你知道有方法能支援 TypeScript 的話，歡迎跟我說！
+
+## 參考資源
+
+- [Proxying API Requests in Development | Create React App](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
+- [跨來源資源共用（CORS） - HTTP | MDN](https://developer.mozilla.org/zh-TW/docs/Web/HTTP/CORS)
+- [CORS 完全手冊（一）：為什麼會發生 CORS 錯誤？ - Huli](https://blog.huli.tw/2021/02/19/cors-guide-1/)
