@@ -1,0 +1,76 @@
+---
+title: Day8 GraphQL 介紹、在WordPress 上安裝 WPGraphQL plugin
+description: '在 WordPress 上安裝 WPGraphQL plugin，建立 GraphQL API，提供 Next.js 前端抓取文章資料'
+slug: '2021-ironman-day8-wpgraphql'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+  - GraphQL
+  - GraphiQL
+  - WPGraphQL
+socialImage: ''
+date: 2022-03-20 15:00
+type: Post
+meta:
+  title: Day8 GraphQL 介紹、在WordPress 上安裝 WPGraphQL plugin
+---
+
+我們的系統架構很單純，分為託管在 Vercel 上的 Next.js 前端，以及託管在 BlueHost 上的 WordPress 後端 CMS。
+
+而前後端之間要溝通，最常見的做法就是後端開 API 讓前端去呼叫，前端透過 API 抓取後端 CMS 上的文章資料，來呈現在前端畫面上。
+
+那麼 WordPress 要怎麼開 API 呢？現在網路世界裡最普遍的 API 格式叫做 RESTful API，WordPress 內建就有 RESTful API 可以直接呼叫，來取得各種資料。但在這系列裡，我們會用一套更新穎的 API 格式，叫做 GraphQL。
+
+# GraphQL，由 Facebook 開發的更有彈性的 API 格式
+
+![Imgur](https://i.imgur.com/y5DPhvc.png)
+
+[GraphQL](https://graphql.org/) 是一套 API 格式，由 Facebook 在 2015 年開源出來讓大家可以使用。GraphQL 跟 RESTful API 一樣是基於 HTTP request 來做資料交換，但在後端開發和前端串接上都有優於 RESTful 的地方。
+
+如同上圖 GraphQL 官網所描述的架構一樣，左邊第一區塊「Describe your data」描述的是後端建立 API 的方式。後端不再需要針對每個使用情境獨立開設 API endpoint 與撰寫邏輯，而僅需要安裝 GraphQL server，定義好一個 schema.json 檔案，描述資料庫的型別、及各型別之間如何連結，That's it！GraphQL API 就開好了。雖然僅有一個 endpoint，但支援了無數種呼叫方式，取代了過往幾十、幾百條的 RESTful API，大幅減輕後端開發 loading。
+
+一樣是上圖的中間和左邊區塊，則描述了前端如何使用 GraphQL API。前端在 query 的時候都是針對那唯一的 endpoint 發送 POST request，但是參數裡面會攜帶如同中間圖片格式的 query string，代表了這次 API call 的意圖，跟 API 講說前端我現在需要哪些欄位的資料，API 便會回傳對應格式的 JSON response，包含了不多也不少、剛剛好的資料。
+
+這對前端來說有幾個意義：
+
+1. 前端控制權變大：如果需求調整的，某一個頁面需要多顯示一個欄位，傳統 RESTful API 模式的話，需要拜託後端在某隻 API 多回傳一個欄位的資料，並且要溝通好這個新欄位回傳值的各種 case 和型別，前端才有辦法串接，來回溝通費時費力。而 GraphQL 則超簡單，前端在 query string 裡多送一個欄位給 API 多要資料就好，後端完全不用調整。並且也由於 GraphQL 是強型別語言，不用擔心這個欄位會不會有奇怪回傳值。
+2. 資料取得更精準：傳統 RESTful API 可能一個 API 會用在多個頁面、甚至多個應用，所以這隻 API 資料就會很多，但不是每個頁面都會用到這麼完整的資料，而多餘的資料會增加延遲和頻寬消耗。GraphQL 則更彈性，每個用到 API 的頁面都可以剛好只取用需要的資料，一點也不浪費。
+3. 即時更新的 API 文件：因為後端開 API 時有一份 schema.json 檔案，通常會搭配 GraphiQL 等工具，自動產生最新的 API 文件和互動式開發環境，這在 RESTful API 是要額外花心力去導入了，而 GraphQL 生態系則天生就幫你裝好了，提高了開發者體驗。
+
+所以我們在這系列文章會採用 GraphQL 作為 API 格式。接下來讓我們在 WordPress 啟用 GraphQL。
+
+# 安裝 WPGraphQL plugin，啟用 GraphQL
+
+WordPress 內建沒有支援 GraphQL API，需要裝 plugin，最熱門的是 [WPGraphQL](https://www.wpgraphql.com/) 這套。讓我們把它裝起來吧！
+
+![Imgur](https://i.imgur.com/w9XidAz.png)
+
+在 WordPress 安裝 plugin 有兩種方法，熱門的 plugin 通常是在 plugin market 頁面搜尋，點擊安裝按鈕裝起來，比較冷門的就要上 Github 之類的網站找到 zip 檔，上傳到 WordPress。
+
+這裡 WPGraphQL 很熱門，因此我們直接在 plugin market 上搜尋，並點擊「Install now」按鈕把它裝起來。按下去後這個畫面不要馬上關掉，等他安裝完後，原本按鈕會變成「Activate」，要再點一下 Activate 把它啟用，才會生效
+
+![Imgur](https://i.imgur.com/zMzcRAC.png)
+
+啟用完後，畫面最上面會多一個 GraphiQL IDE 按鈕，有看到的話就算安裝成功了！可以點進去玩一下。點進去後畫面如下：
+
+![Imgur](https://i.imgur.com/7cW1Ub4.png)
+
+我們不需要做任何設定，WPGraphQL 自動就會知道 WordPress 會有哪些型別，自動建好所有 Schema，畫面左邊 Explorer 就列出了所有我們能用的 Schema，代表了所有能 query 的資料。系列文章後面我們還會講要如何增加型別做客製化，這邊基本的就很夠用了。
+
+GraphiQL IDE 是一個互動式開發工具，在這邊瀏覽到你需要的型別和欄位後，可以直接在需要的欄位打勾，中間就會自動產生出對應的 query string，後續就可以將此 query string 貼到 Next.js 裡面使用。這邊我們先在 GraphiQL IDE 操作看看就好。
+
+最常用的操作就是取得文章列表，於是我們在左邊 Explorer 找到 posts 打勾他，並且把它展開來，繼續展開 nodes 層，再繼續往下把想看的欄位打勾，以這張圖的話我打勾了 slug、title、uri、id、date 欄位，完成以後按上面長得像播放鍵的按鈕，就會根據這個 query string 實際抓資料出來，右邊就能看到 response 的 JSON，就能確實看到我撰寫的文章的對應欄位
+
+![Imgur](https://i.imgur.com/iq6AhZF.png)
+
+恭喜你學會如何在 WordPress 上操作 GraphQL 了！下一篇文章我們接著來用 Next.js 串接 GraphQL API！
+
+## 參考資料：
+
+- https://graphql.org/
+- https://ithelp.ithome.com.tw/articles/10200678
+- https://www.wpgraphql.com/
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10269849)

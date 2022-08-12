@@ -59,16 +59,7 @@ const getPostOGImage = (socialImage) => {
   return siteMetadata.siteUrl + siteMetadata.socialBanner
 }
 
-export const BlogSEO = ({
-  authorDetails,
-  title,
-  description,
-  date,
-  lastmod,
-  url,
-  images = [],
-  socialImage,
-}) => {
+export const BlogSEO = ({ title, description, date, lastmod, url, images = [], socialImage }) => {
   const router = useRouter()
   const publishedAt = new Date(date).toISOString()
   const modifiedAt = new Date(lastmod || date).toISOString()
@@ -87,19 +78,9 @@ export const BlogSEO = ({
     }
   })
 
-  let authorList
-  if (authorDetails) {
-    authorList = authorDetails.map((author) => {
-      return {
-        '@type': 'Person',
-        name: author.name,
-      }
-    })
-  } else {
-    authorList = {
-      '@type': 'Person',
-      name: siteMetadata.author,
-    }
+  const authorList = {
+    '@type': 'Person',
+    name: siteMetadata.author,
   }
 
   const structuredData = {

@@ -1,0 +1,89 @@
+---
+title: Day4 WordPress 介紹，基礎設定與發文
+description: '設定個人部落格 WordPress 的基礎設定，完成文章發布'
+slug: '2021-ironman-day4-wordpress-post'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - WordPress
+  - BlueHost
+  - YoastSEO
+socialImage: ''
+date: 2022-03-20 14:20
+type: Post
+meta:
+  title: Day4 WordPress 介紹，基礎設定與發文
+---
+
+上篇文章我們在 BlueHost 架起了 WordPress 環境，但也許你還不知道什麼是 WordPress，這裡簡單介紹一下它的特點。
+
+# WordPress，世界上最熱門且低門檻的架站方式
+
+![Imgur](https://i.imgur.com/TaFNT6e.png)
+
+如果你曾經上網搜尋過「如何架設網站」的話，你一定聽說過 WordPress。根據 wordpress.org 官網資料，全球有 42% 網站是用 WordPress 架設的，是世界上最熱門的架網站方式。
+
+WordPress 本身是一套 php 寫成的內容管理系統（CMS），適用的架站情境非常廣泛，個人部落格或作品集網站，大到上架了幾十萬商品的電商平台，都可以用 WordPress 實現。架設過程不需要任何程式背景，也不需要寫到任何一行程式碼，只需要上網找幾篇教學文件，找好適合的主機或是自己有主機也行，在主機裡安裝 WordPress，按照畫面上的指示按按鈕做設定，就能完成架設，非常簡單。
+
+網站外觀部分，WordPress 提供了非常多免費或付費的主題 theme 可供選擇，可以根據你想要的 UI 畫面選擇喜歡的主題，懂程式的話也能進一步客製化自己的主題。
+
+網站內容維護部分，WordPress 提供了直覺的可視化頁面、文章編輯器，可用拖拉的方式編排網站內容以及編輯文章，一樣不需要動到任何一行程式碼。
+
+功能部分，WordPress 插件（plugin）生態系也非常豐富，不論你想要什麼功能，支援 RSS feed、串接金流服務、加入上傳文件功能，WordPress 插件商店都能找到對應的插件可供使用，雖然滿多好用的插件要付費購買就是了。
+
+總體來說 WordPress 是一套非常簡單上手的架站方式，我的第一版本部落格就是用 WordPress 架設的。
+
+# WordPress 基本設定
+
+WordPress 有非常多設定，根據你的架站平台和裝的 plugin 數量不同，在後台畫面左邊有不同 menu，如果你對 WordPress 不熟的話非常建議每個都點點看，了解一下各種功能的所在處。
+
+前台前端畫面和後台編輯畫面，都有各種設定可以依照需求調整。
+
+以我的例子我最主要調整的是這個，Settings 的 Permalinks 選單。這裡是調整文章內文頁、分類頁、標籤頁的網址格式，預設是最上面 Plain 選項，文章網址會是「mydomain/?p=123」這種格式，我覺得很難辨認文章內容，因此我改成 Post name 選項，讓文章在發布前多一個 slug 欄位，可以主動設定每篇文章網址。
+
+並且我也設定了分類頁和標籤頁的前綴路徑。這能讓我們更好從網址判斷某個頁面是代表一個 category 還是 tag，預設是空白沒有設定的。
+
+![Imgur](https://i.imgur.com/dTbdFaA.png)
+
+其他設定就不一一展開了，根據你的需求調整吧！
+
+調完設定後，讓我們來實際發一些文章。
+
+# 在 WordPress 裡發文
+
+因為我們主要拿 WordPress 當 CMS 內容管理系統使用，最重要也最常用的 menu 就是 **「Posts」** 了。在這裡我們可以看到文章列表 (All Posts)、分類列表 (Categories)、標籤列表 (Tags)，發文也是在這裡發。
+
+![Imgur](https://i.imgur.com/eIoFORW.png)
+
+一開始你應該只會有「Hello World!」一篇文章，另外兩篇中文的是我已經預先新增好的文章。在這邊可以看到各文章的基本資訊，點文章標題也可以進到編輯文章畫面。
+
+我們這個系列情境是個人部落格，我希望將我鐵人賽的系列文章也放進部落格，上一篇 Day3 的文章還沒有放進去，因此我們來新增一篇 Day3 的文章。
+
+要發新文章的話要點畫面最上方的 **「Add New」** 按鈕，在 Posts 標題右邊藍色框線那個。
+
+![Imgur](https://i.imgur.com/svxeKhN.png)
+
+發文畫面如下圖，也是根據裝的 plugin 不同，會有各種 menu，一樣建議可以都點點看，了解有哪些屬性可以設定。
+
+![Imgur](https://i.imgur.com/Ge515JF.png)
+
+最重要的就是中間區塊的「Add title」可以填文章標題，以及「Type / to choose a block」處可以填文章內文。
+
+文章內文是以 block 區塊為單位，每一段文字或子標題或圖片等等元件，都是一個 block，右側選單可以單獨調整每個 block 屬性，或是整篇文章的屬性。
+
+下面 YoastSEO 選單是因為 BlueHost 預設有裝 YoastSEO plugin 才有的，這是用來設定文章的 OpenGraph meta tag，能單獨調整文章分享到社群平台時的標題、縮圖、摘要，可以依照需求設定。
+
+最後編輯完文章時，右上方選單有預覽、儲存草稿、和發文按鈕。
+
+讓我們把文章內容填入，填完會如下圖畫面。記得點開右側 Post 選單，設定此文章分類 Category、標籤 Tag、和網址 Slug，都設定完後就能點選右上角「Publish」按鈕發文了！
+
+![Imgur](https://i.imgur.com/KcYiXk7.png)
+
+發文後畫面就會跳出 View Post 連結，按下去會將你導向到前台畫面看文章：
+
+![Imgur](https://i.imgur.com/kuyovSq.png)
+
+至此我們完成了 WordPress 端的最基本設定了！下一篇文章讓我們把重心移到 Next.js 上，先來介紹什麼是 Next.js
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10267176)

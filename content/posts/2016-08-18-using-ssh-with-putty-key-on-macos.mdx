@@ -1,0 +1,63 @@
+---
+title: '在MacOS使用putty key進行ssh連線'
+date: 2016-08-18 11:00
+tags: [MacOSX, SSH, Putty, Tutorial]
+category: Environment
+socialImage: 'https://imgur.com/3B3Hrd4.png'
+type: Post
+slug: 'using-ssh-with-putty-key-on-macos'
+description: ''
+redirect_from:
+  - /2016/08/18/using-ssh-with-putty-key-on-macos/
+---
+
+# Quick Reference：
+
+```bash
+$ brew install putty #安裝puttygen套件
+$ puttygen <your-putty-key.ppk> -O private-openssh -o <your-ssh-key.pem> #將putty key轉換成ssh key
+$ chmod 400 <your-ssh-key.pem> #調整.pem權限
+$ ssh -i <your-ssh-key.pem> <user@your.server.com> #使用.pem進行ssh連線
+```
+
+---
+
+突然發現學程的網站有小 bug，所以需要連上網站所在的 AWS(Amazon Web Service)伺服器裡修改程式碼。但建置網站的學長只留下了一個.ppk 的 putty 專用 SSH 認證檔，而我這台破 Mac 實在沒容量給我再灌一台 Windows 然後裝上 Putty 來連線，所以我就開始研究如何讓 MacOS 內建的 ssh 指令也能吃進這支.ppk 的 putty key 認證檔。
+
+以下是我找到的解法：
+
+# 1.使用 puttygen 將 putty key 轉換成 ssh 可用的 key
+
+ssh 指令無法接受.ppk 的 putty key，必須先轉換成 ssh 可以使用的 key
+
+puttygen 這支程式可以幫你轉換，你可以使用[Homebrew](http://brew.sh/index_zh-tw.html)來安裝它：
+
+```bash
+$ brew install putty
+```
+
+接著可以輸入下面這條指令，將 putty key 轉換成 ssh key：
+
+```bash
+$ puttygen <your-putty-key.ppk> -O private-openssh -o <your-ssh-key.pem>
+```
+
+# 2.為 ssh key 設定適當的存取權限
+
+如果你的 ssh key 檔的權限太過開放，伺服器會阻擋你使用這支 key 來連線，所以你必須為它設定適當的權限（有時候不需要設定權限就是對的了）：
+
+```bash
+$ chmod 400 <your-ssh-key.pem>
+```
+
+# 3.連線
+
+接著你可以用它來進行連線啦！
+
+```bash
+$ ssh -i <your-ssh-key.pem> <user@your.server.com>
+```
+
+---
+
+Reference: [https://stackoverflow.com/questions/3475069/use-ppk-file-in-mac-terminal-to-connect-to-remote-connection-over-ssh](https://stackoverflow.com/questions/3475069/use-ppk-file-in-mac-terminal-to-connect-to-remote-connection-over-ssh)

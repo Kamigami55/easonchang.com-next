@@ -1,0 +1,97 @@
+---
+title: Day7 使用 Vercel 發布我們的 Next.js 網站，搭配 Github 實現自動部署
+description: '將 Next.js 專案發布到 Vercel，在線上看到你的成果，並且使用 Github 自動部署。'
+slug: '2021-ironman-day7-vercel-publish'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+  - Vercel
+  - Github
+  - CICD
+socialImage: ''
+date: 2022-03-20 14:50
+type: Post
+meta:
+  title: Day7 使用 Vercel 發布我們的 Next.js 網站，搭配 Github 實現自動部署
+---
+
+上一篇我們建完 Next.js 專案了，並且能成功在自己的電腦上開發改 code 了！下一步就是要來把它上線到雲端主機上，讓全世界看到！
+
+雖然我們什麼都還沒改，什麼功能都還沒加，但除非你的專案已經是赫赫有名的網站了，或是有上線時程的考量，非得要全部完成後才能上線，否則如果是新的小部落格的話，我建議可以把部署到主機上的流程先建立起來，開發起來會比較有成就感，馬上能在線上看到自己的成果，也方便隨時分享給其他人看，諮詢改善的意見 ~~（順便炫耀一下）~~
+
+你可以在任何能執行 Node.js 的主機上部署 Next.js 網站，而我們在這邊會使用 [Vercel](https://vercel.com/) 來部署。
+
+# Vercel 託管平台簡介
+
+Vercel 也是由開發 Next.js 的 Vercel 公司（同一個名字）提供的網站託管平台，支援許多現代網頁框架的部署，包含 Next.js、React、Vue、Angular、Gatsby、Svelte 等，官網內有詳細列表。而因為跟 Next.js 是同一個爹，當然最適合用來架設 Next.js 網站在上頭。
+
+在 Vercel 上部署 Next.js 網站，只要流量不要太大，基本上是完全免費的！也不需要綁定信用卡，部署過程也非常無痛！按幾個按鈕幾秒鐘就能完成了，非常佛心！
+
+Vercel 更好用的地方是它可以跟 Github 連動，當你 push 新的改動到 Github repo 上時，會自動觸發新的上版流程，即時更新之前已經部署完成的網頁，不需要手動重做任何 build 動作，Vercel 幫你搞定，這個機制有個專有名詞叫 Continuous Deployment (CD)，可以大幅提升開發者體驗！所以我們會先從開 Github repo 和與 Vercel 串連開始做起。
+
+# 建立 Github repo
+
+如果你開發過程式，這流程你應該很熟了，我們快速帶過！
+
+進到 [Github](https://github.com/) 官網，點右上角加號建立新 Repository，並輸入你期望的專案名稱後點完成按鈕。因為我們上一篇文章在本機端已經有一些 code 了，我們要的是把本機的 code 推上來，不希望 repo 有預設的檔案，因此預設 README.md 那些都不用打勾：
+
+![Imgur](https://i.imgur.com/QHHIrlr.png)
+
+完成以後複製下面第二段程式碼，並在本機端 Next.js 資料夾用終端機執行：
+
+![Imgur](https://i.imgur.com/PuVPj8U.png)
+
+```
+git remote add origin git@github.com:Kamigami55/oh-so-pro-blog.git
+git branch -M main
+git push -u origin main
+```
+
+![Imgur](https://i.imgur.com/178Ikeq.png)
+
+執行完後在 Github 網頁重新整理，有看到如下圖，程式碼有被上傳就算完成這部分了！
+
+![Imgur](https://i.imgur.com/L6fQQ9V.png)
+
+# 將 Vercel 串連 Github，實現自動部署
+
+接著進到 Vercel 網站建立新專案，記得使用 Github 帳號做登入
+
+https://vercel.com/new
+
+登入完後就會看到如下圖畫面，左邊會列出你 Github 帳號裡所有 repo，你可以在這裡選擇剛剛新建立的 Next.js blog repo，點擊 Import 按鈕
+
+![Imgur](https://i.imgur.com/rT1W4di.png)
+
+會進到下一步設定畫面。首先要設定 Team，但如果沒有要跟其他人協作的話，這邊可以先點 Skip
+
+![Imgur](https://i.imgur.com/LmPlQLb.png)
+
+下面可以進一步告訴 Vercel 你的專案是用什麼框架？以及要用什麼指令來 Deploy？這邊設定也不用修改，用預設的 Next.js 設定就好，直接點下面 Deploy 按鈕：
+
+![Imgur](https://i.imgur.com/TacSntL.png)
+
+等大約一分鐘 build 完後就會出現完成畫面！！！
+
+![Imgur](https://i.imgur.com/bATVcYG.png)
+
+點按鈕進到 Dashboard 就有各種進階設定可以調整，像是環境變數之類的，目前先不需要調整
+
+![Imgur](https://i.imgur.com/YBJ0gUJ.png)
+
+你可以點 Visit 按鈕，就能看到你成功 Deploy 的新網站！！恭喜你完成 Deploy 了！！
+
+Vercel 也分配給他了一個還不錯的網址，你的網站現在全世界都可以看到了！並且當你改東西 push 到 Github 上時，網站也會自動更新到最新版！非常方便！接下來我們只要專注在功能開發就好！
+
+![Imgur](https://i.imgur.com/5P1n5XQ.png)
+
+下面附上我自己的專案網址和 Github repo，後續的改動都可以在這邊看到最新程式碼和畫面：
+
+https://oh-so-pro-blog.vercel.app/
+
+https://github.com/Kamigami55/oh-so-pro-blog
+
+下一篇文章讓我們開始將 WordPress 與 Next.js 連接起來！我們會先從 WordPress 端的 GraphQL API 開始建立。
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10269342)

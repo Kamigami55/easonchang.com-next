@@ -1,9 +1,8 @@
-// import fs from 'fs'
-
+import { allPosts } from 'contentlayer/generated'
+import { compareDesc } from 'date-fns'
+import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { MDXRemote } from 'next-mdx-remote'
 
-// const DEFAULT_LAYOUT = 'PostLayout'
 import {
   CustomH1,
   CustomH2,
@@ -12,17 +11,11 @@ import {
   CustomH5,
   CustomH6,
 } from '@/components/CustomHeading'
-// import { MDXLayoutRenderer } from '@/components/MDXComponents'
 import PageTitle from '@/components/PageTitle'
+import { LOCALES } from '@/constants/siteMeta'
 import PostLayout from '@/layouts/PostLayout'
-// import generateRss from '@/lib/generate-rss'
-import {
-  formatSlug,
-  getAllFilesFrontMatter,
-  getFileBySlug,
-  getFiles,
-  POSTS_FOLDER,
-} from '@/lib/mdx'
+import { unifyPath } from '@/utils/unifyPath'
+import { allRedirects } from '@/utils/getAllRedirects'
 
 import CustomLink from '../../components/CustomLink'
 
@@ -41,30 +34,41 @@ const components = {
 }
 
 export async function getStaticPaths() {
-  const posts = getFiles(POSTS_FOLDER)
+  const paths = []
+  LOCALES.forEach((locale) => {
+    paths.push(...allPosts.map((post) => `/${locale}${post.path}`))
+  })
   return {
-    paths: posts.map((p) => ({
-      params: {
-        slug: formatSlug(p.slug).split('/'),
-      },
-      locale: p.locale,
-    })),
-    fallback: false,
+    paths,
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps({ params, locale }) {
-  const allPosts = await getAllFilesFrontMatter(POSTS_FOLDER, locale)
-  const postIndex = allPosts.findIndex((post) => formatSlug(post.slug) === params.slug.join('/'))
+  // Handle post redirect logic
+  const path = unifyPath('/posts/' + params.slug.join('/'))
+  const matchedRedirectRule = allRedirects.find((rule) => rule.source === path)
+  if (matchedRedirectRule) {
+    return {
+      redirect: {
+        destination: matchedRedirectRule.destination,
+        permanent: matchedRedirectRule.permanent,
+      },
+    }
+  }
+
+  const posts = allPosts.sort((a, b) => {
+    return compareDesc(new Date(a.date), new Date(b.date))
+  })
+  const postIndex = allPosts.findIndex((post) => post.slug === params.slug.join('/'))
+  if (postIndex === -1) {
+    return  {
+      notFound: true,
+    }
+  }
   const prev = allPosts[postIndex + 1] || null
   const next = allPosts[postIndex - 1] || null
-  const post = await getFileBySlug(POSTS_FOLDER, params.slug.join('/'), locale)
-  // const authorList = post.frontMatter.authors || ['default']
-  // const authorPromise = authorList.map(async (author) => {
-  //   const authorResults = await getFileBySlug('authors', [author], locale)
-  //   return authorResults.frontMatter
-  // })
-  // const authorDetails = await Promise.all(authorPromise)
+  const post = posts[postIndex]
 
   // rss
   // if (allPosts.length > 0) {
@@ -83,24 +87,15 @@ export async function getStaticProps({ params, locale }) {
 }
 
 export default function Blog({ post, prev, next }) {
-  const { mdxSource, frontMatter } = post
+  const MDXContent = useMDXComponent(post.body.code)
 
   return (
     <>
-      {frontMatter.draft !== true ? (
-        <PostLayout frontMatter={frontMatter} prev={prev} next={next}>
-          <MDXRemote {...mdxSource} components={components} />
+      {post.isDraft !== true ? (
+        <PostLayout post={post} prev={prev} next={next}>
+          <MDXContent />
         </PostLayout>
       ) : (
-        // <MDXLayoutRenderer
-        //   layout={frontMatter.layout || DEFAULT_LAYOUT}
-        //   // toc={toc}
-        //   mdxSource={mdxSource}
-        //   frontMatter={frontMatter}
-        //   // authorDetails={authorDetails}
-        //   prev={prev}
-        //   next={next}
-        // />
         <div className="mt-24 text-center">
           <PageTitle>
             Under Construction{' '}

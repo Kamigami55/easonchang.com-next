@@ -1,0 +1,151 @@
+---
+title: '【100sites #009】Flame，P5js酷炫小動畫'
+date: 2016-03-23 07:05
+tags: [100sites, Project, P5js, Web]
+category: 100sites
+socialImage: 'https://i.imgur.com/rqkEbP4.jpg'
+type: Post
+slug: '100sites-009-flame'
+description: ''
+redirect_from:
+  - /2016/03/23/100sites-009-flame/
+---
+
+> 一句話摘要：使用 P5.js 製作的類火焰互動效果
+
+[玩線上 Demo](http://kamigami55.github.io/100sites/009_Flame/)
+
+[查看 Github 原始碼](https://github.com/Kamigami55/100sites/tree/gh-pages/009_Flame)
+
+![螢幕快照 2016-03-23 上午4.08.53.png](https://i.imgur.com/rqkEbP4.jpg)
+
+我會知道[P5.js](http://p5js.org)的存在，是因為在今年 SITCON 年會上聽了[游宭鎬(Chiun Hau You)](https://www.behance.net/chiunhauyou)先生的分享，而最近看他用 P5.js 做的視覺辨識專案: [Hello World - Programmable Visual Identity](https://www.behance.net/gallery/34490551/Hello-World-Programmable-Visual-Identity)上了[CodePen](http://codepen.io)的 Picked Pens，迴響熱烈，讓我也開始想探索 P5.js 更多的可能性，於是做了今天的小火焰互動特效練習。
+
+今天沒什麼細節要講，移動你的滑鼠，享受這些小火焰吧！
+
+點滑鼠左鍵可以切換樣式，共有 4 種樣式。
+
+另外一種樣式：
+![螢幕快照 2016-03-23 上午4.09.52.png](https://i.imgur.com/2hriTFz.jpg)
+
+原始碼：
+
+```html index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset-"UTF-8">
+    <title>Flame</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.23/p5.js"></script>
+    <script src="flame.js"></script>
+  </head>
+
+  <body></body>
+</html>
+```
+
+```css style.css
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;
+}
+```
+
+```javascript flame.js
+var rows = 0, // how many shapes there are vertically
+  cols = 0, // how many shapes there are horizontally
+  diameter = [], // diameter of every single shape
+  displayMode = 0, // four display mode: 0: red rect, 1: red ellipse, 2: blue rect, 3: blue ellipse
+  MARGIN = 30, // distance between two shapes
+  MAX_SIZE = 100, // max shape size when mouse approach
+  SENSE_RANGE = 200 // what distance shapes will react
+
+function setup() {
+  createCanvas(windowWidth, windowHeight)
+  strokeWeight(0)
+  ellipseMode(CENTER)
+  rectMode(CENTER)
+  frameRate(30)
+
+  rows = windowHeight / MARGIN
+  cols = windowWidth / MARGIN
+
+  // initialize diameter 2-dimensional array
+  for (var y = 0; y < rows; ++y) {
+    diameter.push([])
+    for (var x = 0; x < cols; ++x) {
+      diameter[y].push(0)
+    }
+  }
+}
+
+function draw() {
+  background(20)
+  for (var y = 0; y < rows; y += 1) {
+    for (var x = 0; x < cols; x += 1) {
+      var thisDiameter = diameter[y][x]
+
+      // decrease diameter by time until diameter is 0
+      if (thisDiameter < 2) {
+        diameter[y][x] = 0
+      } else {
+        // thisDiameter >= 2
+        diameter[y][x] -= 2
+        thisDiameter = diameter[y][x]
+
+        // And we can now display it
+        // Determine which color should we use
+        if (displayMode <= 1) {
+          // 0, 1
+          fill(255, thisDiameter * 2.5, 0) // red color mode
+        } else {
+          // 2, 3
+          fill(0, thisDiameter * 2.5, 255 - thisDiameter * 1.5) // blue color mode
+        }
+        // Determine which shape should we use
+        if (displayMode == 0 || displayMode == 2) {
+          // 0, 2
+          rect(x * MARGIN, y * MARGIN, thisDiameter, thisDiameter) // rect mode
+        } else {
+          // 1, 3
+          ellipse(x * MARGIN, y * MARGIN, thisDiameter, thisDiameter) // ellipse mode
+        }
+      } // .if-else
+    } // .for
+  } // .for
+}
+
+// when mouse moved, adjust diameters of every shapes
+function mouseMoved() {
+  for (var y = 0; y < rows; y += 1) {
+    for (var x = 0; x < cols; x += 1) {
+      // calculus the distance between this shape and user mouse
+      var dist = Math.sqrt(
+        (x * MARGIN - mouseX) * (x * MARGIN - mouseX) +
+          (y * MARGIN - mouseY) * (y * MARGIN - mouseY)
+      )
+      if (dist <= SENSE_RANGE) {
+        // calculus the diameter based on the distance
+        var theDiameter = ((SENSE_RANGE - dist) * MAX_SIZE) / SENSE_RANGE
+        // if current diameter is smaller than the calc diameter
+        if (diameter[y][x] < theDiameter) {
+          diameter[y][x] = theDiameter // increase the current diameter to it should be
+        }
+      }
+    }
+  }
+}
+
+// switch display mode
+function mousePressed() {
+  ++displayMode
+  if (displayMode > 3) {
+    displayMode = 0
+  }
+}
+```

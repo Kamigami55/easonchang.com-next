@@ -10,14 +10,20 @@ import { BlogSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import formatDate from '@/lib/utils/formatDate'
 
-export default function PostLayout({ frontMatter, next, prev, children }) {
-  const { date, title } = frontMatter
+export default function PostLayout({ post, next, prev, children }) {
+  const { date, title, path, description, socialImage } = post
 
   const { locale } = useRouter()
 
   return (
     <SectionContainer>
-      <BlogSEO url={`${siteMetadata.siteUrl}/posts/${frontMatter.slug}`} {...frontMatter} />
+      <BlogSEO
+        url={`${siteMetadata.siteUrl}${path}`}
+        title={title}
+        description={description}
+        date={date}
+        socialImage={socialImage}
+      />
 
       <ScrollTop />
 
@@ -56,7 +62,7 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
                       Previous Article
                     </h2>
                     <Link
-                      href={`/posts/${prev.slug}`}
+                      href={prev.path}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       &larr; {prev.title}
@@ -69,7 +75,7 @@ export default function PostLayout({ frontMatter, next, prev, children }) {
                       Next Article
                     </h2>
                     <Link
-                      href={`/posts/${next.slug}`}
+                      href={next.path}
                       className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       {next.title} &rarr;

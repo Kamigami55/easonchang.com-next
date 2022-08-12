@@ -1,0 +1,60 @@
+---
+title: Day5 Next.js 介紹 - Production-ready 的 React.js 框架
+description: 'Next.js 是高級版的 React.js 全端開發框架，支援 Server Side Rendering 等各種渲染策略，大幅提升 DX 開發者體驗及 UX 網站訪客體驗，是非常值得學習的技術。'
+slug: '2021-ironman-day5-nextjs-intro'
+category: 'Frontend'
+tags:
+  - 13屆IT鐵人賽
+  - Next.js
+socialImage: ''
+date: 2022-03-20 14:30
+type: Post
+meta:
+  title: Day5 Next.js 介紹 - Production-ready 的 React.js 框架
+---
+
+這系列內容主要內容是在講如何用 Next.js 取代 WordPress 前端，因此約 70% 內容會著重在開發 Next.js 前端上，因此今天我們先來介紹一下什麼是 Next.js。
+
+# React.js CSR 帶來的問題
+
+React.js 很棒，他可以讓我們以宣告式、元件化的方式開發網站，讓我們能用拼樂高的方式逐步架構出具有複雜狀態的網站。但因為它的成品是 Client-side Rendering 的（CSR、在瀏覽器端渲染），會連帶製造一些問題，主要是這兩點：
+
+1. 第一次瀏覽的顯示出畫面的時間太久（要等到下載完所有 JavaScript 檔案才能渲染出畫面）
+2. SEO 不佳（因為 HTML 內容變成由 JS 算出來，部分搜尋引擎爬蟲不會去執行 JS，會爬不到網頁內容）
+
+要解決這個問題，後續有新的各類 Server-side rendering、Static site generation 等解法被提出來，而
+Next.js 就是其中 Server-side rendering 解法中最成熟的，而這也是 Next.js 最初的賣點。
+
+# 什麼是 Next.js
+
+![Imgur](https://i.imgur.com/m15mP1y.png)
+
+[Next.js](https://nextjs.org/) 是大約五年前由 [Vercel](https://vercel.com/about) 這家公司開發的開源 React.js 框架，要簡單理解它的話可以理解為高級版的 React.js，所有 React 生態系的套件都一樣能使用、開發元件和邏輯時 code 寫法也跟在開發 React 網頁時一模一樣，但 Next.js 幫我們處理了非常多開發 React 網頁會遇到的問題。
+
+Next.js 最主要的提升是在「網站使用者體驗」和「開發者體驗」上。
+
+## 網站使用者體驗上的提升
+
+針對「網站使用者體驗」，Next.js 一開始就提供了 Server-side rendering 的寫法，解決了前面提到的 React 會有的兩大問題，因而提升了使用者體驗和 SEO。
+
+而在近期的改版後，Next.js 提供了更多種渲染策略如 Static Site Generation 和 Incremental Static Generation，這些寫法各有效能和使用情境上的優缺點，我們能在一個網站的不同頁面選用不同策略。關於不同渲染方式的介紹，如 CSR、SSR、SSG、ISR，下一篇文章會詳細介紹。
+
+Next.js 也提供了內建的許多提升效能的解法：
+
+- Image Optimization：在 server 上 cache 圖片，並幫你轉檔成 size 較小的檔案格式如 webp，並且也幫你做 lazy loading 處理，這些在過去是要自己研究適當的 React 套件來引入、或自己實現的，現在直接內建！
+- Code Splitting：自動幫你根據不同頁面（route）做 code splitting，讓每一個頁面的 JS bundle size 不至於太大，影響讀取速度
+- Font Optimization、Script Optimization：幫你用最有效率的方式引用 webfont 和外部 script，也提升了網頁讀取速度
+
+## 開發者體驗上的提升
+
+在開發者體驗上，Next.js 一樣提供了類似 create-react-app 一樣的啟動專案指令，叫做 create-next-app 用法差不多，能讓你快速建立起 Next.js 專案，後續的文章會說明如何使用。
+
+維護 Next.js 的 Vercel 也是非常專業的開發團隊，官網的[官方文件](https://nextjs.org/docs/getting-started)非常好讀，有哪個細節不懂的通常在官網上就能查到解答。在 [Next.js Github repo](https://github.com/vercel/next.js/tree/canary/examples) 裡，也提供了非常豐富近百個範例，demo 了非常多種 Next.js 的使用情境，像是如果你要串接各類服務在你的專案裡例如 Google Analytics 要怎麼寫、要串接各種 state management library 例如 redux、xstate 要怎麼寫，等等，可以找到非常多優質的範例程式碼。
+
+同時，Vercel 官方也提供了同名 [Vercel](https://vercel.com/) 網站託管服務，讓你輕鬆免費部署 Next.js 網站，非常方便！
+
+總結來說，Next.js 是一套非常值得掌握的技術，雖然比起 React.js 確實引入了更多複雜度，需要多考量如何讓同份程式碼在 server-side 和 client-side 都能執行，但上手之後，Next.js 能讓我們做出更優良的網站。
+
+下一篇文章，讓我們實際來建立一個 Next.js 專案吧！
+
+> 本文同步發佈在 [iT 邦幫忙 2021 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10267910)
