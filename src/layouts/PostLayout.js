@@ -21,7 +21,7 @@ export default function PostLayout({ post, next, prev, children }) {
     <>
       <BlogSEO
         url={`${siteMetadata.siteUrl}${path}`}
-        title={title}
+        title={`${title} - ${siteMetadata.title}`}
         description={description}
         date={date}
         socialImage={socialImage}
