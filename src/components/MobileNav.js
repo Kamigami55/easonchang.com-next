@@ -10,10 +10,10 @@ const MobileNav = () => {
   const onToggleNav = () => {
     setNavShow((status) => {
       if (status) {
-        document.body.style.overflow = 'auto'
+        document.body.style.overflowY = 'auto'
       } else {
         // Prevent scrolling
-        document.body.style.overflow = 'hidden'
+        document.body.style.overflowY = 'hidden'
       }
       return !status
     })
@@ -48,18 +48,13 @@ const MobileNav = () => {
           )}
         </svg>
       </button>
+
       <div
-        className={`fixed top-24 right-0 z-10 h-full w-full transform bg-gray-200 opacity-95 transition-colors duration-300 ease-in-out dark:bg-gray-800 ${
+        className={`fixed top-16 right-0 h-screen w-full bg-gray-200/90 transition-all duration-300 ease-in-out dark:bg-gray-800/90 ${
           navShow ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <button
-          type="button"
-          aria-label="toggle modal"
-          className="fixed h-full w-full cursor-auto focus:outline-none"
-          onClick={onToggleNav}
-        ></button>
-        <nav className="fixed mt-8 h-full w-full">
+        <nav className="mt-8 h-full w-full">
           {headerNavLinks.map((link) => (
             <Link
               href={link.href}
