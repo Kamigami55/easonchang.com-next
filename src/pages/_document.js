@@ -49,7 +49,7 @@ gtag('config', '${NEXT_PUBLIC_GOOGLE_ANALYTICS}');
             `}
           </Script> */}
         </Head>
-        <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
+        <body className="bg-white text-black antialiased transition-colors dark:bg-gray-900 dark:text-white">
           <Main />
           <NextScript />
         </body>

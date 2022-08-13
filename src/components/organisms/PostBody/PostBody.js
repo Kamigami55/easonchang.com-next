@@ -5,7 +5,12 @@ import styles from './PostBody.module.scss'
 
 export default function PostBody({ children }) {
   return (
-    <div className={clsx('prose mx-auto pt-10 pb-8 dark:prose-dark', styles.postBody)}>
+    <div
+      className={clsx(
+        'prose mx-auto pt-10 pb-8 transition-colors dark:prose-dark',
+        styles.postBody
+      )}
+    >
       {children}
     </div>
   )

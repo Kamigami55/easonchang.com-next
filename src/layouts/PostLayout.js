@@ -28,7 +28,7 @@ export default function PostLayout({ post, next, prev, children }) {
       <ScrollTop />
 
       <article>
-        <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
+        <div className="transition-colors xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
               <div className="mb-4">
@@ -38,7 +38,7 @@ export default function PostLayout({ post, next, prev, children }) {
               <dl className="space-y-10">
                 <div>
                   <dt className="sr-only">Published on</dt>
-                  <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                  <dd className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400">
                     <time dateTime={date}>{formatDate(date, locale)}</time>
                   </dd>
                 </div>
@@ -47,10 +47,10 @@ export default function PostLayout({ post, next, prev, children }) {
           </header>
 
           <div
-            className="divide-y divide-gray-200 pb-8 dark:divide-gray-700 xl:divide-y-0"
+            className="xl:divide-y- divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:pb-0">
+            <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700 xl:pb-0">
               <PostBody>{children}</PostBody>
             </div>
 
@@ -58,12 +58,12 @@ export default function PostLayout({ post, next, prev, children }) {
               <div className="flex flex-col gap-4 pt-4 text-sm font-medium sm:flex-row sm:justify-between sm:text-base xl:gap-8 xl:pt-8">
                 {prev && (
                   <div className="basis-6/12">
-                    <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
                       Previous Article
                     </h2>
                     <Link
                       href={prev.path}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                      className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       &larr; {prev.title}
                     </Link>
@@ -71,12 +71,12 @@ export default function PostLayout({ post, next, prev, children }) {
                 )}
                 {next && (
                   <div className="basis-6/12">
-                    <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 sm:text-right">
+                    <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
                       Next Article
                     </h2>
                     <Link
                       href={next.path}
-                      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                      className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       {next.title} &rarr;
                     </Link>
