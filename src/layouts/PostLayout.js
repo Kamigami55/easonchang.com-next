@@ -5,7 +5,6 @@ import Link from '@/components/Link'
 import PostBody from '@/components/organisms/PostBody'
 import PageTitle from '@/components/PageTitle'
 import ScrollTop from '@/components/ScrollTop'
-import SectionContainer from '@/components/SectionContainer'
 import { BlogSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import formatDate from '@/lib/utils/formatDate'
@@ -16,7 +15,7 @@ export default function PostLayout({ post, next, prev, children }) {
   const { locale } = useRouter()
 
   return (
-    <SectionContainer>
+    <>
       <BlogSEO
         url={`${siteMetadata.siteUrl}${path}`}
         title={title}
@@ -47,7 +46,7 @@ export default function PostLayout({ post, next, prev, children }) {
           </header>
 
           <div
-            className="xl:divide-y- divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
+            className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
             <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700 xl:pb-0">
@@ -87,6 +86,6 @@ export default function PostLayout({ post, next, prev, children }) {
           </div>
         </div>
       </article>
-    </SectionContainer>
+    </>
   )
 }
