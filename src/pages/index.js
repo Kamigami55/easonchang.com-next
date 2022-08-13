@@ -38,7 +38,7 @@ export default function Index({ posts }) {
       </div>
 
       <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
-        <div className="prose prose-lg mb-4 dark:prose-dark">
+        <div className="prose prose-lg my-8 dark:prose-dark">
           <h2>{t('latest-posts')}</h2>
         </div>
 
@@ -47,9 +47,9 @@ export default function Index({ posts }) {
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, description, path } = post
             return (
-              <li key={slug}>
+              <li key={slug} className="group">
                 <Link href={path}>
-                  <article className="space-y-2 py-4 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+                  <article className="space-y-2 rounded-xl p-4 transition-colors group-hover:bg-gray-100 dark:group-hover:bg-gray-800 xl:grid xl:grid-cols-4  xl:items-baseline xl:space-y-0">
                     <dl>
                       <dt className="sr-only">Published on</dt>
                       <dd className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400">
