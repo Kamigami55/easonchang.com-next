@@ -1,5 +1,7 @@
 // import Comments from '@/components/comments'
+import Giscus from '@giscus/react'
 import { useRouter } from 'next/router'
+import { useTheme } from 'next-themes'
 
 import Link from '@/components/Link'
 import PostBody from '@/components/organisms/PostBody'
@@ -13,6 +15,7 @@ export default function PostLayout({ post, next, prev, children }) {
   const { date, title, path, description, socialImage } = post
 
   const { locale } = useRouter()
+  const { theme } = useTheme()
 
   return (
     <>
@@ -49,8 +52,24 @@ export default function PostLayout({ post, next, prev, children }) {
             className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700 xl:pb-0">
+            <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
               <PostBody>{children}</PostBody>
+            </div>
+
+            <div className="mx-auto max-w-prose py-6">
+              <Giscus
+                repo={siteMetadata.giscusConfig.repo}
+                repoId={siteMetadata.giscusConfig.repoId}
+                category={siteMetadata.giscusConfig.category}
+                categoryId={siteMetadata.giscusConfig.categoryId}
+                mapping="pathname"
+                reactionsEnabled="1"
+                emitMetadata="0"
+                inputPosition="top"
+                theme={theme === 'dark' ? 'transparent_dark' : 'light'}
+                lang={locale}
+                loading="lazy"
+              />
             </div>
 
             <footer>
