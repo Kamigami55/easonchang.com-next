@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable react/jsx-key */
 import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
+import { Trans, useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import Link from '@/components/Link'
@@ -12,32 +14,26 @@ import formatDate from '@/lib/utils/formatDate'
 const MAX_DISPLAY = 5
 
 export default function Index({ posts }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['indexPage', 'common'])
   const { locale } = useRouter()
-
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
 
       <div className="prose prose-lg space-y-2 pt-6 pb-8 transition-colors dark:prose-dark md:space-y-5">
-        <h1 className="text-center sm:text-left">
-          Hey, I am Eason Chang{' '}
-          <span role="img" aria-label="Hi">
-            👋
-          </span>
-        </h1>
+        <h1 className="text-center sm:text-left">{t('intro-title')}</h1>
         <p>
-          I am a Fullstack Developer. I love building <Link href="/projects">cool stuff</Link>!
+          <Trans i18nKey="intro-1" t={t} components={[<Link href="/projects" />]} />
         </p>
         <p>
-          Here I write <Link href="/posts">posts</Link> about <b>Software Engineering</b>,{' '}
-          <b>Web Dev</b>, <b>Maker</b>, and <b>Productivity</b>
+          <Trans i18nKey="intro-2" t={t} components={[<Link href="/posts" />]} />
         </p>
         <p>
-          I currently live in Taiwan and work at{' '}
-          <a href="https://www.trendmicro.com/" target="_blank" rel="noreferrer">
-            Trend Micro
-          </a>
+          <Trans
+            i18nKey="intro-3"
+            t={t}
+            components={[<a href="https://www.trendmicro.com/" target="_blank" rel="noreferrer" />]}
+          />
         </p>
       </div>
 
@@ -85,7 +81,7 @@ export default function Index({ posts }) {
             className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="all posts"
           >
-            View all &rarr;
+            {t('view-all', { ns: 'common' })} &rarr;
           </Link>
         </div>
       )}
@@ -100,7 +96,7 @@ export async function getStaticProps({ locale }) {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['indexPage', 'common'])),
       posts,
     },
   }
