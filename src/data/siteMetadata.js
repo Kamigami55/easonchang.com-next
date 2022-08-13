@@ -1,7 +1,7 @@
 const siteMetadata = {
-  title: "Eason's blog",
+  title: 'Eason Chang',
   author: 'Eason Chang',
-  headerTitle: "Eason's blog",
+  headerTitle: 'Eason Chang',
   description: 'I create, therefore I am.',
   language: 'zh-tw',
   theme: 'system', // system, dark or light
