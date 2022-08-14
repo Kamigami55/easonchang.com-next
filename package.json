@@ -42,6 +42,7 @@
     "react-dom": "18.2.0",
     "rehype-prism-plus": "^1.4.2",
     "rehype-slug": "^5.0.1",
+    "remark-gfm": "^3.0.1",
     "smoothscroll-polyfill": "^0.4.4"
   },
   "devDependencies": {

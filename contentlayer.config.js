@@ -2,6 +2,7 @@
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
 
 const Meta = defineNestedType(() => ({
   name: 'Meta',
@@ -99,5 +100,8 @@ export const Page = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post, Page],
-  mdx: { rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]] },
+  mdx: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],
+  },
 })
