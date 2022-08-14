@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
+import rehypeCodeTitles from 'rehype-code-titles'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
@@ -102,6 +103,6 @@ export default makeSource({
   documentTypes: [Post, Page],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],
+    rehypePlugins: [rehypeSlug, rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],
   },
 })

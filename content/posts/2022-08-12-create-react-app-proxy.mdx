@@ -86,7 +86,7 @@ CRA Proxy 伺服器收到 API 請求後，會把 request 原封不動拿去呼�
 
 只需要在專案的 **packaga.json 新增 `proxy` 屬性**就好，內容填上目標 API 網域，像這樣：
 
-```json
+```json:package.json
 "proxy": "https://example.com/api"
 ```
 
@@ -110,7 +110,7 @@ $ npm install http-proxy-middleware --save
 
 接著新增一個檔案 **src/setupProxy.js**，內容如下：
 
-```js showLineNumbers
+```js:src/setupProxy.js showLineNumbers
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
@@ -132,7 +132,7 @@ module.exports = function (app) {
 
 如果你同時要呼叫多個 API，都有 CORS 問題的話，用方法 2 就能同時做設定，擴充的寫法如下，修改 **setupProxy.js**：
 
-```js showLineNumbers {12-18}
+```js:src/setupProxy.js showLineNumbers {12-18}
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
@@ -164,14 +164,14 @@ module.exports = function (app) {
 
 **.env**
 
-```bash
+```bash:.env
 REACT_APP_API_DOMAIN = 'https://example.com'
 REACT_APP_API_PATH = '/api'
 ```
 
 在 **setupProxy.js** 裡就能這樣使用：
 
-```js showLineNumbers {5,7}
+```js:src/setupProxy.js showLineNumbers {5,7}
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
