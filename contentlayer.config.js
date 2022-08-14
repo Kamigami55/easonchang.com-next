@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
+import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
-import prism from 'remark-prism'
 
 const Meta = defineNestedType(() => ({
   name: 'Meta',
@@ -99,5 +99,5 @@ export const Page = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Post, Page],
-  mdx: { remarkPlugins: [prism], rehypePlugins: [rehypeSlug] },
+  mdx: { rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]] },
 })

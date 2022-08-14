@@ -1,5 +1,6 @@
 import '@/styles/index.css'
 import '@/styles/prism-dracula.css'
+import '@/styles/prism-plus.css'
 import '@fontsource/inter/variable-full.css'
 
 import Head from 'next/head'

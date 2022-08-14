@@ -110,7 +110,7 @@ $ npm install http-proxy-middleware --save
 
 接著新增一個檔案 **src/setupProxy.js**，內容如下：
 
-```js
+```js showLineNumbers
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
@@ -132,7 +132,7 @@ module.exports = function (app) {
 
 如果你同時要呼叫多個 API，都有 CORS 問題的話，用方法 2 就能同時做設定，擴充的寫法如下，修改 **setupProxy.js**：
 
-```js
+```js showLineNumbers {12-18}
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
@@ -171,7 +171,7 @@ REACT_APP_API_PATH = '/api'
 
 在 **setupProxy.js** 裡就能這樣使用：
 
-```js
+```js showLineNumbers {5,7}
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = function (app) {
