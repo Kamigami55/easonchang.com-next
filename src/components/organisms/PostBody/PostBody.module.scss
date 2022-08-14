@@ -21,4 +21,22 @@
       content: none;
     }
   }
+
+  // For rehype auto link headings
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply -ml-8 scroll-mt-24 pl-8;
+
+    :global(.autolink-anchor) {
+      @apply invisible absolute -ml-8;
+    }
+
+    &:hover > :global(.autolink-anchor) {
+      @apply md:visible;
+    }
+  }
 }
