@@ -1,4 +1,5 @@
 // import Image from '@/components/Image'
+import PostBody from '@/components/organisms/PostBody'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 // import SocialIcon from '@/components/social-icons'
@@ -13,7 +14,7 @@ export default function ProjectLayout({ children }) {
             Projects
           </h1>
         </div>
-        <div className="items-start space-y-2">
+        <div className="items-start space-y-2 py-8">
           {/* <div className="flex flex-col items-center space-x-2 pt-8">
             <Image
               src={avatar}
@@ -32,7 +33,7 @@ export default function ProjectLayout({ children }) {
               <SocialIcon kind="twitter" href={twitter} />
             </div>
           </div> */}
-          <div className="prose max-w-none py-8 transition-colors dark:prose-dark">{children}</div>
+          <PostBody className="max-w-none">{children}</PostBody>
         </div>
       </div>
     </>

@@ -52,7 +52,7 @@ export default function PostLayout({ post, next, prev, children }) {
             className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+            <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700">
               <PostBody>{children}</PostBody>
             </div>
 
