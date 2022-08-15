@@ -6,6 +6,7 @@
 // https://github.com/JS-DevTools/rehype-inline-svg/blob/master/src/inline-svg.ts
 import imageSize from 'image-size'
 import path from 'path'
+import { getPlaiceholder } from 'plaiceholder'
 import { visit } from 'unist-util-visit'
 import { promisify } from 'util'
 
@@ -36,11 +37,13 @@ function filterImageNode(node) {
  */
 async function addMetadata(node) {
   const res = await sizeOf(path.join(process.cwd(), 'public', node.properties.src))
+  const { base64 } = await getPlaiceholder(node.properties.src)
 
   if (!res) throw Error(`Invalid image with src "${node.properties.src}"`)
 
   node.properties.width = res.width
   node.properties.height = res.height
+  node.properties.base64 = base64
 }
 
 /**
