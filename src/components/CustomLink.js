@@ -1,10 +1,14 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+
 import Link from 'next/link'
 
-export default function CustomLink({ as, href, ...otherProps }) {
-  return (
-    <Link as={as} href={href}>
-      {/* eslint-disable-next-line jsx-a11y/anchor-has-content */}
-      <a {...otherProps} />
-    </Link>
-  )
+export default function CustomLink({ href, ...otherProps }) {
+  if (href.startsWith('/')) {
+    return (
+      <Link href={href}>
+        <a {...otherProps} />
+      </Link>
+    )
+  }
+  return <a href={href} {...otherProps} />
 }
