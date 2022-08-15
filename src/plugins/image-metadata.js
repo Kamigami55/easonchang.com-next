@@ -37,7 +37,7 @@ function filterImageNode(node) {
  */
 async function addMetadata(node) {
   const res = await sizeOf(path.join(process.cwd(), 'public', node.properties.src))
-  const { base64 } = await getPlaiceholder(node.properties.src)
+  const { base64 } = await getPlaiceholder(node.properties.src, { size: 10 }) // 10 is to increase detail (default is 4)
 
   if (!res) throw Error(`Invalid image with src "${node.properties.src}"`)
 
