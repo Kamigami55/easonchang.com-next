@@ -46,6 +46,7 @@
     "rehype-prism-plus": "^1.4.2",
     "rehype-slug": "^5.0.1",
     "remark-gfm": "^3.0.1",
+    "sharp": "^0.30.7",
     "smoothscroll-polyfill": "^0.4.4",
     "unist-util-visit": "^4.1.0"
   },
