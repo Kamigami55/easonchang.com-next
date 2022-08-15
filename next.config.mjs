@@ -11,4 +11,7 @@ export default withContentlayer({
     ignoreDuringBuilds: true,
   },
   i18n,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
 })

@@ -5,6 +5,8 @@ import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 
+import imageMetadata from './src/plugins/image-metadata'
+
 const Meta = defineNestedType(() => ({
   name: 'Meta',
   fields: {
@@ -103,6 +105,11 @@ export default makeSource({
   documentTypes: [Post, Page],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],
+    rehypePlugins: [
+      rehypeSlug,
+      rehypeCodeTitles,
+      [rehypePrism, { ignoreMissing: true }],
+      imageMetadata,
+    ],
   },
 })
