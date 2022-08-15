@@ -5,6 +5,14 @@ export default function CustomImage({ src, height, width, alt, ...otherProps }) 
     return <img src={src} height={height} width={width} alt={alt} {...otherProps} />
   }
   return (
-    <Image layout="responsive" src={src} height={height} width={width} alt={alt} {...otherProps} />
+    <Image
+      layout="responsive"
+      src={src}
+      height={height}
+      width={width}
+      alt={alt}
+      sizes="(min-width: 40em) 40em, 100vw"
+      {...otherProps}
+    />
   )
 }
