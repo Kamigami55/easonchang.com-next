@@ -2,10 +2,14 @@ import { HashtagIcon } from '@heroicons/react/solid'
 
 function CustomHeading({ Component, id, children, ...otherProps }) {
   return (
-    <Component id={id} className="group -ml-4 flex whitespace-pre-wrap pl-4" {...otherProps}>
+    <Component
+      id={id}
+      className="group -ml-4 flex scroll-mt-24 whitespace-pre-wrap pl-4"
+      {...otherProps}
+    >
       <a
         href={`#${id}`}
-        className="absolute -ml-10 flex items-center border-0 opacity-0 group-hover:opacity-100"
+        className="absolute -ml-8 flex items-center border-0 opacity-0 group-hover:md:opacity-100"
         aria-label="Anchor"
       >
         {'​'}

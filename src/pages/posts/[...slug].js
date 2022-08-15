@@ -3,35 +3,13 @@ import { compareDesc } from 'date-fns'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import {
-  CustomH1,
-  CustomH2,
-  CustomH3,
-  CustomH4,
-  CustomH5,
-  CustomH6,
-} from '@/components/CustomHeading'
 import PageTitle from '@/components/PageTitle'
 import { LOCALES } from '@/constants/siteMeta'
 import PostLayout from '@/layouts/PostLayout'
 import { unifyPath } from '@/utils/unifyPath'
 import { allRedirects } from '@/utils/getAllRedirects'
 
-import CustomLink from '../../components/CustomLink'
-
-// Custom components/renderers to pass to MDX.
-// Since the MDX files aren't loaded by webpack, they have no knowledge of how
-// to handle import statements. Instead, you must include components in scope
-// here.
-const components = {
-  a: CustomLink,
-  h1: CustomH1,
-  h2: CustomH2,
-  h3: CustomH3,
-  h4: CustomH4,
-  h5: CustomH5,
-  h6: CustomH6,
-}
+import mdxComponents from '@/lib/mdxComponents'
 
 export async function getStaticPaths() {
   const paths = []
@@ -93,7 +71,7 @@ export default function Blog({ post, prev, next }) {
     <>
       {post.isDraft !== true ? (
         <PostLayout post={post} prev={prev} next={next}>
-          <MDXContent />
+          <MDXContent components={mdxComponents} />
         </PostLayout>
       ) : (
         <div className="mt-24 text-center">
