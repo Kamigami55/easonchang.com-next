@@ -8,6 +8,7 @@ import PostBody from '@/components/organisms/PostBody'
 import PageTitle from '@/components/PageTitle'
 import ScrollTop from '@/components/ScrollTop'
 import { BlogSEO } from '@/components/SEO'
+import TableOfContents from '@/components/TableOfContents'
 import siteMetadata from '@/data/siteMetadata'
 import formatDate from '@/lib/utils/formatDate'
 
@@ -49,13 +50,25 @@ export default function PostLayout({ post, next, prev, children }) {
           </header>
 
           <div
-            className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
+            className="pb-8 transition-colors lg:grid lg:grid-cols-4 lg:gap-x-6"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700">
+            <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700 lg:col-span-3">
               <PostBody>{children}</PostBody>
             </div>
 
+            {/* DESKTOP TABLE OF CONTENTS */}
+            <aside>
+              <div className="hidden lg:sticky lg:top-24 lg:col-span-1 lg:block">
+                <TableOfContents source={post.body.raw} />
+              </div>
+            </aside>
+          </div>
+
+          <div
+            className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
+            style={{ gridTemplateRows: 'auto 1fr' }}
+          >
             <div className="mx-auto max-w-prose py-6">
               <Giscus
                 repo={siteMetadata.giscusConfig.repo}
