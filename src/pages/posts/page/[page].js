@@ -1,5 +1,6 @@
 import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
+import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { PageSEO } from '@/components/SEO'
@@ -66,15 +67,19 @@ export async function getStaticProps({ params, locale }) {
   }
 }
 
-export default function PostPage({ posts, initialDisplayPosts, pagination }) {
+export default function PostListPage({ posts, initialDisplayPosts, pagination }) {
+  const { t } = useTranslation(['common'])
+
   return (
     <>
-      <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
+      <PageSEO
+        title={`${t('all-posts')} - ${siteMetadata.title}`}
+        description={t('about-me-description')}
+      />
       <ListLayout
         posts={posts}
         initialDisplayPosts={initialDisplayPosts}
         pagination={pagination}
-        title="All Posts"
       />
     </>
   )

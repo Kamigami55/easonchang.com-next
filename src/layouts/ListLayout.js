@@ -1,9 +1,12 @@
+import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
 import PostList from '@/components/organisms/PostList'
 import Pagination from '@/components/Pagination'
 
-export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }) {
+export default function ListLayout({ posts, initialDisplayPosts = [], pagination }) {
+  const { t } = useTranslation(['common'])
+
   const [searchValue, setSearchValue] = useState('')
   const filteredBlogPosts = searchValue
     ? posts.filter((frontMatter) => {
@@ -16,16 +19,16 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
   return (
     <>
       <div className="divide-y">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            {title}
+        <div className="space-y-2 pt-10 pb-6 md:space-y-5">
+          <h1 className="pb-4 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+            {t('all-posts')}
           </h1>
           <div className="relative max-w-lg">
             <input
-              aria-label="Search articles"
+              aria-label={t('post-search-placeholder')}
               type="text"
               onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="Search articles"
+              placeholder={t('post-search-placeholder')}
               className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 transition-colors focus:border-primary-500 focus:ring-primary-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
             />
             <svg
