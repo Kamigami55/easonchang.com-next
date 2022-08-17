@@ -1,3 +1,5 @@
+import { useTranslation } from 'next-i18next'
+
 import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -9,6 +11,8 @@ import SectionContainer from './SectionContainer'
 import ThemeSwitch from './ThemeSwitch'
 
 const LayoutWrapper = ({ children }) => {
+  const { t } = useTranslation(['common'])
+
   return (
     <div className="flex min-h-screen w-full flex-col justify-between">
       <div>
@@ -36,7 +40,7 @@ const LayoutWrapper = ({ children }) => {
                       href={link.href}
                       className="rounded p-3 font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
                     >
-                      {link.title}
+                      {t(link.title)}
                     </Link>
                   ))}
                 </div>

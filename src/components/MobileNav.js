@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next'
 import { useState } from 'react'
 
 import headerNavLinks from '@/data/headerNavLinks'
@@ -5,6 +6,8 @@ import headerNavLinks from '@/data/headerNavLinks'
 import Link from './Link'
 
 const MobileNav = () => {
+  const { t } = useTranslation(['common'])
+
   const [navShow, setNavShow] = useState(false)
 
   const onToggleNav = () => {
@@ -62,7 +65,7 @@ const MobileNav = () => {
               className="block px-12 py-4 text-2xl font-bold tracking-widest text-gray-900 transition-colors hover:bg-gray-300 dark:text-gray-100 dark:hover:bg-gray-700"
               onClick={onToggleNav}
             >
-              {link.title}
+              {t(link.title)}
             </Link>
           ))}
         </nav>
