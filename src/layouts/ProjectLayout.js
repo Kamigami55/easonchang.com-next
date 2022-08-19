@@ -1,39 +1,35 @@
-// import Image from '@/components/Image'
-import PostBody from '@/components/organisms/PostBody'
-import { PageSEO } from '@/components/SEO'
-import siteMetadata from '@/data/siteMetadata'
-// import SocialIcon from '@/components/social-icons'
+import { useTranslation } from 'next-i18next'
 
-export default function ProjectLayout({ children }) {
+import ProjectCard from '@/components/organisms/ProjectCard'
+import { PageSEO } from '@/components/SEO'
+import { PROJECTS_ZH } from '@/data/projects-zh'
+import siteMetadata from '@/data/siteMetadata'
+
+export default function ProjectLayout() {
+  const { t } = useTranslation(['common'])
+
+  const projectsData = PROJECTS_ZH
+
   return (
     <>
-      <PageSEO title={`Projects - ${siteMetadata.title}`} description={`Projects`} />
-      <div className="divide-y">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+      <PageSEO
+        title={`${t('projects')} - ${siteMetadata.title}`}
+        description={t('about-me-description')}
+      />
+
+      <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+        <div className="space-y-2 py-10 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Projects
+            {t('projects')}
           </h1>
         </div>
-        <div className="items-start space-y-2 py-8">
-          {/* <div className="flex flex-col items-center space-x-2 pt-8">
-            <Image
-              src={avatar}
-              alt="avatar"
-              width="192px"
-              height="192px"
-              className="h-48 w-48 rounded-full"
-            />
-            <h3 className="pt-4 pb-2 text-2xl font-bold leading-8 tracking-tight">{name}</h3>
-            <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
-            <div className="text-gray-500 dark:text-gray-400">{company}</div>
-            <div className="flex space-x-3 pt-6">
-              <SocialIcon kind="mail" href={`mailto:${email}`} />
-              <SocialIcon kind="github" href={github} />
-              <SocialIcon kind="linkedin" href={linkedin} />
-              <SocialIcon kind="twitter" href={twitter} />
-            </div>
-          </div> */}
-          <PostBody className="max-w-none">{children}</PostBody>
+
+        <div className="py-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+            {projectsData.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
         </div>
       </div>
     </>

@@ -13,5 +13,6 @@ export default withContentlayer({
   i18n,
   images: {
     formats: ['image/avif', 'image/webp'],
+    domains: ['imgur.com', 'i.imgur.com', 'img.youtube.com', 'i.creativecommons.org'],
   },
 })
