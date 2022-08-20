@@ -46,6 +46,7 @@ specifiers:
   postcss: ^8.4.6
   prettier: ^2.4.1
   prettier-plugin-tailwindcss: ^0.1.4
+  prop-types: ^15.8.1
   react: 18.2.0
   react-dom: 18.2.0
   rehype-code-titles: ^1.1.0
@@ -78,6 +79,7 @@ dependencies:
   next-themes: 0.0.15_vyccxgqxcnj5vudpssiumaxlme
   nprogress: 0.2.0
   plaiceholder: 2.4.0_sharp@0.30.7
+  prop-types: 15.8.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   rehype-code-titles: 1.1.0
@@ -2498,9 +2500,9 @@ packages:
       react: 15.x || 16.x || 16.4.0-alpha.0911da3
       react-dom: 15.x || 16.x || 16.4.0-alpha.0911da3
     dependencies:
-      create-react-context: 0.3.0_zqe2qwrp72if6a3djdia6zm2gq
+      create-react-context: 0.3.0_sh5qlbywuemxd2y3xkrw2y2kr4
       invariant: 2.2.4
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-lifecycles-compat: 3.0.4
@@ -2528,7 +2530,7 @@ packages:
       global: 4.4.0
       lodash: 4.17.21
       polished: 4.1.3
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-inspector: 5.1.1_react@18.2.0
@@ -2672,7 +2674,7 @@ packages:
       lodash: 4.17.21
       p-limit: 3.1.0
       prettier: 2.2.1
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-element-to-jsx-string: 14.3.2_biqbaboplfbrettd7655fr4n2y
@@ -2782,7 +2784,7 @@ packages:
       '@types/qs': 6.9.7
       core-js: 3.21.1
       global: 4.4.0
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       qs: 6.10.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -2872,7 +2874,7 @@ packages:
       core-js: 3.21.1
       global: 4.4.0
       memoizerific: 1.11.3
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       regenerator-runtime: 0.13.9
@@ -3099,7 +3101,7 @@ packages:
       memoizerific: 1.11.3
       overlayscrollbars: 1.13.1
       polished: 4.1.3
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-colorful: 5.5.0_biqbaboplfbrettd7655fr4n2y
       react-dom: 18.2.0_react@18.2.0
@@ -3477,7 +3479,7 @@ packages:
       core-js: 3.21.1
       global: 4.4.0
       lodash: 4.17.21
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dev-utils: 11.0.4_w2ixakxgs5mowfqcau4gppkd74
       react-dom: 18.2.0_react@18.2.0
@@ -5767,14 +5769,14 @@ packages:
       sha.js: 2.4.11
     dev: true
 
-  /create-react-context/0.3.0_zqe2qwrp72if6a3djdia6zm2gq:
+  /create-react-context/0.3.0_sh5qlbywuemxd2y3xkrw2y2kr4:
     resolution: {integrity: sha512-dNldIoSuNSvlTJ7slIKC/ZFGKexBMBrrcc+TTe1NdmROnaASuLPvqpwj9v4XS4uXZ8+YPu0sNmShX2rXI5LNsw==}
     peerDependencies:
       prop-types: ^15.0.0
       react: ^0.14.0 || ^15.0.0 || ^16.0.0
     dependencies:
       gud: 1.0.0
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       warning: 4.0.3
     dev: true
@@ -6229,7 +6231,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.9
       compute-scroll-into-view: 1.0.17
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-is: 17.0.2
       tslib: 2.4.0
@@ -6828,7 +6830,7 @@ packages:
       object.fromentries: 2.0.5
       object.hasown: 1.0.0
       object.values: 1.1.5
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       resolve: 2.0.0-next.3
       semver: 6.3.0
       string.prototype.matchall: 4.0.6
@@ -9421,7 +9423,7 @@ packages:
     peerDependencies:
       react: '>= 0.14.0'
     dependencies:
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       unquote: 1.1.1
     dev: true
@@ -10633,7 +10635,6 @@ packages:
   /object-assign/4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /object-copy/0.1.0:
     resolution: {integrity: sha512-79LYn6VAb63zgtmAteVOWo9Vdj71ZVBy3Pbse+VqxDpEP83XuujMrGqHIwAXJ5I/aM0zU7dIyIAhifVTPrNItQ==}
@@ -11442,13 +11443,12 @@ packages:
       sisteransi: 1.0.5
     dev: true
 
-  /prop-types/15.7.2:
-    resolution: {integrity: sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==}
+  /prop-types/15.8.1:
+    resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: true
 
   /property-information/5.6.0:
     resolution: {integrity: sha512-YUHSPk+A30YPv+0Qf8i9Mbfe/C0hdPXk1s1jPVToV8pk8BQtpw10ct89Eo7OWkutrwqvT0eicAxlOg3dOAu8JA==}
@@ -11747,7 +11747,7 @@ packages:
       react-dom: '>= 16.3.0'
     dependencies:
       clsx: 1.1.1
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: true
@@ -11780,7 +11780,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.9
       invariant: 2.2.4
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-fast-compare: 3.2.0
@@ -11814,7 +11814,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.18.9
       is-dom: 1.1.0
-      prop-types: 15.7.2
+      prop-types: 15.8.1
       react: 18.2.0
     dev: true
 
