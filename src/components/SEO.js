@@ -17,7 +17,8 @@ const CommonSEO = ({ title, description, ogType, ogImage }) => {
       <meta property="og:title" key="og:title" content={title} />
       <meta property="og:image" key="og:image" content={ogImage} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content={siteMetadata.twitter} />
+      <meta name="twitter:site" content={siteMetadata.twitterID} />
+      <meta name="twitter:creator" content={siteMetadata.twitterID} />
       <meta name="twitter:title" key="twitter:title" content={title} />
       <meta name="twitter:description" key="twitter:description" content={description} />
       <meta name="twitter:image" key="twitter:image" content={ogImage} />
