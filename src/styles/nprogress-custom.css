@@ -1,0 +1,3 @@
+#nprogress .bar {
+  @apply h-[3px] bg-primary-500;
+}

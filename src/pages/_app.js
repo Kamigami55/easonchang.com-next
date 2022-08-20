@@ -1,14 +1,17 @@
 import '@/styles/index.css'
 import '@/styles/prism-dracula.css'
 import '@/styles/prism-plus.css'
+import '@/styles/nprogress-custom.css'
 import '@fontsource/inter/variable-full.css'
+import 'nprogress/nprogress.css'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { appWithTranslation } from 'next-i18next'
-// import { useRouter } from 'next/router'
 import { ThemeProvider } from 'next-themes'
+import NProgress from 'nprogress'
+import { useEffect } from 'react'
 
-// import { useEffect } from 'react'
 // import { ClientReload } from '@/components/ClientReload'
 import LayoutWrapper from '@/components/LayoutWrapper'
 import { PageSEO } from '@/components/SEO'
@@ -17,9 +20,17 @@ import siteMetadata from '@/data/siteMetadata'
 
 // const isDevelopment = process.env.NODE_ENV === 'development'
 // const isSocket = process.env.SOCKET
+NProgress.configure({ showSpinner: false })
 
 function App({ Component, pageProps }) {
-  // const router = useRouter()
+  const router = useRouter()
+
+  // Integrate nprogress
+  useEffect(() => {
+    router.events.on('routeChangeStart', () => NProgress.start())
+    router.events.on('routeChangeComplete', () => NProgress.done())
+    router.events.on('routeChangeError', () => NProgress.done())
+  }, [])
 
   // useEffect(() => {
   //   const handleRouteChange = (url) => {
