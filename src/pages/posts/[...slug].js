@@ -48,12 +48,6 @@ export async function getStaticProps({ params, locale }) {
   const next = allPosts[postIndex - 1] || null
   const post = posts[postIndex]
 
-  // rss
-  // if (allPosts.length > 0) {
-  //   const rss = generateRss(allPosts)
-  //   fs.writeFileSync('./public/feed.xml', rss)
-  // }
-
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),

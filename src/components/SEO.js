@@ -49,7 +49,7 @@ export const TagSEO = ({ title, description }) => {
   )
 }
 
-const getPostOGImage = (socialImage) => {
+export const getPostOGImage = (socialImage) => {
   if (socialImage) {
     if (socialImage.startsWith('http')) {
       return socialImage

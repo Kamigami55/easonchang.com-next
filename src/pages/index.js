@@ -9,6 +9,7 @@ import Link from '@/components/Link'
 import PostList from '@/components/organisms/PostList'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import generateRSS from '@/lib/utils/generateRSS'
 
 const MAX_DISPLAY = 5
 
@@ -62,6 +63,8 @@ export async function getStaticProps({ locale }) {
   const posts = allPosts.sort((a, b) => {
     return compareDesc(new Date(a.date), new Date(b.date))
   })
+
+  await generateRSS()
 
   return {
     props: {

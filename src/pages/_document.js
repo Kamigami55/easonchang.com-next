@@ -16,6 +16,7 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+          <link rel="alternate" type="application/atom+xml" href="/atom.xml" />
 
           {/* Global site tag (gtag.js) - Google Analytics */}
           {NEXT_PUBLIC_GOOGLE_ANALYTICS && (
