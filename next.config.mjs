@@ -15,4 +15,11 @@ export default withContentlayer({
     formats: ['image/avif', 'image/webp'],
     domains: ['imgur.com', 'i.imgur.com', 'img.youtube.com', 'i.creativecommons.org'],
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    return config
+  },
 })
