@@ -5,6 +5,7 @@ import Facebook from './facebook.svg'
 import Github from './github.svg'
 import Linkedin from './linkedin.svg'
 import Mail from './mail.svg'
+import RSS from './rss.svg'
 import Twitter from './twitter.svg'
 import Youtube from './youtube.svg'
 
@@ -17,6 +18,7 @@ const components = {
   youtube: Youtube,
   linkedin: Linkedin,
   twitter: Twitter,
+  rss: RSS,
 }
 
 const SocialIcon = ({ kind, href }) => {
@@ -41,7 +43,8 @@ const SocialIcon = ({ kind, href }) => {
           kind === 'facebook' && 'hover:text-[#4267B2] dark:hover:text-[#4267B2]',
           kind === 'youtube' && 'hover:text-[#FF0000] dark:hover:text-[#FF0000]',
           kind === 'linkedin' && 'hover:text-[#0e76a8] dark:hover:text-[#0e76a8]',
-          kind === 'twitter' && 'hover:text-[#1DA1F2] dark:hover:text-[#1DA1F2]'
+          kind === 'twitter' && 'hover:text-[#1DA1F2] dark:hover:text-[#1DA1F2]',
+          kind === 'rss' && 'hover:text-[#FFA500] dark:hover:text-[#FFA500]'
         )}
       />
     </a>

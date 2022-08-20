@@ -13,6 +13,7 @@ export default function Footer() {
           <SocialIcon kind="facebook" href={siteMetadata.facebook} />
           <SocialIcon kind="linkedin" href={siteMetadata.linkedin} />
           <SocialIcon kind="twitter" href={siteMetadata.twitter} />
+          <SocialIcon kind="rss" href={siteMetadata.siteUrl + siteMetadata.rss} />
         </div>
         <div className="mb-8 flex space-x-2 text-sm text-gray-500 transition-colors dark:text-gray-400">
           <div>{`Copyright © 2015 - ${new Date().getFullYear()}`}</div>

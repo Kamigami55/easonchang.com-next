@@ -15,6 +15,7 @@ const siteMetadata = {
   twitter: 'https://twitter.com/EasonChang_me',
   twitterID: '@EasonChang_me',
   facebook: 'https://www.facebook.com/eason.blog/',
+  rss: '/feed.xml',
   // youtube: 'https://youtube.com',
   linkedin: 'https://www.linkedin.com/in/easonchang101',
   locale: 'zh-TW',
