@@ -1,9 +1,9 @@
+import 'nprogress/nprogress.css'
+import '@fontsource/inter/variable-full.css'
 import '@/styles/index.css'
 import '@/styles/prism-dracula.css'
 import '@/styles/prism-plus.css'
 import '@/styles/nprogress-custom.css'
-import '@fontsource/inter/variable-full.css'
-import 'nprogress/nprogress.css'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
