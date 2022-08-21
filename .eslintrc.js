@@ -7,13 +7,13 @@ module.exports = {
     'import/resolver': {
       alias: {
         map: [['@', './src']],
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
     'import/ignore': ['contentLayerAdapter.js'],
   },
   extends: [
-    'eason',
+    'eason/typescript',
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
   ],

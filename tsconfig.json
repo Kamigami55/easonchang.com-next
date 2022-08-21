@@ -10,6 +10,7 @@
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -23,6 +24,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.mjs",
+    "**/*.js",
+    "**/*.jsx",
+    ".eslintrc.js",
     ".contentlayer/generated"
   ],
   "exclude": ["node_modules"]
