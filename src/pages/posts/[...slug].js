@@ -1,4 +1,3 @@
-import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -9,6 +8,7 @@ import PostLayout from '@/layouts/PostLayout'
 import { unifyPath } from '@/utils/unifyPath'
 import { allRedirects } from '@/utils/getAllRedirects'
 
+import { allPosts } from '@/lib/contentLayerAdapter'
 import mdxComponents from '@/lib/mdxComponents'
 
 export async function getStaticPaths() {

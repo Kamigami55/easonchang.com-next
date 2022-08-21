@@ -1,10 +1,13 @@
-// eslint-disable-next-line import/no-unresolved
-import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
 import rehypeCodeTitles from 'rehype-code-titles'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 
+import {
+  defineDocumentType,
+  defineNestedType,
+  makeSource,
+} from './src/lib/contentLayerAdapter'
 import imageMetadata from './src/plugins/image-metadata'
 
 const Meta = defineNestedType(() => ({

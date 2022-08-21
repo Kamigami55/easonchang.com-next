@@ -1,4 +1,3 @@
-import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -7,6 +6,7 @@ import { PageSEO } from '@/components/SEO'
 import { LOCALES, POSTS_PER_PAGE } from '@/constants/siteMeta'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
+import { allPosts } from '@/lib/contentLayerAdapter'
 import { allRedirects } from '@/utils/getAllRedirects'
 import { unifyPath } from '@/utils/unifyPath'
 

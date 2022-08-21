@@ -1,8 +1,8 @@
-import { allPages } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import AuthorLayout from '@/layouts/AuthorLayout'
+import { allPages } from '@/lib/contentLayerAdapter'
 import mdxComponents from '@/lib/mdxComponents'
 
 const LOCALE_TO_PAGE_NAME = {

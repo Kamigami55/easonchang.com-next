@@ -10,6 +10,7 @@ module.exports = {
         extensions: ['.js', '.jsx'],
       },
     },
+    'import/ignore': ['contentLayerAdapter.js'],
   },
   extends: [
     'eason',

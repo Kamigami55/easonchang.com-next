@@ -1,4 +1,4 @@
-import { allPages, allPosts } from 'contentlayer/generated'
+import { allPages, allPosts } from '@/lib/contentLayerAdapter'
 
 import { unifyPath } from './unifyPath'
 

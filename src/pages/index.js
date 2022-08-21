@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable react/jsx-key */
-import { allPosts } from 'contentlayer/generated'
 import { compareDesc } from 'date-fns'
 import { Trans, useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -9,6 +8,7 @@ import Link from '@/components/Link'
 import PostList from '@/components/organisms/PostList'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import { allPosts } from '@/lib/contentLayerAdapter'
 import generateRSS from '@/lib/utils/generateRSS'
 
 const MAX_DISPLAY = 5

@@ -1,9 +1,9 @@
-import { allPosts } from 'contentlayer/generated'
 import { Feed } from 'feed'
 import { writeFileSync } from 'fs'
 
 import { getPostOGImage } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
+import { allPosts } from '@/lib/contentLayerAdapter'
 
 export default async function generateRSS() {
   const author = {
