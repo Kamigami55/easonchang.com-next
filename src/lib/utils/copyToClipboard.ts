@@ -19,7 +19,7 @@ export const copyToClipboard = (text) => {
 
         body?.removeChild(textarea);
 
-        resolve();
+        resolve(void 0);
       } catch (e) {
         reject(e);
       }

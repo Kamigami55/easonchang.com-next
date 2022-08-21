@@ -35,7 +35,7 @@ export default async function generateRSS() {
       link: siteMetadata.siteUrl + post.path,
       description: post.description,
       image: getPostOGImage(post.socialImage),
-      content: post.body.html,
+      // content: post.body.html,
       author: [author],
       contributor: [author],
       date: new Date(post.date),

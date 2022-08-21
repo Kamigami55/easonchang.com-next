@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 import styles from './PostBody.module.scss';
 
-export default function PostBody({ children, className }) {
+export default function PostBody({ children }) {
   return (
     <div
       className={clsx(
         'prose mx-auto transition-colors dark:prose-dark',
-        styles.postBody,
-        className
+        styles.postBody
       )}
     >
       {children}
