@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 
-import Link from '@/components/Link';
+import CustomLink from '@/components/CustomLink';
 
 export default function Pagination({ totalPages, currentPage }) {
   const { t } = useTranslation(['common']);
@@ -21,7 +21,7 @@ export default function Pagination({ totalPages, currentPage }) {
           </button>
         )}
         {prevPage && (
-          <Link
+          <CustomLink
             href={
               currentPage - 1 === 1
                 ? `/posts/`
@@ -29,7 +29,7 @@ export default function Pagination({ totalPages, currentPage }) {
             }
           >
             <button rel="previous">{t('previous-page')}</button>
-          </Link>
+          </CustomLink>
         )}
         <span>
           {currentPage} / {totalPages}
@@ -44,9 +44,9 @@ export default function Pagination({ totalPages, currentPage }) {
           </button>
         )}
         {nextPage && (
-          <Link href={`/posts/page/${currentPage + 1}`}>
+          <CustomLink href={`/posts/page/${currentPage + 1}`}>
             <button rel="next">{t('next-page')}</button>
-          </Link>
+          </CustomLink>
         )}
       </nav>
     </div>

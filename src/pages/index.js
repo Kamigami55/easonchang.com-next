@@ -4,7 +4,7 @@ import { compareDesc } from 'date-fns';
 import { Trans, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import Link from '@/components/Link';
+import CustomLink from '@/components/CustomLink';
 import PostList from '@/components/organisms/PostList';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
@@ -28,14 +28,14 @@ export default function Index({ posts }) {
           <Trans
             i18nKey="intro-1"
             t={t}
-            components={[<Link href="/projects" />]}
+            components={[<CustomLink href="/projects" />]}
           />
         </p>
         <p>
           <Trans
             i18nKey="intro-2"
             t={t}
-            components={[<Link href="/posts" />]}
+            components={[<CustomLink href="/posts" />]}
           />
         </p>
         <p>
@@ -63,13 +63,13 @@ export default function Index({ posts }) {
 
       {posts.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6 md:text-lg">
-          <Link
+          <CustomLink
             href="/posts"
             className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="all posts"
           >
             {t('view-all', { ns: 'common' })} &rarr;
-          </Link>
+          </CustomLink>
         </div>
       )}
     </>

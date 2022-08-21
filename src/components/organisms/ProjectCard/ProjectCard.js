@@ -2,7 +2,7 @@ import { useTranslation } from 'next-i18next';
 import PropTypes from 'prop-types';
 
 import Image from '@/components/Image';
-import Link from '@/components/Link';
+import CustomLink from '@/components/CustomLink';
 
 export default function ProjectCard({ project }) {
   const {
@@ -20,7 +20,7 @@ export default function ProjectCard({ project }) {
           'h-full overflow-hidden rounded-md border-2 border-gray-300/60 transition-colors transition-colors dark:border-gray-700/60'
         }
       >
-        <Link
+        <CustomLink
           href={href}
           aria-label={`Link to ${title}`}
           className="relative block aspect-video w-full"
@@ -34,12 +34,12 @@ export default function ProjectCard({ project }) {
             quality="30"
             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 344px, 472px"
           />
-        </Link>
+        </CustomLink>
         <div className="p-6">
           <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
-            <Link href={href} aria-label={`Link to ${title}`}>
+            <CustomLink href={href} aria-label={`Link to ${title}`}>
               {title}
-            </Link>
+            </CustomLink>
           </h2>
           <p
             className="prose mb-3 max-w-none text-gray-500 transition-colors dark:text-gray-400"
@@ -47,13 +47,13 @@ export default function ProjectCard({ project }) {
               __html: description,
             }}
           />
-          <Link
+          <CustomLink
             href={href}
             className="text-base font-medium leading-6 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
             aria-label={`Link to ${title}`}
           >
             {t('learn-more')} &rarr;
-          </Link>
+          </CustomLink>
         </div>
       </div>
     </div>

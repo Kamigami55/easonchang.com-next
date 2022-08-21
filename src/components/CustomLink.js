@@ -2,13 +2,23 @@
 
 import Link from 'next/link';
 
-export default function CustomLink({ href, ...otherProps }) {
-  if (href.startsWith('/')) {
+const CustomLink = ({ href, ...rest }) => {
+  const isInternalLink = href && href.startsWith('/');
+  const isAnchorLink = href && href.startsWith('#');
+
+  if (isInternalLink) {
     return (
       <Link href={href}>
-        <a {...otherProps} />
+        <a {...rest} />
       </Link>
     );
   }
-  return <a href={href} {...otherProps} />;
-}
+
+  if (isAnchorLink) {
+    return <a href={href} {...rest} />;
+  }
+
+  return <a target="_blank" rel="noopener noreferrer" href={href} {...rest} />;
+};
+
+export default CustomLink;

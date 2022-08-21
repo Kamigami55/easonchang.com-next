@@ -3,7 +3,7 @@ import Giscus from '@giscus/react';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
 
-import Link from '@/components/Link';
+import CustomLink from '@/components/CustomLink';
 import PostBody from '@/components/organisms/PostBody';
 import PageTitle from '@/components/PageTitle';
 import ScrollTop from '@/components/ScrollTop';
@@ -92,12 +92,12 @@ export default function PostLayout({ post, next, prev, children }) {
                     <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
                       Previous Article
                     </h2>
-                    <Link
+                    <CustomLink
                       href={prev.path}
                       className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       &larr; {prev.title}
-                    </Link>
+                    </CustomLink>
                   </div>
                 )}
                 {next && (
@@ -105,12 +105,12 @@ export default function PostLayout({ post, next, prev, children }) {
                     <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
                       Next Article
                     </h2>
-                    <Link
+                    <CustomLink
                       href={next.path}
                       className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                     >
                       {next.title} &rarr;
-                    </Link>
+                    </CustomLink>
                   </div>
                 )}
               </div>

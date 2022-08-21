@@ -1,7 +1,6 @@
 import SocialIcon from '@/components/atoms/SocialIcon';
+import CustomLink from '@/components/CustomLink';
 import siteMetadata from '@/data/siteMetadata';
-
-import Link from './Link';
 
 export default function Footer() {
   return (
@@ -20,7 +19,7 @@ export default function Footer() {
         </div>
         <div className="mb-8 flex space-x-2 text-sm text-gray-500 transition-colors dark:text-gray-400">
           <div>{`Copyright © 2015 - ${new Date().getFullYear()}`}</div>
-          <Link href="/">{siteMetadata.author}</Link>
+          <CustomLink href="/">{siteMetadata.author}</CustomLink>
         </div>
       </div>
     </footer>

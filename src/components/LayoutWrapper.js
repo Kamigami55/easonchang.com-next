@@ -1,11 +1,11 @@
 import { useTranslation } from 'next-i18next';
 
+import CustomLink from '@/components/CustomLink';
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
 
 import Footer from './Footer';
 import LanguageSwitch from './LanguageSwitch';
-import Link from './Link';
 import MobileNav from './MobileNav';
 import SectionContainer from './SectionContainer';
 import ThemeSwitch from './ThemeSwitch';
@@ -20,7 +20,7 @@ const LayoutWrapper = ({ children }) => {
           <SectionContainer>
             <div className="flex items-center justify-between">
               <div>
-                <Link href="/" aria-label={siteMetadata.headerTitle}>
+                <CustomLink href="/" aria-label={siteMetadata.headerTitle}>
                   <div className="flex items-center justify-between">
                     {typeof siteMetadata.headerTitle === 'string' ? (
                       <div className="h-6 text-2xl font-semibold sm:block">
@@ -30,18 +30,18 @@ const LayoutWrapper = ({ children }) => {
                       siteMetadata.headerTitle
                     )}
                   </div>
-                </Link>
+                </CustomLink>
               </div>
               <div className="flex items-center text-base leading-5 sm:gap-1">
                 <div className="hidden gap-1 sm:flex">
                   {headerNavLinks.map((link) => (
-                    <Link
+                    <CustomLink
                       key={link.title}
                       href={link.href}
                       className="rounded p-3 font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
                     >
                       {t(link.title)}
-                    </Link>
+                    </CustomLink>
                   ))}
                 </div>
                 <LanguageSwitch />
