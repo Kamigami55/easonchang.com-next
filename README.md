@@ -1,12 +1,15 @@
-# My brand new personal blog
+# easonchang.com-next
 
-Awesome Next.js starter template made by Eason Chang
+Eason Chang's brand new personal blog
 
-[Visit](https://www.easonchang.com/)
+Visit: [https://easonchang.com/](https://easonchang.com/)
 
-## features
+![Blog homepage](./docs/readme-cover.jpg)
+
+## Features
 
 - Next.js 12
+- ContentLayer (loading local MDX files)
 - TailwindCSS
 - Atomic design project structure
 - Storybook
@@ -14,13 +17,14 @@ Awesome Next.js starter template made by Eason Chang
 - Hygen as code generator
 - Eslint, Prettier
 - Husky, lint-staged pre-commit hook
+- `pnpm` as package manager
 
 ## Commands
 
 ### Start local dev server
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -28,7 +32,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Start Storybook component dev environment
 
 ```bash
-yarn storybook
+pnpm storybook
 ```
 
 This command will open [http://localhost:6006](http://localhost:6006) for you, this is where you can see storybook
@@ -36,9 +40,15 @@ This command will open [http://localhost:6006](http://localhost:6006) for you, t
 ### Generate new component scaffold
 
 ```bash
-yarn new-component
+pnpm new-component
 ```
 
 This calls hygen to generate new component with basic file structures, including its JS file and stories.js file
 
 You will be prompted to select component type (atoms, molecules, organisms, templates), and then input component name
+
+### Generate new post
+
+```bash
+pnpm new-post
+```
