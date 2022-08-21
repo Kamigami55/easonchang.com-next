@@ -1,9 +1,9 @@
-const { format } = require('date-fns')
+const { format } = require('date-fns');
 
 module.exports = {
   helpers: {
     getDateTime: function (formatStr) {
-      return format(new Date(), formatStr)
-    }
-  }
-}
+      return format(new Date(), formatStr);
+    },
+  },
+};

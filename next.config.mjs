@@ -1,7 +1,8 @@
-import { withContentlayer } from 'next-contentlayer'
+import { withContentlayer } from 'next-contentlayer';
 
-import i18nConfig from './next-i18next.config.js'
-const { i18n } = i18nConfig
+import i18nConfig from './next-i18next.config.js';
+
+const { i18n } = i18nConfig;
 
 export default withContentlayer({
   reactStrictMode: true,
@@ -13,13 +14,18 @@ export default withContentlayer({
   i18n,
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['imgur.com', 'i.imgur.com', 'img.youtube.com', 'i.creativecommons.org'],
+    domains: [
+      'imgur.com',
+      'i.imgur.com',
+      'img.youtube.com',
+      'i.creativecommons.org',
+    ],
   },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
-    })
-    return config
+    });
+    return config;
   },
-})
+});
