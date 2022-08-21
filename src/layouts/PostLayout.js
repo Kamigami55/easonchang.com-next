@@ -69,7 +69,7 @@ export default function PostLayout({ post, next, prev, children }) {
             className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div className="mx-auto max-w-prose py-6">
+            <div id="comment" className="mx-auto max-w-prose py-6">
               <Giscus
                 repo={siteMetadata.giscusConfig.repo}
                 repoId={siteMetadata.giscusConfig.repoId}
