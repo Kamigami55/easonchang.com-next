@@ -1,10 +1,10 @@
 # easonchang.com-next
 
+![Blog homepage](./docs/readme-cover.jpg)
+
 Eason Chang's brand new personal blog
 
 Visit: [https://easonchang.com/](https://easonchang.com/)
-
-![Blog homepage](./docs/readme-cover.jpg)
 
 ## Features
 
