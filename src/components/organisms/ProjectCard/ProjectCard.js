@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import PropTypes from 'prop-types';
 
-import Image from '@/components/Image';
 import CustomLink from '@/components/CustomLink';
 
 export default function ProjectCard({ project }) {

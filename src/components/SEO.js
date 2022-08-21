@@ -54,29 +54,6 @@ export const PageSEO = ({ title, description }) => {
   );
 };
 
-export const TagSEO = ({ title, description }) => {
-  const ogImage = siteMetadata.siteUrl + siteMetadata.socialBanner;
-  const router = useRouter();
-  return (
-    <>
-      <CommonSEO
-        title={title}
-        description={description}
-        ogType="website"
-        ogImage={ogImage}
-      />
-      <Head>
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title={`${description} - RSS feed`}
-          href={`${siteMetadata.siteUrl}${router.asPath}/feed.xml`}
-        />
-      </Head>
-    </>
-  );
-};
-
 export const getPostOGImage = (socialImage) => {
   if (socialImage) {
     if (socialImage.startsWith('http')) {

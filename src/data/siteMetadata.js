@@ -16,24 +16,9 @@ const siteMetadata = {
   twitterID: '@EasonChang_me',
   facebook: 'https://www.facebook.com/eason.blog/',
   rss: '/feed.xml',
-  // youtube: 'https://youtube.com',
   linkedin: 'https://www.linkedin.com/in/easonchang101',
   locale: 'zh-TW',
-  // analytics: {
-  //   // supports plausible, simpleAnalytics, umami or googleAnalytics
-  //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
-  //   simpleAnalytics: false, // true or false
-  //   umamiWebsiteId: '', // e.g. 123e4567-e89b-12d3-a456-426614174000
-  //   googleAnalyticsId: '', // e.g. UA-000000-2 or G-XXXXXXX
-  // },
-  // newsletter: {
-  //   // supports mailchimp, buttondown, convertkit, klaviyo
-  //   // Please add your .env file and modify it according to your selection
-  //   provider: 'buttondown',
-  // },
   giscusConfig: {
-    // Visit the link below, and follow the steps in the 'configuration' section
-    // https://giscus.app/
     repo: 'Kamigami55/easonchang.com-next',
     repoId: 'R_kgDOGyMt4A',
     category: 'Announcements',
