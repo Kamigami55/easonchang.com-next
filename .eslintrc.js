@@ -3,17 +3,7 @@
 
 module.exports = {
   root: true, // Make sure eslint picks up the config at the root of the directory
-  parserOptions: {
-    ecmaVersion: 'latest', // Use the latest ecmascript standard
-    sourceType: 'module', // Allows using import/export statements
-    ecmaFeatures: {
-      jsx: true, // Enable JSX since we're using React
-    },
-  },
   settings: {
-    react: {
-      version: 'detect', // Automatically detect the react version
-    },
     'import/resolver': {
       alias: {
         map: [['@', './src']],
@@ -21,25 +11,13 @@ module.exports = {
       },
     },
   },
-  env: {
-    browser: true, // Enables browser globals like window and document
-    amd: true, // Enables require() and define() as global variables as per the amd spec.
-    node: true, // Enables Node.js global variables and Node.js scoping.
-    es6: true,
-  },
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:jsx-a11y/recommended',
-    'plugin:import/recommended',
+    'eason',
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
   ],
-  plugins: ['simple-import-sort', 'tailwindcss', 'import'],
+  plugins: ['tailwindcss'],
   rules: {
-    'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source
-    'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'off',
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
@@ -49,7 +27,5 @@ module.exports = {
       },
     ],
     'tailwindcss/classnames-order': 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
   },
-}
+};
