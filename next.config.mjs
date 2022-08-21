@@ -28,4 +28,7 @@ export default withContentlayer({
     });
     return config;
   },
+  // Enable SWC minification for building time performance
+  // https://nextjs.org/docs/advanced-features/compiler#minification
+  swcMinify: true,
 });
