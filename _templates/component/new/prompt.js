@@ -13,4 +13,4 @@ module.exports = [
     name: 'name',
     message: 'Enter component name (ex: Button): ',
   },
-]
+];

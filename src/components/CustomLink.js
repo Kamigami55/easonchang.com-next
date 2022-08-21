@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function CustomLink({ href, ...otherProps }) {
   if (href.startsWith('/')) {
@@ -8,7 +8,7 @@ export default function CustomLink({ href, ...otherProps }) {
       <Link href={href}>
         <a {...otherProps} />
       </Link>
-    )
+    );
   }
-  return <a href={href} {...otherProps} />
+  return <a href={href} {...otherProps} />;
 }

@@ -1,3 +1,3 @@
-import IndexPageTemplate from './IndexPageTemplate'
+import IndexPageTemplate from './IndexPageTemplate';
 
-export default IndexPageTemplate
+export default IndexPageTemplate;

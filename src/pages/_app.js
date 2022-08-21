@@ -1,36 +1,36 @@
-import 'nprogress/nprogress.css'
-import '@fontsource/inter/variable-full.css'
-import '@/styles/index.css'
-import '@/styles/prism-dracula.css'
-import '@/styles/prism-plus.css'
-import '@/styles/nprogress-custom.css'
+import 'nprogress/nprogress.css';
+import '@fontsource/inter/variable-full.css';
+import '@/styles/index.css';
+import '@/styles/prism-dracula.css';
+import '@/styles/prism-plus.css';
+import '@/styles/nprogress-custom.css';
 
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { appWithTranslation } from 'next-i18next'
-import { ThemeProvider } from 'next-themes'
-import NProgress from 'nprogress'
-import { useEffect } from 'react'
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { appWithTranslation } from 'next-i18next';
+import { ThemeProvider } from 'next-themes';
+import NProgress from 'nprogress';
+import { useEffect } from 'react';
 
 // import { ClientReload } from '@/components/ClientReload'
-import LayoutWrapper from '@/components/LayoutWrapper'
-import { PageSEO } from '@/components/SEO'
+import LayoutWrapper from '@/components/LayoutWrapper';
+import { PageSEO } from '@/components/SEO';
 // import { NEXT_PUBLIC_GOOGLE_ANALYTICS } from '@/constants/envValues'
-import siteMetadata from '@/data/siteMetadata'
+import siteMetadata from '@/data/siteMetadata';
 
 // const isDevelopment = process.env.NODE_ENV === 'development'
 // const isSocket = process.env.SOCKET
-NProgress.configure({ showSpinner: false })
+NProgress.configure({ showSpinner: false });
 
 function App({ Component, pageProps }) {
-  const router = useRouter()
+  const router = useRouter();
 
   // Integrate nprogress
   useEffect(() => {
-    router.events.on('routeChangeStart', () => NProgress.start())
-    router.events.on('routeChangeComplete', () => NProgress.done())
-    router.events.on('routeChangeError', () => NProgress.done())
-  }, [])
+    router.events.on('routeChangeStart', () => NProgress.start());
+    router.events.on('routeChangeComplete', () => NProgress.done());
+    router.events.on('routeChangeError', () => NProgress.done());
+  }, []);
 
   // useEffect(() => {
   //   const handleRouteChange = (url) => {
@@ -49,12 +49,15 @@ function App({ Component, pageProps }) {
       <Head>
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
+      <PageSEO
+        title={siteMetadata.title}
+        description={siteMetadata.description}
+      />
       <LayoutWrapper>
         <Component {...pageProps} />
       </LayoutWrapper>
     </ThemeProvider>
-  )
+  );
 }
 
-export default appWithTranslation(App)
+export default appWithTranslation(App);

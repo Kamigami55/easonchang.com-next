@@ -1,14 +1,14 @@
-import rehypeCodeTitles from 'rehype-code-titles'
-import rehypePrism from 'rehype-prism-plus'
-import rehypeSlug from 'rehype-slug'
-import remarkGfm from 'remark-gfm'
+import rehypeCodeTitles from 'rehype-code-titles';
+import rehypePrism from 'rehype-prism-plus';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 
 import {
   defineDocumentType,
   defineNestedType,
   makeSource,
-} from './src/lib/contentLayerAdapter'
-import imageMetadata from './src/plugins/image-metadata'
+} from './src/lib/contentLayerAdapter';
+import imageMetadata from './src/plugins/image-metadata';
 
 const Meta = defineNestedType(() => ({
   name: 'Meta',
@@ -16,7 +16,7 @@ const Meta = defineNestedType(() => ({
     title: { type: 'string' },
     description: { type: 'string' },
   },
-}))
+}));
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -80,7 +80,7 @@ export const Post = defineDocumentType(() => ({
       resolve: (post) => `/posts/${post.slug}`,
     },
   },
-}))
+}));
 
 export const Page = defineDocumentType(() => ({
   name: 'Page',
@@ -101,7 +101,7 @@ export const Page = defineDocumentType(() => ({
       of: { type: 'string' },
     },
   },
-}))
+}));
 
 export default makeSource({
   contentDirPath: 'content',
@@ -115,4 +115,4 @@ export default makeSource({
       imageMetadata,
     ],
   },
-})
+});

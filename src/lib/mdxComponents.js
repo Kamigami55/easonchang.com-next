@@ -5,10 +5,10 @@ import {
   CustomH4,
   CustomH5,
   CustomH6,
-} from '@/components/CustomHeading'
-import CustomImage from '@/components/CustomImage'
-import CustomLink from '@/components/CustomLink'
-import CustomPre from '@/components/CustomPre'
+} from '@/components/CustomHeading';
+import CustomImage from '@/components/CustomImage';
+import CustomLink from '@/components/CustomLink';
+import CustomPre from '@/components/CustomPre';
 
 // Custom components/renderers to pass to MDX.
 // Since the MDX files aren't loaded by webpack, they have no knowledge of how
@@ -25,6 +25,6 @@ const mdxComponents = {
   h6: CustomH6,
   img: CustomImage,
   pre: CustomPre,
-}
+};
 
-export default mdxComponents
+export default mdxComponents;

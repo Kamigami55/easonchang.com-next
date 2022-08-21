@@ -1,16 +1,16 @@
-import Giscus from '@giscus/react'
-import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
-import { useTheme } from 'next-themes'
+import Giscus from '@giscus/react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { useTheme } from 'next-themes';
 
-import PostBody from '@/components/organisms/PostBody'
-import { PageSEO } from '@/components/SEO'
-import siteMetadata from '@/data/siteMetadata'
+import PostBody from '@/components/organisms/PostBody';
+import { PageSEO } from '@/components/SEO';
+import siteMetadata from '@/data/siteMetadata';
 
 export default function AuthorLayout({ children }) {
-  const { t } = useTranslation(['common'])
-  const { locale } = useRouter()
-  const { theme } = useTheme()
+  const { t } = useTranslation(['common']);
+  const { locale } = useRouter();
+  const { theme } = useTheme();
 
   return (
     <>
@@ -48,5 +48,5 @@ export default function AuthorLayout({ children }) {
         </div>
       </div>
     </>
-  )
+  );
 }

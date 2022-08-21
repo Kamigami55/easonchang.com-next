@@ -1,3 +1,3 @@
-import IndexHeading from './IndexHeading'
+import IndexHeading from './IndexHeading';
 
-export default IndexHeading
+export default IndexHeading;

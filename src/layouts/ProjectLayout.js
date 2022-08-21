@@ -1,14 +1,14 @@
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next';
 
-import ProjectCard from '@/components/organisms/ProjectCard'
-import { PageSEO } from '@/components/SEO'
-import { PROJECTS_ZH } from '@/data/projects-zh'
-import siteMetadata from '@/data/siteMetadata'
+import ProjectCard from '@/components/organisms/ProjectCard';
+import { PageSEO } from '@/components/SEO';
+import { PROJECTS_ZH } from '@/data/projects-zh';
+import siteMetadata from '@/data/siteMetadata';
 
 export default function ProjectLayout() {
-  const { t } = useTranslation(['common'])
+  const { t } = useTranslation(['common']);
 
-  const projectsData = PROJECTS_ZH
+  const projectsData = PROJECTS_ZH;
 
   return (
     <>
@@ -33,5 +33,5 @@ export default function ProjectLayout() {
         </div>
       </div>
     </>
-  )
+  );
 }

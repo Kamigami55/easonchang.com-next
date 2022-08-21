@@ -1,14 +1,14 @@
-import fs from 'fs'
-import matter from 'gray-matter'
+import fs from 'fs';
+import matter from 'gray-matter';
 // import Head from 'next/head'
 // import { MDXRemote } from 'next-mdx-remote'
-import { serialize } from 'next-mdx-remote/serialize'
+import { serialize } from 'next-mdx-remote/serialize';
 // import { bundleMDX } from 'mdx-bundler'
-import path from 'path'
-import rehypeSlug from 'rehype-slug'
-import prism from 'remark-prism'
+import path from 'path';
+import rehypeSlug from 'rehype-slug';
+import prism from 'remark-prism';
 
-import { LOCALES } from '@/constants/siteMeta'
+import { LOCALES } from '@/constants/siteMeta';
 
 // import readingTime from 'reading-time'
 // import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -27,45 +27,57 @@ import { LOCALES } from '@/constants/siteMeta'
 // import remarkExtractFrontmatter from './remark-extract-frontmatter'
 // import remarkImgToJsx from './remark-img-to-jsx'
 // import remarkTocHeadings from './remark-toc-headings'
-import getAllFilesRecursively from './utils/files'
+import getAllFilesRecursively from './utils/files';
 
-const root = process.cwd()
+const root = process.cwd();
 
-export const CONTENT_ROOT_FOLDER = 'content'
-export const POSTS_FOLDER = 'posts'
-export const AUTHORS_FOLDER = 'authors'
-export const PROJECTS_FOLDER = 'projects'
+export const CONTENT_ROOT_FOLDER = 'content';
+export const POSTS_FOLDER = 'posts';
+export const AUTHORS_FOLDER = 'authors';
+export const PROJECTS_FOLDER = 'projects';
 
 export function getFiles(folder) {
-  let filesOfAllLocales = []
+  let filesOfAllLocales = [];
   LOCALES.forEach((locale) => {
-    const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale)
+    const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale);
     const files = getAllFilesRecursively(prefixPaths).map((file) => ({
       slug: file.slice(prefixPaths.length + 1).replace(/\\/g, '/'),
       locale: locale,
-    }))
+    }));
     // Only want to return blog/path and ignore root, replace is needed to work on Windows
-    filesOfAllLocales = [...filesOfAllLocales, ...files]
-  })
-  return filesOfAllLocales
+    filesOfAllLocales = [...filesOfAllLocales, ...files];
+  });
+  return filesOfAllLocales;
 }
 
 export function formatSlug(slug) {
-  return slug.replace(/\.(mdx|md)/, '')
+  return slug.replace(/\.(mdx|md)/, '');
 }
 
 export function dateSortDesc(a, b) {
-  if (a > b) return -1
-  if (a < b) return 1
-  return 0
+  if (a > b) return -1;
+  if (a < b) return 1;
+  return 0;
 }
 
 export async function getFileBySlug(folder, slug, locale) {
-  const mdxPath = path.join(root, CONTENT_ROOT_FOLDER, folder, locale, `${slug}.mdx`)
-  const mdPath = path.join(root, CONTENT_ROOT_FOLDER, folder, locale, `${slug}.md`)
+  const mdxPath = path.join(
+    root,
+    CONTENT_ROOT_FOLDER,
+    folder,
+    locale,
+    `${slug}.mdx`
+  );
+  const mdPath = path.join(
+    root,
+    CONTENT_ROOT_FOLDER,
+    folder,
+    locale,
+    `${slug}.md`
+  );
   const source = fs.existsSync(mdxPath)
     ? fs.readFileSync(mdxPath, 'utf8')
-    : fs.readFileSync(mdPath, 'utf8')
+    : fs.readFileSync(mdPath, 'utf8');
 
   // https://github.com/kentcdodds/mdx-bundler#nextjs-esbuild-enoent
   // if (process.platform === 'win32') {
@@ -79,7 +91,7 @@ export async function getFileBySlug(folder, slug, locale) {
   // const postFilePath = path.join(POSTS_PATH, `${params.slug}.mdx`)
   // const source = fs.readFileSync(postFilePath)
 
-  const { content, data: frontmatter } = matter(source)
+  const { content, data: frontmatter } = matter(source);
   const mdxSource = await serialize(content, {
     // Optionally pass remark/rehype plugins
     mdxOptions: {
@@ -87,7 +99,7 @@ export async function getFileBySlug(folder, slug, locale) {
       rehypePlugins: [rehypeSlug],
     },
     scope: frontmatter,
-  })
+  });
 
   // return {
   //   props: {
@@ -146,34 +158,36 @@ export async function getFileBySlug(folder, slug, locale) {
       ...frontmatter,
       date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
     },
-  }
+  };
 }
 
 export async function getAllFilesFrontMatter(folder, locale) {
-  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale)
+  const prefixPaths = path.join(root, CONTENT_ROOT_FOLDER, folder, locale);
 
-  const files = getAllFilesRecursively(prefixPaths)
+  const files = getAllFilesRecursively(prefixPaths);
 
-  const allFrontMatter = []
+  const allFrontMatter = [];
 
   files.forEach((file) => {
     // Replace is needed to work on Windows
-    const fileName = file.slice(prefixPaths.length + 1).replace(/\\/g, '/')
+    const fileName = file.slice(prefixPaths.length + 1).replace(/\\/g, '/');
     // Remove Unexpected File
     if (path.extname(fileName) !== '.md' && path.extname(fileName) !== '.mdx') {
-      return
+      return;
     }
-    const source = fs.readFileSync(file, 'utf8')
-    const { data: frontmatter } = matter(source)
+    const source = fs.readFileSync(file, 'utf8');
+    const { data: frontmatter } = matter(source);
     if (frontmatter.draft !== true) {
       allFrontMatter.push({
         ...frontmatter,
         slug: formatSlug(fileName),
-        date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+        date: frontmatter.date
+          ? new Date(frontmatter.date).toISOString()
+          : null,
         locale: locale,
-      })
+      });
     }
-  })
+  });
 
-  return allFrontMatter.sort((a, b) => dateSortDesc(a.date, b.date))
+  return allFrontMatter.sort((a, b) => dateSortDesc(a.date, b.date));
 }

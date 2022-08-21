@@ -1,6 +1,6 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
-import { SITE_DESCRIPTION, SITE_TITLE } from '@/constants/siteMeta'
+import { SITE_DESCRIPTION, SITE_TITLE } from '@/constants/siteMeta';
 
 export default function Meta() {
   return (
@@ -11,5 +11,5 @@ export default function Meta() {
       <meta name="description" content={SITE_DESCRIPTION} />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-  )
+  );
 }

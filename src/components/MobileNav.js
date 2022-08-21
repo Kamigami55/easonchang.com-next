@@ -1,26 +1,26 @@
-import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
+import { useTranslation } from 'next-i18next';
+import { useState } from 'react';
 
-import headerNavLinks from '@/data/headerNavLinks'
+import headerNavLinks from '@/data/headerNavLinks';
 
-import Link from './Link'
+import Link from './Link';
 
 const MobileNav = () => {
-  const { t } = useTranslation(['common'])
+  const { t } = useTranslation(['common']);
 
-  const [navShow, setNavShow] = useState(false)
+  const [navShow, setNavShow] = useState(false);
 
   const onToggleNav = () => {
     setNavShow((status) => {
       if (status) {
-        document.body.style.overflowY = 'auto'
+        document.body.style.overflowY = 'auto';
       } else {
         // Prevent scrolling
-        document.body.style.overflowY = 'hidden'
+        document.body.style.overflowY = 'hidden';
       }
-      return !status
-    })
-  }
+      return !status;
+    });
+  };
 
   return (
     <div className="sm:hidden">
@@ -71,7 +71,7 @@ const MobileNav = () => {
         </nav>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default MobileNav
+export default MobileNav;

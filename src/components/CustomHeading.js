@@ -1,4 +1,4 @@
-import { HashtagIcon } from '@heroicons/react/solid'
+import { HashtagIcon } from '@heroicons/react/solid';
 
 function CustomHeading({ Component, id, children, ...otherProps }) {
   return (
@@ -19,12 +19,12 @@ function CustomHeading({ Component, id, children, ...otherProps }) {
       </a>
       <span>{children}</span>
     </Component>
-  )
+  );
 }
 
-export const CustomH1 = (props) => <CustomHeading Component="h1" {...props} />
-export const CustomH2 = (props) => <CustomHeading Component="h2" {...props} />
-export const CustomH3 = (props) => <CustomHeading Component="h3" {...props} />
-export const CustomH4 = (props) => <CustomHeading Component="h4" {...props} />
-export const CustomH5 = (props) => <CustomHeading Component="h5" {...props} />
-export const CustomH6 = (props) => <CustomHeading Component="h6" {...props} />
+export const CustomH1 = (props) => <CustomHeading Component="h1" {...props} />;
+export const CustomH2 = (props) => <CustomHeading Component="h2" {...props} />;
+export const CustomH3 = (props) => <CustomHeading Component="h3" {...props} />;
+export const CustomH4 = (props) => <CustomHeading Component="h4" {...props} />;
+export const CustomH5 = (props) => <CustomHeading Component="h5" {...props} />;
+export const CustomH6 = (props) => <CustomHeading Component="h6" {...props} />;

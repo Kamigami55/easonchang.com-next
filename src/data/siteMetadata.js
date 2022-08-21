@@ -39,6 +39,6 @@ const siteMetadata = {
     category: 'Announcements',
     categoryId: 'DIC_kwDOGyMt4M4CQzoa',
   },
-}
+};
 
-module.exports = siteMetadata
+module.exports = siteMetadata;

@@ -1,17 +1,17 @@
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from 'next-i18next';
 
-import headerNavLinks from '@/data/headerNavLinks'
-import siteMetadata from '@/data/siteMetadata'
+import headerNavLinks from '@/data/headerNavLinks';
+import siteMetadata from '@/data/siteMetadata';
 
-import Footer from './Footer'
-import LanguageSwitch from './LanguageSwitch'
-import Link from './Link'
-import MobileNav from './MobileNav'
-import SectionContainer from './SectionContainer'
-import ThemeSwitch from './ThemeSwitch'
+import Footer from './Footer';
+import LanguageSwitch from './LanguageSwitch';
+import Link from './Link';
+import MobileNav from './MobileNav';
+import SectionContainer from './SectionContainer';
+import ThemeSwitch from './ThemeSwitch';
 
 const LayoutWrapper = ({ children }) => {
-  const { t } = useTranslation(['common'])
+  const { t } = useTranslation(['common']);
 
   return (
     <div className="flex min-h-screen w-full flex-col justify-between">
@@ -59,7 +59,7 @@ const LayoutWrapper = ({ children }) => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default LayoutWrapper
+export default LayoutWrapper;

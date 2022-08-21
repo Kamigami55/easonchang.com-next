@@ -1,7 +1,8 @@
 export const PROJECTS_ZH = [
   // Product Hunt Today
   {
-    title: 'Product Hunt Today - 自動產生短影片介紹熱門 Product Hunt 專案的推特機器人',
+    title:
+      'Product Hunt Today - 自動產生短影片介紹熱門 Product Hunt 專案的推特機器人',
     description:
       '每日透過 Product Hunt API 爬取 Product Hunt 上熱門專案，接著用 Remotion 產生短影片（使用 React！），最後寫些簡介，透過 Twitter API 發佈到貼文到推特上。',
     links: {
@@ -104,4 +105,4 @@ export const PROJECTS_ZH = [
       alt: '100sites',
     },
   },
-]
+];

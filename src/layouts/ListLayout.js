@@ -1,20 +1,26 @@
-import { useTranslation } from 'next-i18next'
-import { useState } from 'react'
+import { useTranslation } from 'next-i18next';
+import { useState } from 'react';
 
-import PostList from '@/components/organisms/PostList'
-import Pagination from '@/components/Pagination'
+import PostList from '@/components/organisms/PostList';
+import Pagination from '@/components/Pagination';
 
-export default function ListLayout({ posts, initialDisplayPosts = [], pagination }) {
-  const { t } = useTranslation(['common'])
+export default function ListLayout({
+  posts,
+  initialDisplayPosts = [],
+  pagination,
+}) {
+  const { t } = useTranslation(['common']);
 
-  const [searchValue, setSearchValue] = useState('')
+  const [searchValue, setSearchValue] = useState('');
   const filteredBlogPosts = searchValue
     ? posts.filter((frontMatter) => {
         const searchContent =
-          frontMatter.title + frontMatter.description + frontMatter.tags.join(' ')
-        return searchContent.toLowerCase().includes(searchValue.toLowerCase())
+          frontMatter.title +
+          frontMatter.description +
+          frontMatter.tags.join(' ');
+        return searchContent.toLowerCase().includes(searchValue.toLowerCase());
       })
-    : initialDisplayPosts
+    : initialDisplayPosts;
 
   return (
     <>
@@ -51,8 +57,11 @@ export default function ListLayout({ posts, initialDisplayPosts = [], pagination
         <PostList posts={filteredBlogPosts} />
       </div>
       {pagination && pagination.totalPages > 1 && !searchValue && (
-        <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+        <Pagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+        />
       )}
     </>
-  )
+  );
 }

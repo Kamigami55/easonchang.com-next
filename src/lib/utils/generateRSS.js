@@ -1,16 +1,16 @@
-import { Feed } from 'feed'
-import { writeFileSync } from 'fs'
+import { Feed } from 'feed';
+import { writeFileSync } from 'fs';
 
-import { getPostOGImage } from '@/components/SEO'
-import siteMetadata from '@/data/siteMetadata'
-import { allPosts } from '@/lib/contentLayerAdapter'
+import { getPostOGImage } from '@/components/SEO';
+import siteMetadata from '@/data/siteMetadata';
+import { allPosts } from '@/lib/contentLayerAdapter';
 
 export default async function generateRSS() {
   const author = {
     name: siteMetadata.author,
     email: siteMetadata.email,
     link: siteMetadata.siteUrl,
-  }
+  };
 
   const feed = new Feed({
     title: siteMetadata.title,
@@ -26,7 +26,7 @@ export default async function generateRSS() {
       atom: `${siteMetadata.siteUrl}/atom.xml`,
     },
     author: author,
-  })
+  });
 
   allPosts.forEach((post) => {
     feed.addItem({
@@ -39,10 +39,10 @@ export default async function generateRSS() {
       author: [author],
       contributor: [author],
       date: new Date(post.date),
-    })
-  })
+    });
+  });
 
-  writeFileSync('./public/feed.xml', feed.rss2())
-  writeFileSync('./public/atom.xml', feed.atom1())
-  writeFileSync('./public/feed.json', feed.json1())
+  writeFileSync('./public/feed.xml', feed.rss2());
+  writeFileSync('./public/atom.xml', feed.atom1());
+  writeFileSync('./public/feed.json', feed.json1());
 }

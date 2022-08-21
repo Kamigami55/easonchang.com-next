@@ -1,22 +1,22 @@
 // import Comments from '@/components/comments'
-import Giscus from '@giscus/react'
-import { useRouter } from 'next/router'
-import { useTheme } from 'next-themes'
+import Giscus from '@giscus/react';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 
-import Link from '@/components/Link'
-import PostBody from '@/components/organisms/PostBody'
-import PageTitle from '@/components/PageTitle'
-import ScrollTop from '@/components/ScrollTop'
-import { BlogSEO } from '@/components/SEO'
-import TableOfContents from '@/components/TableOfContents'
-import siteMetadata from '@/data/siteMetadata'
-import formatDate from '@/lib/utils/formatDate'
+import Link from '@/components/Link';
+import PostBody from '@/components/organisms/PostBody';
+import PageTitle from '@/components/PageTitle';
+import ScrollTop from '@/components/ScrollTop';
+import { BlogSEO } from '@/components/SEO';
+import TableOfContents from '@/components/TableOfContents';
+import siteMetadata from '@/data/siteMetadata';
+import formatDate from '@/lib/utils/formatDate';
 
 export default function PostLayout({ post, next, prev, children }) {
-  const { date, title, path, description, socialImage } = post
+  const { date, title, path, description, socialImage } = post;
 
-  const { locale } = useRouter()
-  const { theme } = useTheme()
+  const { locale } = useRouter();
+  const { theme } = useTheme();
 
   return (
     <>
@@ -119,5 +119,5 @@ export default function PostLayout({ post, next, prev, children }) {
         </div>
       </article>
     </>
-  )
+  );
 }

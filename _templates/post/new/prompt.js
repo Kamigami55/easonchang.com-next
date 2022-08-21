@@ -4,4 +4,4 @@ module.exports = [
     name: 'slug',
     message: 'Enter slug (ex: "my-post"): ',
   },
-]
+];

@@ -1,8 +1,8 @@
-import { useTranslation } from 'next-i18next'
-import PropTypes from 'prop-types'
+import { useTranslation } from 'next-i18next';
+import PropTypes from 'prop-types';
 
-import Image from '@/components/Image'
-import Link from '@/components/Link'
+import Image from '@/components/Image';
+import Link from '@/components/Link';
 
 export default function ProjectCard({ project }) {
   const {
@@ -10,8 +10,8 @@ export default function ProjectCard({ project }) {
     description,
     links: { post: href, github: githubHref, site: siteHref },
     image: { src: imgSrc, alt: imgAlt },
-  } = project
-  const { t } = useTranslation(['common'])
+  } = project;
+  const { t } = useTranslation(['common']);
 
   return (
     <div>
@@ -57,7 +57,7 @@ export default function ProjectCard({ project }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 ProjectCard.propTypes = {
@@ -74,4 +74,4 @@ ProjectCard.propTypes = {
       alt: PropTypes.string,
     }),
   }).isRequired,
-}
+};

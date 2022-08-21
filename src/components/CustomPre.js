@@ -1,34 +1,38 @@
 // ref: https://philstainer.io/blog/copy-code-button-markdown
 
-import clsx from 'clsx'
-import { useTranslation } from 'next-i18next'
-import { useEffect, useRef, useState } from 'react'
+import clsx from 'clsx';
+import { useTranslation } from 'next-i18next';
+import { useEffect, useRef, useState } from 'react';
 
-import { copyToClipboard } from '@/lib/utils/copyToClipboard'
-import { removeDuplicateNewLine } from '@/lib/utils/removeDuplicateNewLine'
+import { copyToClipboard } from '@/lib/utils/copyToClipboard';
+import { removeDuplicateNewLine } from '@/lib/utils/removeDuplicateNewLine';
 
 function CustomPre({ children, className, ...props }) {
-  const preRef = useRef(null)
-  const { t } = useTranslation(['common'])
+  const preRef = useRef(null);
+  const { t } = useTranslation(['common']);
 
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setCopied(false), 2000)
+    const timer = setTimeout(() => setCopied(false), 2000);
 
-    return () => clearTimeout(timer)
-  }, [copied])
+    return () => clearTimeout(timer);
+  }, [copied]);
 
   const onClick = async () => {
     if (preRef.current?.innerText) {
-      copyToClipboard(removeDuplicateNewLine(preRef.current.innerText))
-      setCopied(true)
+      copyToClipboard(removeDuplicateNewLine(preRef.current.innerText));
+      setCopied(true);
     }
-  }
+  };
 
   return (
     <div className="group relative">
-      <pre {...props} ref={preRef} className={clsx(className, 'focus:outline-none')}>
+      <pre
+        {...props}
+        ref={preRef}
+        className={clsx(className, 'focus:outline-none')}
+      >
         <div className="absolute top-0 right-0 m-2 flex items-center rounded-md bg-[#282a36] dark:bg-[#262626]">
           <span
             className={clsx('hidden px-2 text-xs text-green-400 ease-in', {
@@ -84,7 +88,7 @@ function CustomPre({ children, className, ...props }) {
         {children}
       </pre>
     </div>
-  )
+  );
 }
 
-export default CustomPre
+export default CustomPre;

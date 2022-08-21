@@ -1,9 +1,15 @@
-import Image from 'next/image'
+import Image from 'next/image';
 
-export default function CustomImage({ src, height, width, base64, ...otherProps }) {
+export default function CustomImage({
+  src,
+  height,
+  width,
+  base64,
+  ...otherProps
+}) {
   if (!src || !height || !width) {
     // eslint-disable-next-line jsx-a11y/alt-text
-    return <img src={src} height={height} width={width} {...otherProps} />
+    return <img src={src} height={height} width={width} {...otherProps} />;
   }
   return (
     <Image
@@ -16,5 +22,5 @@ export default function CustomImage({ src, height, width, base64, ...otherProps 
       blurDataURL={base64}
       {...otherProps}
     />
-  )
+  );
 }

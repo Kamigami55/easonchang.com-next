@@ -1,17 +1,17 @@
-import { useRouter } from 'next/router'
-import PropTypes from 'prop-types'
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
-import Link from '@/components/Link'
-import formatDate from '@/lib/utils/formatDate'
+import Link from '@/components/Link';
+import formatDate from '@/lib/utils/formatDate';
 
 export default function PostList({ posts }) {
-  const { locale } = useRouter()
+  const { locale } = useRouter();
 
   return (
     <ul className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
       {!posts.length && 'No posts found.'}
       {posts.map((post) => {
-        const { slug, date, title, description, path } = post
+        const { slug, date, title, description, path } = post;
         return (
           <li key={slug} className="group transition-colors">
             <Link href={path}>
@@ -35,12 +35,12 @@ export default function PostList({ posts }) {
               </article>
             </Link>
           </li>
-        )
+        );
       })}
     </ul>
-  )
+  );
 }
 
-PostList.propTypes = { posts: PropTypes.array }
+PostList.propTypes = { posts: PropTypes.array };
 
-PostList.defaultProps = { posts: [] }
+PostList.defaultProps = { posts: [] };

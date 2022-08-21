@@ -1,3 +1,3 @@
-import PostBody from './PostBody'
+import PostBody from './PostBody';
 
-export default PostBody
+export default PostBody;
