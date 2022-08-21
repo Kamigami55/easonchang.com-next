@@ -24,7 +24,7 @@ specifiers:
   contentlayer: ^0.2.7
   date-fns: ^2.29.2
   eslint: ^8.22.0
-  eslint-config-eason: 0.0.9
+  eslint-config-eason: 0.0.10
   eslint-config-prettier: ^8.5.0
   eslint-import-resolver-alias: ^1.1.2
   eslint-plugin-html: ^7.1.0
@@ -112,7 +112,7 @@ devDependencies:
   babel-loader: 8.2.5_xc6oct4hcywdrbo4ned6ytbybm
   chromatic: 6.7.4
   eslint: 8.22.0
-  eslint-config-eason: 0.0.9_g4xyhmssezljkgut3df6dyi2zq
+  eslint-config-eason: 0.0.10_g4xyhmssezljkgut3df6dyi2zq
   eslint-config-prettier: 8.5.0_eslint@8.22.0
   eslint-import-resolver-alias: 1.1.2_fkfqfehjtk7sk2efaqbgxsuasa
   eslint-plugin-html: 7.1.0
@@ -7019,8 +7019,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /eslint-config-eason/0.0.9_g4xyhmssezljkgut3df6dyi2zq:
-    resolution: {integrity: sha512-cMfQCM9wrIBf8QLLtVVz6uli9oYasnD5b/4DwsuD1G1au2nR89kRaCKW5/TJZhN9eMdo5V0FXeubZLmLhhRZ2w==}
+  /eslint-config-eason/0.0.10_g4xyhmssezljkgut3df6dyi2zq:
+    resolution: {integrity: sha512-ccfz5HO9r5R6yXwFUrxd7/ONHlQhFrgZ8kyncMcSsZfnF3nLg6M09bKs4HV43V2aGH/Vo7ll2WxoIOQC63RBSw==}
     peerDependencies:
       '@babel/core': ^7.18.10
       '@babel/eslint-parser': ^7.18.9
