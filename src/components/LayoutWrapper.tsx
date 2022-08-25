@@ -46,8 +46,8 @@ const LayoutWrapper = ({ children }) => {
                   ))}
                 </div>
                 <LanguageSwitch />
-                <CommandBarToggle />
                 <ThemeSwitch />
+                <CommandBarToggle />
                 <MobileNav />
               </div>
             </div>
