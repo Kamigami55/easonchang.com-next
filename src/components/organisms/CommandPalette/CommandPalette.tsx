@@ -121,9 +121,9 @@ export default function CommandPalette({ children }) {
 function CommandBar() {
   return (
     <KBarPortal>
-      <KBarPositioner className="z-20 p-2 bg-gray-900/80 flex items-center backdrop-blur-sm">
-        <KBarAnimator className="w-full max-w-[600px] overflow-hidden p-2 bg-white dark:bg-gray-800 rounded-xl box-content">
-          <KBarSearch className="flex px-4 w-full h-16 outline-none bg-white dark:bg-gray-800" />
+      <KBarPositioner className="z-20 p-2 bg-gray-400/70 dark:bg-gray-900/80 flex items-center backdrop-blur-sm">
+        <KBarAnimator className="w-full max-w-[600px] overflow-hidden p-2 bg-white/80 dark:bg-gray-700/80 rounded-xl box-content border border-gray-400 dark:border-gray-600">
+          <KBarSearch className="flex px-4 w-full h-16 outline-none bg-transparent" />
           <RenderResults />
         </KBarAnimator>
       </KBarPositioner>
@@ -192,7 +192,7 @@ const ResultItem = forwardRef<Ref, Props>(
         className={`${
           active
             ? 'bg-teal-500 rounded-lg text-gray-100'
-            : 'transparent text-gray-500 dark:text-gray-400'
+            : 'transparent text-gray-600 dark:text-gray-300'
         } rounded-lg px-4 py-2 flex items-center cursor-pointer justify-between`}
       >
         <div className="flex items-center gap-2 text-base">
@@ -202,7 +202,7 @@ const ResultItem = forwardRef<Ref, Props>(
               {ancestors.length > 0 &&
                 ancestors.map((ancestor) => (
                   <React.Fragment key={ancestor.id}>
-                    <span className="mr-4 opacity-50">{ancestor.name}</span>
+                    <span className="mr-4 opacity-70">{ancestor.name}</span>
                     <span className="mr-4">&rsaquo;</span>
                   </React.Fragment>
                 ))}
