@@ -34,14 +34,15 @@ export default function CommandPalette({ children }) {
     {
       id: 'home',
       name: t('home'),
-      keywords: 'home homepage 首頁',
+      keywords: 'home homepage index 首頁',
       perform: () => router.push('/'),
       icon: <HomeIcon className="w-6 h-6" />,
     },
     {
       id: 'posts',
       name: t('posts'),
-      keywords: 'posts writing words blog articles thoughts 文章 寫作 部落格',
+      keywords:
+        'latest posts writing words blog articles thoughts 最新 文章 寫作 部落格',
       perform: () => router.push('/posts'),
       icon: <PencilIcon className="w-6 h-6" />,
     },
