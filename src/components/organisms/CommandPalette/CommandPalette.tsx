@@ -34,7 +34,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'home',
       name: t('home'),
-      shortcut: ['h'],
       keywords: 'home homepage 首頁',
       perform: () => router.push('/'),
       icon: <HomeIcon className="w-6 h-6" />,
@@ -42,7 +41,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'posts',
       name: t('posts'),
-      shortcut: ['p', 'o'],
       keywords: 'posts writing words blog articles thoughts 文章 寫作 部落格',
       perform: () => router.push('/posts'),
       icon: <PencilIcon className="w-6 h-6" />,
@@ -50,7 +48,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'projects',
       name: t('projects'),
-      shortcut: ['p', 'r'],
       keywords:
         'projects web code coding product program 專案 程式 成品 作品集',
       perform: () => router.push('/projects'),
@@ -59,7 +56,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'about',
       name: t('about'),
-      shortcut: ['a'],
       keywords:
         'about eason chang more links email github linkedin twitter facebook resume 關於 張楹翔 更多 連結 郵件 推特 臉書 履歷',
       perform: () => router.push('/about'),
@@ -68,7 +64,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'theme',
       name: t('toggle-theme'),
-      shortcut: ['t'],
       keywords:
         'change toggle theme dark black light white mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜 明亮 白色',
       icon: <MoonIcon className="w-6 h-6" />,
@@ -76,7 +71,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'theme-light',
       name: t('light-mode'),
-      shortcut: ['l'],
       keywords:
         'change toggle theme light white mode color 切換 更換 顏色 主題 模式 明亮 白色',
       perform: () => setTheme('light'),
@@ -86,7 +80,6 @@ export default function CommandPalette({ children }) {
     {
       id: 'theme-dark',
       name: t('dark-mode'),
-      shortcut: ['d'],
       keywords:
         'change toggle theme dark black mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜',
       perform: () => setTheme('dark'),
