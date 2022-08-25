@@ -2,12 +2,13 @@
 // https://blog.prototypr.io/how-to-implement-command-palette-with-kbar-and-tailwind-css-71ea0e3f99c1
 
 import {
+  CodeBracketIcon,
   HomeIcon,
   LightBulbIcon,
   MoonIcon,
   PencilSquareIcon,
   SunIcon,
-  UserCircleIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 import {
   ActionId,
@@ -32,6 +33,7 @@ export default function CommandPalette({ children }) {
   const { setTheme } = useTheme();
 
   const actions = [
+    // Page section
     {
       id: 'home',
       name: t('home'),
@@ -61,7 +63,7 @@ export default function CommandPalette({ children }) {
       keywords:
         'projects web code coding product program 專案 程式 成品 作品集',
       perform: () => router.push('/projects'),
-      icon: <LightBulbIcon className="w-6 h-6" />,
+      icon: <CodeBracketIcon className="w-6 h-6" />,
       section: {
         name: t('page'),
         priority: Priority.HIGH,
@@ -71,27 +73,27 @@ export default function CommandPalette({ children }) {
       id: 'about',
       name: t('about'),
       keywords:
-        'about eason chang more links email github linkedin twitter facebook resume 關於 張楹翔 更多 連結 郵件 推特 臉書 履歷',
+        'about contact eason chang more links email github linkedin twitter facebook resume 關於 聯絡 聯繫 張楹翔 更多 連結 郵件 推特 臉書 履歷',
       perform: () => router.push('/about'),
-      icon: <UserCircleIcon className="w-6 h-6" />,
+      icon: <UserIcon className="w-6 h-6" />,
       section: {
         name: t('page'),
         priority: Priority.HIGH,
       },
     },
+    // Operation section
+    // - Theme toggle
     {
       id: 'theme',
       name: t('toggle-theme'),
-      keywords:
-        'change toggle theme dark black light white mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜 明亮 白色',
-      icon: <MoonIcon className="w-6 h-6" />,
+      keywords: 'change toggle theme mode color 切換 更換 顏色 主題 模式',
+      icon: <LightBulbIcon className="w-6 h-6" />,
       section: t('operation'),
     },
     {
       id: 'theme-light',
       name: t('light-mode'),
-      keywords:
-        'change toggle theme light white mode color 切換 更換 顏色 主題 模式 明亮 白色',
+      keywords: 'theme light white mode color 顏色 主題 模式 明亮 白色',
       perform: () => setTheme('light'),
       icon: <SunIcon className="w-6 h-6" />,
       parent: 'theme',
@@ -100,8 +102,7 @@ export default function CommandPalette({ children }) {
     {
       id: 'theme-dark',
       name: t('dark-mode'),
-      keywords:
-        'change toggle theme dark black mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜',
+      keywords: 'theme dark black mode color 顏色 主題 模式 暗黑 黑色 深夜',
       perform: () => setTheme('dark'),
       icon: <MoonIcon className="w-6 h-6" />,
       parent: 'theme',
