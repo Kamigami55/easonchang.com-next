@@ -1,4 +1,4 @@
-import { HashtagIcon } from '@heroicons/react/solid';
+import { HashtagIcon } from '@heroicons/react/20/solid';
 
 function CustomHeading({ Component, id, children, ...otherProps }) {
   return (
