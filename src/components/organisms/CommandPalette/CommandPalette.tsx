@@ -18,6 +18,7 @@ import {
   KBarProvider,
   KBarResults,
   KBarSearch,
+  Priority,
   useMatches,
 } from 'kbar';
 import { useRouter } from 'next/router';
@@ -37,6 +38,10 @@ export default function CommandPalette({ children }) {
       keywords: 'home homepage index 首頁',
       perform: () => router.push('/'),
       icon: <HomeIcon className="w-6 h-6" />,
+      section: {
+        name: t('page'),
+        priority: Priority.HIGH,
+      },
     },
     {
       id: 'posts',
@@ -45,6 +50,10 @@ export default function CommandPalette({ children }) {
         'latest posts writing words blog articles thoughts 最新 文章 寫作 部落格',
       perform: () => router.push('/posts'),
       icon: <PencilIcon className="w-6 h-6" />,
+      section: {
+        name: t('page'),
+        priority: Priority.HIGH,
+      },
     },
     {
       id: 'projects',
@@ -53,6 +62,10 @@ export default function CommandPalette({ children }) {
         'projects web code coding product program 專案 程式 成品 作品集',
       perform: () => router.push('/projects'),
       icon: <LightBulbIcon className="w-6 h-6" />,
+      section: {
+        name: t('page'),
+        priority: Priority.HIGH,
+      },
     },
     {
       id: 'about',
@@ -61,6 +74,10 @@ export default function CommandPalette({ children }) {
         'about eason chang more links email github linkedin twitter facebook resume 關於 張楹翔 更多 連結 郵件 推特 臉書 履歷',
       perform: () => router.push('/about'),
       icon: <UserCircleIcon className="w-6 h-6" />,
+      section: {
+        name: t('page'),
+        priority: Priority.HIGH,
+      },
     },
     {
       id: 'theme',
@@ -68,6 +85,7 @@ export default function CommandPalette({ children }) {
       keywords:
         'change toggle theme dark black light white mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜 明亮 白色',
       icon: <MoonIcon className="w-6 h-6" />,
+      section: t('operation'),
     },
     {
       id: 'theme-light',
@@ -77,6 +95,7 @@ export default function CommandPalette({ children }) {
       perform: () => setTheme('light'),
       icon: <SunIcon className="w-6 h-6" />,
       parent: 'theme',
+      section: t('operation'),
     },
     {
       id: 'theme-dark',
@@ -86,6 +105,7 @@ export default function CommandPalette({ children }) {
       perform: () => setTheme('dark'),
       icon: <MoonIcon className="w-6 h-6" />,
       parent: 'theme',
+      section: t('operation'),
     },
   ];
 
@@ -118,7 +138,7 @@ function RenderResults() {
       items={results}
       onRender={({ item, active }) =>
         typeof item === 'string' ? (
-          <div className="px-4 pt-4 pb-2 font-medium text-gray-500 dark:text-gray-400 uppercase">
+          <div className="px-4 pt-4 pb-2 font-medium text-gray-500 dark:text-gray-400">
             {item}
           </div>
         ) : (
