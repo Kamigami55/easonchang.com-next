@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 
 // import { ClientReload } from '@/components/ClientReload'
 import LayoutWrapper from '@/components/LayoutWrapper';
+import CommandPalette from '@/components/organisms/CommandPalette';
 import { PageSEO } from '@/components/SEO';
 // import { NEXT_PUBLIC_GOOGLE_ANALYTICS } from '@/constants/envValues'
 import siteMetadata from '@/data/siteMetadata';
@@ -46,16 +47,18 @@ function App({ Component, pageProps }) {
 
   return (
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
-      <Head>
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-      </Head>
-      <PageSEO
-        title={siteMetadata.title}
-        description={siteMetadata.description}
-      />
-      <LayoutWrapper>
-        <Component {...pageProps} />
-      </LayoutWrapper>
+      <CommandPalette>
+        <Head>
+          <meta content="width=device-width, initial-scale=1" name="viewport" />
+        </Head>
+        <PageSEO
+          title={siteMetadata.title}
+          description={siteMetadata.description}
+        />
+        <LayoutWrapper>
+          <Component {...pageProps} />
+        </LayoutWrapper>
+      </CommandPalette>
     </ThemeProvider>
   );
 }

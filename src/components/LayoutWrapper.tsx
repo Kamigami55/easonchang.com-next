@@ -1,5 +1,6 @@
 import { useTranslation } from 'next-i18next';
 
+import CommandBarToggle from '@/components/atoms/CommandBarToggle';
 import CustomLink from '@/components/CustomLink';
 import headerNavLinks from '@/data/headerNavLinks';
 import siteMetadata from '@/data/siteMetadata';
@@ -16,7 +17,7 @@ const LayoutWrapper = ({ children }) => {
   return (
     <div className="flex min-h-screen w-full flex-col justify-between">
       <div>
-        <header className="sticky top-0 z-50 border-b border-slate-900/10 bg-white/70 py-3 backdrop-blur transition-colors dark:border-slate-50/[0.06] dark:bg-gray-900/60">
+        <header className="sticky top-0 z-10 border-b border-slate-900/10 bg-white/70 py-3 backdrop-blur transition-colors dark:border-slate-50/[0.06] dark:bg-gray-900/60">
           <SectionContainer>
             <div className="flex items-center justify-between">
               <div>
@@ -45,6 +46,7 @@ const LayoutWrapper = ({ children }) => {
                   ))}
                 </div>
                 <LanguageSwitch />
+                <CommandBarToggle />
                 <ThemeSwitch />
                 <MobileNav />
               </div>
