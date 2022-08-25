@@ -4,7 +4,9 @@
 import {
   HomeIcon,
   LightBulbIcon,
+  MoonIcon,
   PencilIcon,
+  SunIcon,
   UserCircleIcon,
 } from '@heroicons/react/outline';
 import {
@@ -20,11 +22,13 @@ import {
 } from 'kbar';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { useTheme } from 'next-themes';
 import React, { forwardRef, useMemo } from 'react';
 
 export default function CommandPalette({ children }) {
   const { t } = useTranslation(['common']);
   const router = useRouter();
+  const { setTheme } = useTheme();
 
   const actions = [
     {
@@ -60,6 +64,34 @@ export default function CommandPalette({ children }) {
         'about eason chang more links email github linkedin twitter facebook resume 關於 張楹翔 更多 連結 郵件 推特 臉書 履歷',
       perform: () => router.push('/about'),
       icon: <UserCircleIcon className="w-6 h-6" />,
+    },
+    {
+      id: 'theme',
+      name: t('toggle-theme'),
+      shortcut: ['t'],
+      keywords:
+        'change toggle theme dark black light white mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜 明亮 白色',
+      icon: <MoonIcon className="w-6 h-6" />,
+    },
+    {
+      id: 'theme-light',
+      name: t('light-mode'),
+      shortcut: ['l'],
+      keywords:
+        'change toggle theme light white mode color 切換 更換 顏色 主題 模式 明亮 白色',
+      perform: () => setTheme('light'),
+      icon: <SunIcon className="w-6 h-6" />,
+      parent: 'theme',
+    },
+    {
+      id: 'theme-dark',
+      name: t('dark-mode'),
+      shortcut: ['d'],
+      keywords:
+        'change toggle theme dark black mode color 切換 更換 顏色 主題 模式 暗黑 黑色 深夜',
+      perform: () => setTheme('dark'),
+      icon: <MoonIcon className="w-6 h-6" />,
+      parent: 'theme',
     },
   ];
 

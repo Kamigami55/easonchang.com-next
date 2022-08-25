@@ -8,16 +8,14 @@ const ThemeSwitch = () => {
   // When mounted on client, now we can show the UI
   useEffect(() => setMounted(true), []);
 
+  const isDark = theme === 'dark' || resolvedTheme === 'dark';
+
   return (
     <button
       aria-label="Toggle Dark Mode"
       type="button"
       className="h-10 w-10 rounded p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 sm:h-12 sm:w-12 sm:p-3"
-      onClick={() =>
-        setTheme(
-          theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark'
-        )
-      }
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +23,7 @@ const ThemeSwitch = () => {
         fill="currentColor"
         className="text-gray-900 transition-colors dark:text-gray-100"
       >
-        {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? (
+        {mounted && isDark ? (
           <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
         ) : (
           <path

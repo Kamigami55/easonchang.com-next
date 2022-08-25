@@ -12,5 +12,8 @@
   "about": "關於",
   "about-me": "關於我",
   "about-me-description": "這是 Eason Chang 的個人網站，你可以在這兒找到我的有趣專案、學習筆記、開發心得等。",
-  "learn-more": "了解更多"
+  "learn-more": "了解更多",
+  "toggle-theme": "切換顏色主題",
+  "dark-mode": "暗黑模式",
+  "light-mode": "明亮模式"
 }
