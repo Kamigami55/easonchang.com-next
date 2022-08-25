@@ -17,5 +17,8 @@
   "dark-mode": "Dark mode",
   "light-mode": "Light mode",
   "page": "Page",
-  "operation": "Operation"
+  "operation": "Operation",
+  "toggle-language": "Toggle language",
+  "english": "English",
+  "chinese": "中文"
 }

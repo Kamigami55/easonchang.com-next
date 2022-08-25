@@ -4,6 +4,7 @@
 import {
   CodeBracketIcon,
   HomeIcon,
+  LanguageIcon,
   LightBulbIcon,
   MoonIcon,
   PencilSquareIcon,
@@ -31,6 +32,12 @@ export default function CommandPalette({ children }) {
   const { t } = useTranslation(['common']);
   const router = useRouter();
   const { setTheme } = useTheme();
+
+  const changeLocale = (locale: string) => {
+    // TODO pathname, asPath, query won't get updated when change page, should fix
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, { locale: locale });
+  };
 
   const actions = [
     // Page section
@@ -106,6 +113,34 @@ export default function CommandPalette({ children }) {
       perform: () => setTheme('dark'),
       icon: <MoonIcon className="w-6 h-6" />,
       parent: 'theme',
+      section: t('operation'),
+    },
+    // - Language toggle
+    {
+      id: 'language',
+      name: t('toggle-language'),
+      keywords:
+        'change toggle locale language translation 切換 更換 語言 語系 翻譯',
+      icon: <LanguageIcon className="w-6 h-6" />,
+      section: t('operation'),
+    },
+    {
+      id: 'language-english',
+      name: t('english'),
+      keywords: 'locale language translation english 語言 語系 英文 英語',
+      perform: () => changeLocale('en'),
+      icon: <span className="p-1">🇺🇸</span>,
+      parent: 'language',
+      section: t('operation'),
+    },
+    {
+      id: 'language-chinese',
+      name: t('chinese'),
+      keywords:
+        'locale language translation traditional chinese taiwanese 語言 語系 翻譯 中文 台灣 繁體',
+      perform: () => changeLocale('zh-TW'),
+      icon: <span className="p-1">🇹🇼</span>,
+      parent: 'language',
       section: t('operation'),
     },
   ];
