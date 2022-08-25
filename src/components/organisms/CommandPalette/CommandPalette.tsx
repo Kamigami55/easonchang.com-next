@@ -5,7 +5,7 @@ import {
   HomeIcon,
   LightBulbIcon,
   MoonIcon,
-  PencilIcon,
+  PencilSquareIcon,
   SunIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
@@ -49,7 +49,7 @@ export default function CommandPalette({ children }) {
       keywords:
         'latest posts writing words blog articles thoughts 最新 文章 寫作 部落格',
       perform: () => router.push('/posts'),
-      icon: <PencilIcon className="w-6 h-6" />,
+      icon: <PencilSquareIcon className="w-6 h-6" />,
       section: {
         name: t('page'),
         priority: Priority.HIGH,
