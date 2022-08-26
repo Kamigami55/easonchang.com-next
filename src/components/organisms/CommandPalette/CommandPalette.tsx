@@ -6,6 +6,7 @@ import {
   HomeIcon,
   LanguageIcon,
   LightBulbIcon,
+  MagnifyingGlassIcon,
   MoonIcon,
   PencilSquareIcon,
   SunIcon,
@@ -53,10 +54,10 @@ export default function CommandPalette({ children }) {
       },
     },
     {
-      id: 'posts',
-      name: t('posts'),
+      id: 'all-posts',
+      name: t('all-posts'),
       keywords:
-        'latest posts writing words blog articles thoughts 最新 文章 寫作 部落格',
+        'all latest posts writing words blog articles thoughts 所有 最新 文章 寫作 部落格',
       perform: () => router.push('/posts'),
       icon: <PencilSquareIcon className="w-6 h-6" />,
       section: {
@@ -87,6 +88,16 @@ export default function CommandPalette({ children }) {
         name: t('page'),
         priority: Priority.HIGH,
       },
+    },
+    // Search section
+    // - Search posts
+    {
+      id: 'search-posts',
+      name: t('posts'),
+      keywords:
+        'search find posts writing words blog articles thoughts 搜尋 尋找 文章 寫作 部落格',
+      icon: <MagnifyingGlassIcon className="w-6 h-6" />,
+      section: t('search'),
     },
     // Operation section
     // - Theme toggle
@@ -233,12 +244,12 @@ const ResultItem = forwardRef<Ref, Props>(
         <div className="flex items-center gap-2 text-base">
           {action.icon && action.icon}
           <div className="flex flex-col">
-            <div>
+            <div className="line-clamp-1">
               {ancestors.length > 0 &&
                 ancestors.map((ancestor) => (
                   <React.Fragment key={ancestor.id}>
-                    <span className="mr-4 opacity-70">{ancestor.name}</span>
-                    <span className="mr-4">&rsaquo;</span>
+                    <span className="mr-3 opacity-70">{ancestor.name}</span>
+                    <span className="mr-3">&rsaquo;</span>
                   </React.Fragment>
                 ))}
               <span>{action.name}</span>

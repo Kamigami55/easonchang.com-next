@@ -9,6 +9,8 @@ import { allPosts } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
 export async function getStaticPaths() {
   const paths = [];
@@ -22,6 +24,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params, locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
+
   // Handle post redirect logic
   const path = unifyPath('/posts/' + params.slug.join('/'));
   const matchedRedirectRule = allRedirects.find((rule) => rule.source === path);
@@ -55,11 +59,14 @@ export async function getStaticProps({ params, locale }) {
       post,
       prev,
       next,
+      commandPalettePosts,
     },
   };
 }
 
-export default function Blog({ post, prev, next }) {
+export default function Blog({ post, prev, next, commandPalettePosts }) {
+  useCommandPalettePostActions(commandPalettePosts);
+
   const MDXContent = useMDXComponent(post.body.code);
 
   return (

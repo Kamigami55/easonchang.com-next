@@ -9,6 +9,8 @@ import ListLayout from '@/layouts/ListLayout';
 import { allPosts } from '@/lib/contentLayerAdapter';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
 export async function getStaticPaths() {
   const posts = allPosts.sort((a, b) => {
@@ -31,6 +33,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params, locale }) {
   const { page } = params;
+
+  const commandPalettePosts = getCommandPalettePosts();
 
   // Handle redirect logic
   const path = unifyPath('/page/' + page);
@@ -63,6 +67,7 @@ export async function getStaticProps({ params, locale }) {
       posts,
       initialDisplayPosts,
       pagination,
+      commandPalettePosts,
     },
   };
 }
@@ -71,8 +76,10 @@ export default function PostListPage({
   posts,
   initialDisplayPosts,
   pagination,
+  commandPalettePosts,
 }) {
   const { t } = useTranslation(['common']);
+  useCommandPalettePostActions(commandPalettePosts);
 
   return (
     <>

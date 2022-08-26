@@ -5,6 +5,8 @@ import { Trans, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import CustomLink from '@/components/CustomLink';
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import PostList from '@/components/organisms/PostList';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
@@ -13,8 +15,10 @@ import generateRSS from '@/lib/utils/generateRSS';
 
 const MAX_DISPLAY = 5;
 
-export default function Index({ posts }) {
+export default function Index({ posts, commandPalettePosts }) {
   const { t } = useTranslation(['indexPage', 'common']);
+  useCommandPalettePostActions(commandPalettePosts);
+
   return (
     <>
       <PageSEO
@@ -77,6 +81,7 @@ export default function Index({ posts }) {
 }
 
 export async function getStaticProps({ locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
   const posts = allPosts.sort((a, b) => {
     return compareDesc(new Date(a.date), new Date(b.date));
   });
@@ -87,6 +92,7 @@ export async function getStaticProps({ locale }) {
     props: {
       ...(await serverSideTranslations(locale, ['indexPage', 'common'])),
       posts,
+      commandPalettePosts,
     },
   };
 }

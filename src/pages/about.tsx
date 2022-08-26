@@ -4,6 +4,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AuthorLayout from '@/layouts/AuthorLayout';
 import { allPages } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 
 const LOCALE_TO_PAGE_NAME = {
   en: 'about-en',
@@ -11,6 +13,8 @@ const LOCALE_TO_PAGE_NAME = {
 };
 
 export async function getStaticProps({ locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
+
   const aboutPage = allPages.find(
     (page) => page.name === LOCALE_TO_PAGE_NAME[locale]
   );
@@ -18,11 +22,14 @@ export async function getStaticProps({ locale }) {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
       aboutPage,
+      commandPalettePosts,
     },
   };
 }
 
-export default function About({ aboutPage }) {
+export default function About({ aboutPage, commandPalettePosts }) {
+  useCommandPalettePostActions(commandPalettePosts);
+
   const MDXContent = useMDXComponent(aboutPage.body.code);
 
   return (

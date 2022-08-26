@@ -1,8 +1,12 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import CustomLink from '@/components/CustomLink';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 
-export default function FourZeroFour() {
+export default function FourZeroFour({commandPalettePosts}) {
+  useCommandPalettePostActions(commandPalettePosts);
+
   return (
     <div className="flex flex-col items-start justify-start md:mt-24 md:flex-row md:items-center md:justify-center md:space-x-6">
       <div className="space-x-2 pt-6 pb-8 md:space-y-5">
@@ -28,9 +32,12 @@ export default function FourZeroFour() {
 }
 
 export async function getStaticProps({ locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
+
   return {
     props: {
       ...(await serverSideTranslations(locale, ['common'])),
+      commandPalettePosts,
     },
   };
 }
