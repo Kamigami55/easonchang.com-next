@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable react/jsx-key */
-import { compareDesc } from 'date-fns';
 import { Trans, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -10,7 +9,7 @@ import { useCommandPalettePostActions } from '@/components/organisms/CommandPale
 import PostList from '@/components/organisms/PostList';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
-import { allPosts } from '@/lib/contentLayerAdapter';
+import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
 import generateRSS from '@/lib/utils/generateRSS';
 
 const MAX_DISPLAY = 5;
@@ -62,29 +61,31 @@ export default function Index({ posts, commandPalettePosts }) {
           <h2>{t('latest-posts')}</h2>
         </div>
 
-        <PostList posts={posts.slice(0, MAX_DISPLAY)} />
+        <PostList posts={posts} />
       </div>
 
-      {posts.length > MAX_DISPLAY && (
-        <div className="flex justify-end text-base font-medium leading-6 md:text-lg">
-          <CustomLink
-            href="/posts"
-            className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
-            aria-label="all posts"
-          >
-            {t('view-all', { ns: 'common' })} &rarr;
-          </CustomLink>
-        </div>
-      )}
+      <div className="flex justify-end text-base font-medium leading-6 md:text-lg">
+        <CustomLink
+          href="/posts"
+          className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+          aria-label="all posts"
+        >
+          {t('view-all', { ns: 'common' })} &rarr;
+        </CustomLink>
+      </div>
     </>
   );
 }
 
 export async function getStaticProps({ locale }) {
   const commandPalettePosts = getCommandPalettePosts();
-  const posts = allPosts.sort((a, b) => {
-    return compareDesc(new Date(a.date), new Date(b.date));
-  });
+  const posts = allPostsNewToOld.slice(0, MAX_DISPLAY).map((post) => ({
+    slug: post.slug,
+    date: post.date,
+    title: post.title,
+    description: post.description,
+    path: post.path,
+  }));
 
   await generateRSS();
 
