@@ -13,7 +13,14 @@ import siteMetadata from '@/data/siteMetadata';
 import formatDate from '@/lib/utils/formatDate';
 
 export default function PostLayout({ post, next, prev, children }) {
-  const { date, title, path, description, socialImage } = post;
+  const {
+    date,
+    title,
+    path,
+    description,
+    socialImage,
+    body: { raw },
+  } = post;
 
   const { locale } = useRouter();
   const { theme } = useTheme();
@@ -60,7 +67,7 @@ export default function PostLayout({ post, next, prev, children }) {
             {/* DESKTOP TABLE OF CONTENTS */}
             <aside>
               <div className="hidden lg:sticky lg:top-24 lg:col-span-1 lg:block">
-                <TableOfContents source={post.body.raw} />
+                <TableOfContents source={raw} />
               </div>
             </aside>
           </div>

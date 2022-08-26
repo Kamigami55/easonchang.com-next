@@ -1,16 +1,15 @@
-import { compareDesc } from 'date-fns';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import PageTitle from '@/components/PageTitle';
 import { LOCALES } from '@/constants/siteMeta';
 import PostLayout from '@/layouts/PostLayout';
-import { allPosts } from '@/lib/contentLayerAdapter';
+import { allPosts, allPostsNewToOld } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
-import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
 export async function getStaticPaths() {
   const paths = [];
@@ -38,10 +37,7 @@ export async function getStaticProps({ params, locale }) {
     };
   }
 
-  const posts = allPosts.sort((a, b) => {
-    return compareDesc(new Date(a.date), new Date(b.date));
-  });
-  const postIndex = allPosts.findIndex(
+  const postIndex = allPostsNewToOld.findIndex(
     (post) => post.slug === params.slug.join('/')
   );
   if (postIndex === -1) {
@@ -49,9 +45,23 @@ export async function getStaticProps({ params, locale }) {
       notFound: true,
     };
   }
-  const prev = allPosts[postIndex + 1] || null;
-  const next = allPosts[postIndex - 1] || null;
-  const post = posts[postIndex];
+  const prevFull = allPostsNewToOld[postIndex + 1] || null;
+  const prev = prevFull ? { title: prevFull.title, path: prevFull.path } : null;
+  const nextFull = allPostsNewToOld[postIndex - 1] || null;
+  const next = nextFull ? { title: nextFull.title, path: nextFull.path } : null;
+  const postFull = allPostsNewToOld[postIndex];
+  const post = {
+    title: postFull.title,
+    path: postFull.path,
+    date: postFull.date,
+    description: postFull.description,
+    socialImage: postFull.socialImage,
+    isDraft: postFull.isDraft || null,
+    body: {
+      raw: postFull.body.raw,
+      code: postFull.body.code,
+    },
+  };
 
   return {
     props: {
