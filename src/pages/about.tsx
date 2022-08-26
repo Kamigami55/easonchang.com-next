@@ -1,11 +1,11 @@
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
+import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import AuthorLayout from '@/layouts/AuthorLayout';
 import { allPages } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
-import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 
 const LOCALE_TO_PAGE_NAME = {
   en: 'about-en',

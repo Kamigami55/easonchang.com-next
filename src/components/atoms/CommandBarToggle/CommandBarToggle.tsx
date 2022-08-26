@@ -7,12 +7,12 @@ export default function CommandBarToggle() {
     <button
       aria-label="Toggle Command Palette"
       type="button"
-      className="hidden rounded transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 h-12 w-12 py-3 px-4 sm:block"
+      className="hidden h-12 w-12 rounded py-3 px-4 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 sm:block"
       onClick={query.toggle}
     >
       <svg
         fill="none"
-        className="text-gray-900 transition-colors dark:text-gray-100 w-4 h-4"
+        className="h-4 w-4 text-gray-900 transition-colors dark:text-gray-100"
         viewBox="0 0 18 18"
       >
         <path

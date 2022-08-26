@@ -1,8 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import ProjectLayout from '@/layouts/ProjectLayout';
-import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
+import ProjectLayout from '@/layouts/ProjectLayout';
 
 export async function getStaticProps({ locale }) {
   const commandPalettePosts = getCommandPalettePosts();
@@ -15,7 +15,7 @@ export async function getStaticProps({ locale }) {
   };
 }
 
-export default function Projects({commandPalettePosts}) {
+export default function Projects({ commandPalettePosts }) {
   useCommandPalettePostActions(commandPalettePosts);
 
   return <ProjectLayout />;

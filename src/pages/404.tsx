@@ -1,10 +1,10 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import CustomLink from '@/components/CustomLink';
-import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
-export default function FourZeroFour({commandPalettePosts}) {
+export default function FourZeroFour({ commandPalettePosts }) {
   useCommandPalettePostActions(commandPalettePosts);
 
   return (
