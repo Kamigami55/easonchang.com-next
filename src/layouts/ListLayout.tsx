@@ -13,11 +13,8 @@ export default function ListLayout({
 
   const [searchValue, setSearchValue] = useState('');
   const filteredBlogPosts = searchValue
-    ? posts.filter((frontMatter) => {
-        const searchContent =
-          frontMatter.title +
-          frontMatter.description +
-          frontMatter.tags.join(' ');
+    ? posts.filter((post) => {
+        const searchContent = post.title + post.description;
         return searchContent.toLowerCase().includes(searchValue.toLowerCase());
       })
     : initialDisplayPosts;
