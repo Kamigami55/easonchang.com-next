@@ -11,7 +11,7 @@ import mdxComponents from '@/lib/mdxComponents';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   const paths = [];
   LOCALES.forEach((locale) => {
     paths.push(...allPosts.map((post) => `/${locale}${post.path}`));

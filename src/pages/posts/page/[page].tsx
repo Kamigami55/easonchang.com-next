@@ -11,7 +11,7 @@ import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   let paths = [];
   LOCALES.forEach((locale) => {
     const totalPages = Math.ceil(allPostsNewToOld.length / POSTS_PER_PAGE);
