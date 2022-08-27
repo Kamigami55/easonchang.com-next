@@ -4,6 +4,17 @@ import CustomLink from '@/components/CustomLink';
 import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
+export async function getStaticProps({ locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+      commandPalettePosts,
+    },
+  };
+}
+
 export default function FourZeroFour({ commandPalettePosts }) {
   useCommandPalettePostActions(commandPalettePosts);
 
@@ -29,15 +40,4 @@ export default function FourZeroFour({ commandPalettePosts }) {
       </div>
     </div>
   );
-}
-
-export async function getStaticProps({ locale }) {
-  const commandPalettePosts = getCommandPalettePosts();
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-      commandPalettePosts,
-    },
-  };
 }

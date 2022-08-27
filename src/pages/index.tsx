@@ -14,6 +14,27 @@ import generateRSS from '@/lib/utils/generateRSS';
 
 const MAX_DISPLAY = 5;
 
+export async function getStaticProps({ locale }) {
+  const commandPalettePosts = getCommandPalettePosts();
+  const posts = allPostsNewToOld.slice(0, MAX_DISPLAY).map((post) => ({
+    slug: post.slug,
+    date: post.date,
+    title: post.title,
+    description: post.description,
+    path: post.path,
+  }));
+
+  await generateRSS();
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['indexPage', 'common'])),
+      posts,
+      commandPalettePosts,
+    },
+  };
+}
+
 export default function Index({ posts, commandPalettePosts }) {
   const { t } = useTranslation(['indexPage', 'common']);
   useCommandPalettePostActions(commandPalettePosts);
@@ -75,25 +96,4 @@ export default function Index({ posts, commandPalettePosts }) {
       </div>
     </>
   );
-}
-
-export async function getStaticProps({ locale }) {
-  const commandPalettePosts = getCommandPalettePosts();
-  const posts = allPostsNewToOld.slice(0, MAX_DISPLAY).map((post) => ({
-    slug: post.slug,
-    date: post.date,
-    title: post.title,
-    description: post.description,
-    path: post.path,
-  }));
-
-  await generateRSS();
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['indexPage', 'common'])),
-      posts,
-      commandPalettePosts,
-    },
-  };
 }
