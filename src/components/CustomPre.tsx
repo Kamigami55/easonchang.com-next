@@ -7,8 +7,10 @@ import { useEffect, useRef, useState } from 'react';
 import { copyToClipboard } from '@/lib/utils/copyToClipboard';
 import { removeDuplicateNewLine } from '@/lib/utils/removeDuplicateNewLine';
 
-function CustomPre({ children, className, ...props }) {
-  const preRef = useRef(null);
+type Props = React.ComponentPropsWithoutRef<'pre'>;
+
+function CustomPre({ children, className, ...props }: Props) {
+  const preRef = useRef<HTMLPreElement>(null);
   const { t } = useTranslation(['common']);
 
   const [copied, setCopied] = useState(false);
@@ -21,7 +23,7 @@ function CustomPre({ children, className, ...props }) {
 
   const onClick = async () => {
     if (preRef.current?.innerText) {
-      copyToClipboard(removeDuplicateNewLine(preRef.current.innerText));
+      await copyToClipboard(removeDuplicateNewLine(preRef.current.innerText));
       setCopied(true);
     }
   };

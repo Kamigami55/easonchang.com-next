@@ -1,15 +1,22 @@
+import { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
+import { PostForPostList } from '@/components/organisms/PostList/PostList';
 import { PageSEO } from '@/components/SEO';
 import { POSTS_PER_PAGE } from '@/constants/siteMeta';
 import siteMetadata from '@/data/siteMetadata';
 import ListLayout from '@/layouts/ListLayout';
 import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
 
-export async function getStaticProps({ locale }) {
+type PostForPostsPage = PostForPostList;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
 
   const posts = allPostsNewToOld.map((post) => ({
@@ -18,7 +25,7 @@ export async function getStaticProps({ locale }) {
     date: post.date,
     slug: post.slug,
     path: post.path,
-  }));
+  })) as PostForPostsPage[];
 
   return {
     props: {
@@ -27,9 +34,14 @@ export async function getStaticProps({ locale }) {
       commandPalettePosts,
     },
   };
-}
+};
 
-export default function Posts({ posts, commandPalettePosts }) {
+type Props = {
+  posts: PostForPostsPage[];
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+export default function Posts({ posts, commandPalettePosts }: Props) {
   const { t } = useTranslation(['common']);
   useCommandPalettePostActions(commandPalettePosts);
 

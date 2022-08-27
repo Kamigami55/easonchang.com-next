@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 
 import Facebook from './facebook.svg';
 import Github from './github.svg';
@@ -21,7 +20,19 @@ const components = {
   rss: RSS,
 };
 
-const SocialIcon = ({ kind, href }) => {
+type Props = {
+  kind:
+    | 'mail'
+    | 'github'
+    | 'facebook'
+    | 'youtube'
+    | 'linkedin'
+    | 'twitter'
+    | 'rss';
+  href: string;
+};
+
+const SocialIcon = ({ kind, href }: Props) => {
   if (
     !href ||
     (kind === 'mail' &&
@@ -61,15 +72,3 @@ const SocialIcon = ({ kind, href }) => {
 };
 
 export default SocialIcon;
-
-SocialIcon.propTypes = {
-  kind: PropTypes.oneOf([
-    'mail',
-    'github',
-    'facebook',
-    'youtube',
-    'linkedin',
-    'twitter',
-  ]).isRequired,
-  href: PropTypes.string.isRequired,
-};

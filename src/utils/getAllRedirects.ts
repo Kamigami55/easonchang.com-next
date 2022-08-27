@@ -2,8 +2,14 @@ import { allPages, allPosts } from '@/lib/contentLayerAdapter';
 
 import { unifyPath } from './unifyPath';
 
+export type Redirect = {
+  source: string;
+  destination: string;
+  permanent: boolean;
+};
+
 export const getAllRedirects = () => {
-  const redirects = [];
+  const redirects: Redirect[] = [];
 
   allPosts.forEach((post) => {
     const allRedirectFrom = (

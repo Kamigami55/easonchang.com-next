@@ -205,8 +205,9 @@ interface Props {
   active: boolean;
   currentRootActionId: ActionId;
 }
-type Ref = HTMLButtonElement;
+type Ref = HTMLDivElement;
 
+// eslint-disable-next-line react/display-name
 const ResultItem = forwardRef<Ref, Props>(
   (
     {

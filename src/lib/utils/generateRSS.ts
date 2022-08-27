@@ -5,7 +5,7 @@ import { getPostOGImage } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
 import { allPosts } from '@/lib/contentLayerAdapter';
 
-export default async function generateRSS() {
+export default function generateRSS() {
   const author = {
     name: siteMetadata.author,
     email: siteMetadata.email,

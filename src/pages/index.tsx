@@ -1,12 +1,17 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable react/jsx-key */
+import { GetStaticProps } from 'next';
 import { Trans, useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import CustomLink from '@/components/CustomLink';
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import PostList from '@/components/organisms/PostList';
+import { PostForPostList } from '@/components/organisms/PostList/PostList';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
 import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
@@ -14,7 +19,9 @@ import generateRSS from '@/lib/utils/generateRSS';
 
 const MAX_DISPLAY = 5;
 
-export async function getStaticProps({ locale }) {
+type PostForIndexPage = PostForPostList;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
   const posts = allPostsNewToOld.slice(0, MAX_DISPLAY).map((post) => ({
     slug: post.slug,
@@ -22,9 +29,9 @@ export async function getStaticProps({ locale }) {
     title: post.title,
     description: post.description,
     path: post.path,
-  }));
+  })) as PostForIndexPage[];
 
-  await generateRSS();
+  generateRSS();
 
   return {
     props: {
@@ -33,9 +40,14 @@ export async function getStaticProps({ locale }) {
       commandPalettePosts,
     },
   };
-}
+};
 
-export default function Index({ posts, commandPalettePosts }) {
+type Props = {
+  posts: PostForIndexPage[];
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+export default function Index({ posts, commandPalettePosts }: Props) {
   const { t } = useTranslation(['indexPage', 'common']);
   useCommandPalettePostActions(commandPalettePosts);
 

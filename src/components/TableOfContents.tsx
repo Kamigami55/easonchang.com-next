@@ -5,18 +5,24 @@ import GithubSlugger from 'github-slugger';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useRef, useState } from 'react';
 
-const useIntersectionObserver = (setActiveId) => {
-  const headingElementsRef = useRef({});
+// eslint-disable-next-line no-unused-vars
+type UseIntersectionObserverType = (setActiveId: (id: string) => void) => void;
+
+const useIntersectionObserver: UseIntersectionObserverType = (setActiveId) => {
+  const headingElementsRef = useRef<{
+    [key: string]: IntersectionObserverEntry;
+  }>({});
+  // const headingElementsRef = useRef<{ [key: string]: HTMLHeadingElement }>({});
 
   useEffect(() => {
-    const callback = (headings) => {
+    const callback = (headings: IntersectionObserverEntry[]) => {
       headingElementsRef.current = headings.reduce((map, headingElement) => {
         map[headingElement.target.id] = headingElement;
 
         return map;
       }, headingElementsRef.current);
 
-      const visibleHeadings = [];
+      const visibleHeadings: IntersectionObserverEntry[] = [];
 
       Object.keys(headingElementsRef.current).forEach((key) => {
         const headingElement = headingElementsRef.current[key];
@@ -51,7 +57,11 @@ const useIntersectionObserver = (setActiveId) => {
   }, [setActiveId]);
 };
 
-const TableOfContents = ({ source }) => {
+type Props = {
+  source: string;
+};
+
+const TableOfContents = ({ source }: Props) => {
   const { t } = useTranslation(['common']);
 
   const headingLines = source
@@ -70,7 +80,7 @@ const TableOfContents = ({ source }) => {
     };
   });
 
-  const [activeId, setActiveId] = useState();
+  const [activeId, setActiveId] = useState<string>();
 
   useIntersectionObserver(setActiveId);
 

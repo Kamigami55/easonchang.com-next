@@ -1,9 +1,12 @@
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 
 import styles from './PostBody.module.scss';
 
-export default function PostBody({ children }) {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function PostBody({ children }: Props) {
   return (
     <div
       className={clsx(
@@ -15,5 +18,3 @@ export default function PostBody({ children }) {
     </div>
   );
 }
-
-PostBody.propTypes = { children: PropTypes.element };

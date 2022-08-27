@@ -1,9 +1,26 @@
+import { StaticImageData } from 'next/image';
+
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
 import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';
 import SmartGlovesImg from '../../public/images/projects/smart-gloves.png';
 import WinsterImg from '../../public/images/projects/winster.png';
 
-export const PROJECTS_ZH = [
+export type Project = {
+  title: string;
+  description: string;
+  links: {
+    post: string;
+    github: string;
+    site: string;
+  };
+  image: {
+    src: string | StaticImageData;
+    alt: string;
+    placeholder: 'blur' | 'empty';
+  };
+};
+
+export const PROJECTS_ZH = <Project[]>[
   // Product Hunt Today
   {
     title:

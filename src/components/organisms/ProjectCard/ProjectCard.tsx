@@ -1,14 +1,18 @@
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
-import PropTypes from 'prop-types';
 
 import CustomLink from '@/components/CustomLink';
+import { Project } from '@/data/projects-zh';
 
-export default function ProjectCard({ project }) {
+type Props = {
+  project: Project;
+};
+
+export default function ProjectCard({ project }: Props) {
   const {
     title,
     description,
-    links: { post: href, github: githubHref, site: siteHref },
+    links: { post: href },
     image: { src: imgSrc, alt: imgAlt, placeholder: imgPlaceholder },
   } = project;
   const { t } = useTranslation(['common']);
@@ -60,19 +64,3 @@ export default function ProjectCard({ project }) {
     </div>
   );
 }
-
-ProjectCard.propTypes = {
-  project: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    links: PropTypes.shape({
-      post: PropTypes.string,
-      github: PropTypes.string,
-      site: PropTypes.string,
-    }),
-    image: PropTypes.shape({
-      src: PropTypes.string,
-      alt: PropTypes.string,
-    }),
-  }).isRequired,
-};

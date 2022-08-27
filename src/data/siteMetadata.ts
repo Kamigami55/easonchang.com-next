@@ -19,7 +19,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/in/easonchang101',
   locale: 'zh-TW',
   giscusConfig: {
-    repo: 'Kamigami55/easonchang.com-next',
+    repo: 'Kamigami55/easonchang.com-next' as `${string}/${string}`,
     repoId: 'R_kgDOGyMt4A',
     category: 'Announcements',
     categoryId: 'DIC_kwDOGyMt4M4CQzoa',

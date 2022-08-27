@@ -1,10 +1,14 @@
+import { GetStaticProps } from 'next';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 import AuthorLayout from '@/layouts/AuthorLayout';
-import { allPages } from '@/lib/contentLayerAdapter';
+import { allPages, Page } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
 
 const LOCALE_TO_PAGE_NAME = {
@@ -12,7 +16,7 @@ const LOCALE_TO_PAGE_NAME = {
   'zh-TW': 'about-zh',
 };
 
-export async function getStaticProps({ locale }) {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
 
   const aboutPage = allPages.find(
@@ -25,9 +29,14 @@ export async function getStaticProps({ locale }) {
       commandPalettePosts,
     },
   };
-}
+};
 
-export default function About({ aboutPage, commandPalettePosts }) {
+type Props = {
+  aboutPage: Page;
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+export default function About({ aboutPage, commandPalettePosts }: Props) {
   useCommandPalettePostActions(commandPalettePosts);
 
   const MDXContent = useMDXComponent(aboutPage.body.code);

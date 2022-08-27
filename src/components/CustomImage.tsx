@@ -1,4 +1,6 @@
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
+
+type Props = ImageProps & { base64?: string };
 
 export default function CustomImage({
   src,
@@ -6,8 +8,9 @@ export default function CustomImage({
   width,
   base64,
   ...otherProps
-}) {
-  if (!src || !height || !width) {
+}: Props) {
+  if (!src) return null;
+  if (typeof src === 'string' && (!height || !width)) {
     // eslint-disable-next-line jsx-a11y/alt-text
     return <img src={src} height={height} width={width} {...otherProps} />;
   }

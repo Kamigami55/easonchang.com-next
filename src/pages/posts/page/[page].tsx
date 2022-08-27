@@ -1,8 +1,13 @@
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
+import { PostForPostList } from '@/components/organisms/PostList/PostList';
 import { PageSEO } from '@/components/SEO';
 import { LOCALES, POSTS_PER_PAGE } from '@/constants/siteMeta';
 import siteMetadata from '@/data/siteMetadata';
@@ -11,8 +16,15 @@ import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
 
-export function getStaticPaths() {
-  let paths = [];
+type PathType = {
+  params: {
+    page: string;
+  };
+  locale: string;
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  let paths: PathType[] = [];
   LOCALES.forEach((locale) => {
     const totalPages = Math.ceil(allPostsNewToOld.length / POSTS_PER_PAGE);
     const pathsToAppend = Array.from({ length: totalPages }, (_, i) => ({
@@ -25,15 +37,16 @@ export function getStaticPaths() {
     paths,
     fallback: false,
   };
-}
+};
 
-export async function getStaticProps({ params, locale }) {
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const { page } = params;
+  const pageStr = typeof page === 'string' ? page : page.join('');
 
   const commandPalettePosts = getCommandPalettePosts();
 
   // Handle redirect logic
-  const path = unifyPath('/page/' + page);
+  const path = unifyPath('/page/' + pageStr);
   const matchedRedirectRule = allRedirects.find((rule) => rule.source === path);
   if (matchedRedirectRule) {
     return {
@@ -52,7 +65,7 @@ export async function getStaticProps({ params, locale }) {
     path: post.path,
   }));
 
-  const pageNumber = parseInt(page);
+  const pageNumber = parseInt(pageStr);
 
   return {
     props: {
@@ -62,13 +75,21 @@ export async function getStaticProps({ params, locale }) {
       commandPalettePosts,
     },
   };
-}
+};
+
+type PostForPostsPage = PostForPostList;
+
+type Props = {
+  posts: PostForPostsPage[];
+  pageNumber: number;
+  commandPalettePosts: PostForCommandPalette[];
+};
 
 export default function PostListPage({
   posts,
   pageNumber,
   commandPalettePosts,
-}) {
+}: Props) {
   const { t } = useTranslation(['common']);
   useCommandPalettePostActions(commandPalettePosts);
 

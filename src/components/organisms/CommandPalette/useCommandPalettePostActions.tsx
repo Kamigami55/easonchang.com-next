@@ -2,7 +2,11 @@ import { useRegisterActions } from 'kbar';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
-export const useCommandPalettePostActions = (posts) => {
+import { PostForCommandPalette } from './getCommandPalettePosts';
+
+export const useCommandPalettePostActions = (
+  posts: PostForCommandPalette[]
+): void => {
   const router = useRouter();
   const { t } = useTranslation(['common']);
 

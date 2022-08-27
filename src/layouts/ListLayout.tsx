@@ -2,16 +2,24 @@ import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
 
 import PostList from '@/components/organisms/PostList';
-import Pagination from '@/components/Pagination';
+import { PostForPostList } from '@/components/organisms/PostList/PostList';
+import Pagination, { PaginationType } from '@/components/Pagination';
+
+type Props = {
+  posts: PostForPostList[];
+  initialDisplayPosts: PostForPostList[];
+  pagination: PaginationType;
+};
 
 export default function ListLayout({
   posts,
   initialDisplayPosts = [],
   pagination,
-}) {
+}: Props) {
   const { t } = useTranslation(['common']);
 
   const [searchValue, setSearchValue] = useState('');
+
   const filteredBlogPosts = searchValue
     ? posts.filter((post) => {
         const searchContent = post.title + post.description;
@@ -53,6 +61,7 @@ export default function ListLayout({
 
         <PostList posts={filteredBlogPosts} />
       </div>
+
       {pagination && pagination.totalPages > 1 && !searchValue && (
         <Pagination
           currentPage={pagination.currentPage}

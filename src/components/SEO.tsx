@@ -3,7 +3,13 @@ import { useRouter } from 'next/router';
 
 import siteMetadata from '@/data/siteMetadata';
 
-const CommonSEO = ({ title, description, ogType, ogImage }) => {
+type CommonSEOProps = {
+  title: string;
+  description: string;
+  ogType: string;
+  ogImage: string;
+};
+const CommonSEO = ({ title, description, ogType, ogImage }: CommonSEOProps) => {
   const router = useRouter();
   return (
     <Head>
@@ -42,7 +48,11 @@ const CommonSEO = ({ title, description, ogType, ogImage }) => {
   );
 };
 
-export const PageSEO = ({ title, description }) => {
+type PageSEOProps = {
+  title: string;
+  description: string;
+};
+export const PageSEO = ({ title, description }: PageSEOProps) => {
   const ogImage = siteMetadata.siteUrl + siteMetadata.socialBanner;
   return (
     <CommonSEO
@@ -54,7 +64,7 @@ export const PageSEO = ({ title, description }) => {
   );
 };
 
-export const getPostOGImage = (socialImage) => {
+export const getPostOGImage = (socialImage: string): string => {
   if (socialImage) {
     if (socialImage.startsWith('http')) {
       return socialImage;
@@ -65,6 +75,16 @@ export const getPostOGImage = (socialImage) => {
   return siteMetadata.siteUrl + siteMetadata.socialBanner;
 };
 
+type BlogSEOProps = {
+  title: string;
+  description: string;
+  date: string;
+  lastmod?: string;
+  url: string;
+  images?: string[];
+  socialImage: string;
+};
+
 export const BlogSEO = ({
   title,
   description,
@@ -73,7 +93,7 @@ export const BlogSEO = ({
   url,
   images = [],
   socialImage,
-}) => {
+}: BlogSEOProps) => {
   const router = useRouter();
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();

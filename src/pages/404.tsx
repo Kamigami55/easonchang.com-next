@@ -1,10 +1,14 @@
+import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import CustomLink from '@/components/CustomLink';
-import { getCommandPalettePosts } from '@/components/organisms/CommandPalette/getCommandPalettePosts';
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from '@/components/organisms/CommandPalette/getCommandPalettePosts';
 import { useCommandPalettePostActions } from '@/components/organisms/CommandPalette/useCommandPalettePostActions';
 
-export async function getStaticProps({ locale }) {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
 
   return {
@@ -13,9 +17,13 @@ export async function getStaticProps({ locale }) {
       commandPalettePosts,
     },
   };
-}
+};
 
-export default function FourZeroFour({ commandPalettePosts }) {
+type Props = {
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+export default function FourZeroFour({ commandPalettePosts }: Props) {
   useCommandPalettePostActions(commandPalettePosts);
 
   return (

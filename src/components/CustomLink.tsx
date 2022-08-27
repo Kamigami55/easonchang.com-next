@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 
-const CustomLink = ({ href, ...rest }) => {
+type Props = React.ComponentPropsWithoutRef<'a'>;
+
+const CustomLink = ({ href, ...rest }: Props) => {
   const isInternalLink = href && href.startsWith('/');
   const isAnchorLink = href && href.startsWith('#');
 

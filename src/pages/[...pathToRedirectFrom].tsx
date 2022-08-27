@@ -1,17 +1,27 @@
-import { allRedirects } from '@/utils/getAllRedirects';
+import { GetStaticPaths, GetStaticProps } from 'next';
+
+import { allRedirects, Redirect } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
 
-export function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
     fallback: 'blocking',
   };
-}
+};
 
-export function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = ({
+  params: { pathToRedirectFrom },
+}) => {
   // Handle redirect logic
-  const path = unifyPath(params.pathToRedirectFrom.join('/'));
-  const matchedRedirectRule = allRedirects.find((rule) => rule.source === path);
+  const path = unifyPath(
+    typeof pathToRedirectFrom === 'string'
+      ? pathToRedirectFrom
+      : pathToRedirectFrom.join('/')
+  );
+  const matchedRedirectRule: Redirect | undefined = allRedirects.find(
+    (rule) => rule.source === path
+  );
   if (matchedRedirectRule) {
     return {
       redirect: {
@@ -24,6 +34,6 @@ export function getStaticProps({ params }) {
   return {
     notFound: true,
   };
-}
+};
 
 export default () => null;

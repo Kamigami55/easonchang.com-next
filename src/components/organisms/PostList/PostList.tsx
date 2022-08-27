@@ -1,10 +1,21 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 
 import CustomLink from '@/components/CustomLink';
 import formatDate from '@/lib/utils/formatDate';
 
-export default function PostList({ posts }) {
+export interface PostForPostList {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  path: string;
+}
+
+type Props = {
+  posts: PostForPostList[];
+};
+
+export default function PostList({ posts = [] }: Props) {
   const { locale } = useRouter();
 
   return (
@@ -40,7 +51,3 @@ export default function PostList({ posts }) {
     </ul>
   );
 }
-
-PostList.propTypes = { posts: PropTypes.array };
-
-PostList.defaultProps = { posts: [] };

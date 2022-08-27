@@ -11,7 +11,11 @@ import MobileNav from './MobileNav';
 import SectionContainer from './SectionContainer';
 import ThemeSwitch from './ThemeSwitch';
 
-const LayoutWrapper = ({ children }) => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const LayoutWrapper = ({ children }: Props) => {
   const { t } = useTranslation(['common']);
 
   return (

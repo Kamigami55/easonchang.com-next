@@ -5,6 +5,7 @@ import '@/styles/prism-dracula.css';
 import '@/styles/prism-plus.css';
 import '@/styles/nprogress-custom.css';
 
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { appWithTranslation } from 'next-i18next';
@@ -23,7 +24,7 @@ import siteMetadata from '@/data/siteMetadata';
 // const isSocket = process.env.SOCKET
 NProgress.configure({ showSpinner: false });
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   // Integrate nprogress

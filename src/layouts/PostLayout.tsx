@@ -12,7 +12,28 @@ import TableOfContents from '@/components/TableOfContents';
 import siteMetadata from '@/data/siteMetadata';
 import formatDate from '@/lib/utils/formatDate';
 
-export default function PostLayout({ post, next, prev, children }) {
+export interface PostForPostLayout {
+  date: string;
+  title: string;
+  description: string;
+  path: string;
+  socialImage: string;
+  body: { raw: string };
+}
+
+export type RelatedPostForPostLayout = {
+  title: string;
+  path: string;
+} | null;
+
+type Props = {
+  post: PostForPostLayout;
+  next: RelatedPostForPostLayout;
+  prev: RelatedPostForPostLayout;
+  children: React.ReactNode;
+};
+
+export default function PostLayout({ post, next, prev, children }: Props) {
   const {
     date,
     title,

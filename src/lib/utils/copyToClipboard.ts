@@ -1,6 +1,6 @@
 // ref: https://philstainer.io/blog/copy-code-button-markdown
 
-export const copyToClipboard = (text) => {
+export const copyToClipboard = (text: string) => {
   return new Promise((resolve, reject) => {
     if (navigator?.clipboard) {
       const cb = navigator.clipboard;

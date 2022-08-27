@@ -7,7 +7,11 @@ import PostBody from '@/components/organisms/PostBody';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
 
-export default function AuthorLayout({ children }) {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function AuthorLayout({ children }: Props) {
   const { t } = useTranslation(['common']);
   const { locale } = useRouter();
   const { theme } = useTheme();
