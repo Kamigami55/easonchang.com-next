@@ -1,3 +1,8 @@
+import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
+import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';
+import SmartGlovesImg from '../../public/images/projects/smart-gloves.png';
+import WinsterImg from '../../public/images/projects/winster.png';
+
 export const PROJECTS_ZH = [
   // Product Hunt Today
   {
@@ -11,8 +16,9 @@ export const PROJECTS_ZH = [
       site: 'https://twitter.com/ProductHunToday',
     },
     image: {
-      src: '/images/product-hunt-today/product-hunt-today-tweet.jpg',
+      src: ProductHuntTodayImg,
       alt: 'Tweet of Product Hunt Today',
+      placeholder: 'blur',
     },
   },
   // 智慧手套 Smart Gloves
@@ -30,8 +36,9 @@ export const PROJECTS_ZH = [
       site: '',
     },
     image: {
-      src: '/images/projects/smart-gloves.png',
+      src: SmartGlovesImg,
       alt: 'Smart Gloves',
+      placeholder: 'blur',
     },
   },
   // 科幻風造型獎盃
@@ -45,8 +52,9 @@ export const PROJECTS_ZH = [
       site: '',
     },
     image: {
-      src: '/images/projects/scifi-trophy.png',
+      src: ScifiTrophyImg,
       alt: 'Sci-fi Trophy',
+      placeholder: 'blur',
     },
   },
   // 智慧釀藏酒大師 Winster
@@ -65,8 +73,9 @@ export const PROJECTS_ZH = [
       site: '',
     },
     image: {
-      src: '/images/projects/winster.png',
+      src: WinsterImg,
       alt: 'Wine Master',
+      placeholder: 'blur',
     },
   },
   // 智慧導盲犬 SigmaGO
@@ -87,6 +96,7 @@ export const PROJECTS_ZH = [
     image: {
       src: 'https://i.imgur.com/8E5onDg.jpg',
       alt: 'SigmaGO',
+      placeholder: 'empty',
     },
   },
   // 100sites
@@ -103,6 +113,7 @@ export const PROJECTS_ZH = [
     image: {
       src: 'https://imgur.com/i5gPgdO.png',
       alt: '100sites',
+      placeholder: 'empty',
     },
   },
 ];

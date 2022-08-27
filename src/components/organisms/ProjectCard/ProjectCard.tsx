@@ -9,7 +9,7 @@ export default function ProjectCard({ project }) {
     title,
     description,
     links: { post: href, github: githubHref, site: siteHref },
-    image: { src: imgSrc, alt: imgAlt },
+    image: { src: imgSrc, alt: imgAlt, placeholder: imgPlaceholder },
   } = project;
   const { t } = useTranslation(['common']);
 
@@ -33,6 +33,7 @@ export default function ProjectCard({ project }) {
             objectFit="cover"
             quality="30"
             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 344px, 472px"
+            placeholder={imgPlaceholder}
           />
         </CustomLink>
         <div className="p-6">
