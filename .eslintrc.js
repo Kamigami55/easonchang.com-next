@@ -2,7 +2,6 @@
 // https://dev.to/heyitsarpit/eslint-and-prettier-for-react-apps-bonus-next-js-and-typescript-3e46
 
 module.exports = {
-  root: true, // Make sure eslint picks up the config at the root of the directory
   settings: {
     'import/resolver': {
       alias: {
@@ -13,7 +12,7 @@ module.exports = {
     'import/ignore': ['contentLayerAdapter.js'],
   },
   extends: [
-    'eason/typescript',
+    'eason',
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended', // Make this the last element so prettier config overrides other formatting rules
   ],
@@ -29,4 +28,10 @@ module.exports = {
     ],
     'tailwindcss/classnames-order': 'off',
   },
+  overrides: [
+    {
+      files: '**/*.{ts,tsx}',
+      extends: ['eason/typescript'],
+    },
+  ],
 };
