@@ -20,7 +20,6 @@ import {
   KBarPositioner,
   KBarProvider,
   KBarResults,
-  KBarSearch,
   Priority,
   useMatches,
 } from 'kbar';
@@ -28,6 +27,8 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useTheme } from 'next-themes';
 import React, { forwardRef, useMemo } from 'react';
+
+import { KBarSearch } from './KBarSearch';
 
 export default function CommandPalette({ children }) {
   const { t } = useTranslation(['common']);
