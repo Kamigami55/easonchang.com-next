@@ -5,8 +5,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
-    "build": "next build",
-    "postbuild": "next-sitemap",
+    "build": "next build && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
