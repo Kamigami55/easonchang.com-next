@@ -1,0 +1,364 @@
+---
+title: "ESLint、Prettier、TypeScript 等 Next.js 專案基礎設定 - Modern Next.js Blog 系列 #04"
+description: "Next.js 專案基本設定，讓後續開發體驗更流暢、專案結構更易讀。包含用 .nvmrc 鎖定 Node.js 版本、導入 ESLint 和 Prettier、使用 /src 資料夾、設定 Absolute Import"
+slug: "nextjs-dev-env"
+language: zh-TW
+socialImage: ""
+date: 2022-09-19
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10294414)
+
+這一篇我們來進一步做些 Next.js 專案基本設定，讓後續開發體驗更流暢、專案結構更易讀。
+
+我們會做這些設定：
+
+- 新增 .nvmrc 鎖定專案 Node.js 版本
+- 導入 ESLint、Prettier
+- 將主體 code 放在 /src 資料夾
+- 設定 Absolute Import
+
+開頭也會先說明如何查看 Github repo 程式碼。
+
+---
+
+## 如何查看上一篇的程式碼，和這篇修改的部分
+
+這系列程式碼我都有放在 Github 上的 [Kamigami55/nextjs-tailwind-contentlayer-blog-starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter) repo 裡。
+
+每一篇有寫 code 的文章，都會附上下面這種連結：
+
+> 這篇改動的完整程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day02-init-nextjs...day04-prepare
+
+點開會看到下圖畫面，是文章對應的所有程式碼改動：
+
+![source code compare](https://i.imgur.com/laTd6Z0.jpg)
+
+原理是 repo 裡的 commit 及 branch 內容及順序是精心設計過的。
+
+每個 commit 都只做一件事情，commit message 也有用心撰寫，包含不少參考連結。如果你對某個改動的原因或來源不了解，可以點中間區塊進去看 commit 詳細內容。
+
+branch 順序遵照了 30 天系列文章順序，每篇文章實作完，都有一支對應 branch，標出當天文章最終成果。
+
+像是 [Day2 建立 Next.js 專案](https://ithelp.ithome.com.tw/articles/10292743) 做完後的階段性成果，可以看 [day02-init-nextjs](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day02-init-nextjs) branch。
+
+而今天這篇 Day4 則在 [day04-prepare](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day04-prepare) branch。
+
+上圖畫面中看到的是 Day4（compare）相較於 Day2（base）的差異，也就是今天文章有修改的部分（跳過 Day3 是因為 Day3 沒改東西）。
+
+有時候因為改動太多，我不會把所有 code 都貼上文章，你就可以進 Github 看完整的改動。
+
+如果你想基於上一篇的成果，只動手實作這篇的改動的話，也能 clone 圖中的 base branch（day02-init-nextjs）來修改。
+
+---
+
+## Next.js 專案做基礎設定
+
+回到正題，首先我們來為上一篇的全新 Next.js 專案做基礎設定，讓後續開發體驗更流暢、專案結構更易讀。
+
+> 這篇改動的完整程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day02-init-nextjs...day04-prepare
+
+## 新增 .nvmrc 鎖定專案 Node.js 版本
+
+如果你同時開發許多前端專案，每個專案 Node.js 版本都不同的話，可以使用 [nvm](https://github.com/nvm-sh/nvm) Node Version Manager 來同時安裝多個 Node.js，依照需求切換不同版本。
+
+安裝方式參考 [nvm repo 的 Installing and Updating 說明](https://github.com/nvm-sh/nvm#installing-and-updating)，這邊就不展開了。
+
+但用 nvm 一段時間後，你會發現手動切換 Node 版本很麻煩。
+
+好在 nvm 提供了 shell 深度整合的設定檔，能讓你在終端機 cd 進不同目錄時，自動切換版本。
+
+各 shell 的設定方式也請參考 [nvm repo 的 Deeper Shell Integration 說明](https://github.com/nvm-sh/nvm#deeper-shell-integration) 自行設定。
+
+設定完後還需要在專案內新增 **.nvmrc** 檔案，指定此專案 Node.js 版本號，下次 cd 進來就會自動切換過去。
+
+這裡使用最新的 Node.js LTS 版本 v16.17.0。
+
+在專案根目錄新增 **.nvmrc** 檔案：
+
+```
+v16.17.0
+```
+
+## 導入 ESLint、Prettier
+
+[ESLint](https://eslint.org/) 可以幫助我們抓出 JavaScript code 的各種錯誤，而 [Prettier](https://prettier.io/) 能幫我們統一程式碼風格。
+
+需要長期維護或多人協作的專案，強烈建議把他們都裝起來，保持程式碼品質。
+
+他們各自都有設定檔能依照需求調整，這裡我會導入 [eslint-config-eason](https://github.com/Kamigami55/eslint-config-eason) 這套我用了許久的 ESLint、Prettier 設定。
+
+輸入指令安裝它，這會一次安裝很多套件：
+
+```shell
+npx install-peerdeps --pnpm -D eslint-config-eason
+```
+
+接著將 `.eslintrc.json` 改名成 `.eslintrc.js`，並修改內容如下：
+
+```js
+module.exports = {
+  extends: [
+    "eason",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended", // Make this the last element so prettier config overrides other formatting rules
+  ],
+  rules: {
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        components: ["Link"],
+        specialLink: ["hrefLeft", "hrefRight"],
+        aspects: ["invalidHref", "preferButton"],
+      },
+    ],
+  },
+  overrides: [
+    {
+      files: "**/*.{ts,tsx}",
+      extends: [
+        "eason/typescript",
+        "plugin:prettier/recommended", // Make this the last element so prettier config overrides other formatting rules
+      ],
+    },
+  ],
+};
+```
+
+新增 `.prettierrc.js`：
+
+```js
+module.exports = {
+  trailingComma: "es5",
+  singleQuote: true,
+  printWidth: 80,
+  semi: true,
+};
+```
+
+新增 `.eslintignore` 及 `.prettierignore`，內容從 `.gitignore` 複製過來：
+
+```
+# ============================= Copied from .gitignore =============================
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+# ============================ ./Copied from .gitignore ============================
+```
+
+修改 `package.json`，加入 lint 和 format 指令：
+
+```json
+{
+  // ...
+  "scripts": {
+    // ...
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format:fix": "prettier --write './**/*.{css,scss,md,mdx,json}'"
+  }
+  // ...
+}
+```
+
+這樣就完成了！你能用下面指令來處理程式碼的各種問題：
+
+```shell
+pnpm lint       # 使用 ESLint 抓出問題
+pnpm link:fix   # 使用 ESLint 抓出問題，並修理能自動修復的問題
+pnpm format:fix # 使用 Prettier 統一程式碼風格
+```
+
+> Note：
+> 針對 JavaScript 和 TypeScript 的 `.js`、`.ts`、`.jsx`、`.tsx`，請使用 ESLint 來處理，ESLint 抓完錯誤後會自動幫你用 Prettier 統一風格。
+> 不要直接使用 Prettier！這樣不會執行到 ESLint 的規則，最終結果會不一樣。
+>
+> 針對其他檔案像是 `.json`、`.css`、`.md` 就用 Prettier 統一格式就好（它們也沒有 ESLint 能用）。
+
+### 在 VSCode 整合 ESLint 和 Prettier
+
+如果你使用 VSCode 來寫程式，可以安裝 [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) 和 [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)，並設定檔案儲存時自動執行 ESLint 和 Prettier 修復錯誤，可以讓開發體驗更順暢。
+
+## 在 Build 時忽略 ESLint、TypeScript 錯誤
+
+Next.js 在 build 時，如果發現程式碼有任何 ESLint、TypeScript 錯誤，預設行為是會中斷 build，保護我們不要推送有問題的程式碼上線。
+
+但 ESLint、TypeScript 錯誤未必會讓網站無法正常實行，有些只是格式或設定問題而已。
+
+在開發階段時，你可能還是會想先推程式上線，後續再修正這些錯誤。
+
+你可以修改 `next.config.js`，讓 Next.js build 時忽略 ESLint、TypeScript 錯誤：
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // ...
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: true,
+  },
+};
+
+module.exports = nextConfig;
+```
+
+詳細說明可參考 Next.js 官方文件：[忽略 TypeScript 錯誤](https://nextjs.org/docs/basic-features/typescript#ignoring-typescript-errors)、[忽略 ESLint 錯誤](https://nextjs.org/docs/api-reference/next.config.js/ignoring-eslint)
+
+## 將部落格本體程式碼移進 /src 資料夾
+
+初始 Next.js 專案的本體程式 `/pages` 和 `/styles` 都在根目錄，但後續我們會在根目錄新增更多設定用的檔案。
+
+建議將本體程式碼移動進 `/src` 資料夾方便區分，詳細可參考 Next.js 官方文件：[Advanced Features: \`src\` Directory](https://nextjs.org/docs/advanced-features/src-directory)。
+
+修改如下：
+
+> `/pages/` → `/src/pages/` > `/styles/` → `/src/styles/`
+
+未來新增本體邏輯時，像是新 component 或 utility function，也都會加在 `/src` 裡。
+
+## 使用絕對路徑來 import JS 程式，Next.js Absolute Imports & Module path aliases
+
+正常在 JS 裡要引用另一個檔案內容，我們會用相對路徑寫法：
+
+```js
+import "../../../styles/globals.css";
+```
+
+但像上面這樣路徑差異過大時，就會很難讀。
+
+而且要複製這段 import 給不同層級的 JS 檔時，也要修改前面點點點的數量，多一個煩人步驟要做。
+
+Next.js 提供了 Absolute Imports & Module path aliases 功能，讓我能改用下面絕對路徑方式來 import：
+
+```js
+import "@/styles/globals.css";
+```
+
+詳見官方文件：[Advanced Features: Absolute Imports and Module Path Aliases | Next.js](https://nextjs.org/docs/advanced-features/module-path-aliases)
+
+### 設定 Absolute Imports & Module path aliases
+
+我們想用 `@/` 代表 `src/` 資料夾，修改 `tsconfig.json`，加入 baseUrl 和 paths：
+
+```json
+{
+  "compilerOptions": {
+    // ...
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+  // ...
+}
+```
+
+接著要讓 ESLint 也知道新加的規則，否則會有 error。
+
+輸入指令安裝 `eslint-import-resolver-alias`：
+
+```shell
+pnpm add -D eslint-import-resolver-alias
+```
+
+修改 `.eslintrc.js`，加入 settings 區塊：
+
+```js
+module.exports = {
+  // ...
+  settings: {
+    // Support absolute imports
+    // https://www.npmjs.com/package/eslint-import-resolver-alias
+    "import/resolver": {
+      alias: {
+        map: [["@", "./src"]],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
+  },
+  // ...
+};
+```
+
+這樣就完成設定了！
+
+接著可以把所有檔案的 import 都改用絕對路徑表示。
+
+修改 `src/pages/_app.tsx`：
+
+```tsx
+import "@/styles/globals.css";
+// ...
+```
+
+修改 `src/pages/index.tsx`：
+
+```tsx
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+
+import styles from "@/styles/Home.module.css";
+// ...
+```
+
+這樣就完成所有修改了！用 `pnpm dev` 打開網站瀏覽，如果沒有噴出任何 error 訊息就代表修改成功了！
+
+## 小節＆下一篇
+
+恭喜你完成了 Next.js 專案基本設定，讓後續開發體驗更流暢、專案結構更易讀。
+
+我們做完了這些設定：
+
+- 新增 .nvmrc 鎖定專案 Node.js 版本
+- 導入 ESLint、Prettier
+- 將主體 code 放在 /src 資料夾
+- 設定 Absolute Import
+
+> 這篇改動的完整程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day02-init-nextjs...day04-prepare
+
+下一篇我們將來介紹如何使用 Markdown 寫作，並加入第一個核心功能 Contentlayer，幫我們將 Markdown 轉換成 Next.js 能處理的文章！

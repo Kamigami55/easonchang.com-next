@@ -1,0 +1,187 @@
+---
+title: "首頁樣式切版 - Modern Next.js Blog 系列 #12"
+description: "繼續使用 Tailwind CSS 切版 Blog 首頁樣式"
+slug: "blog-homepage-style"
+language: zh-TW
+socialImage: ""
+date: 2022-09-27
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10299241)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 12 篇文章，上一篇我們使用 Tailwind CSS 美化了 navbar, footer 等全站樣式，這篇我們會繼續美化首頁樣式！
+
+結果截圖如下：
+
+![Home page](https://i.imgur.com/gEMLqww.jpg)
+
+![Home page in dark mode](https://i.imgur.com/CRmwFht.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day11-basic-site-ui...day12-basic-index-page-ui
+
+---
+
+## 首頁樣式切版
+
+這邊樣式主要是基於 [timlrx/tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) 專案來修改的。
+
+新增 `/src/lib/formatDate.ts`：
+
+```ts
+const formatDate = (date: string, locale = "zh-TW") => {
+  const now = new Date(date).toLocaleDateString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return now;
+};
+
+export default formatDate;
+```
+
+新增 `/src/components/PostList.tsx`：
+
+```tsx
+import { useRouter } from "next/router";
+
+import CustomLink from "@/components/CustomLink";
+import formatDate from "@/lib/formatDate";
+
+export interface PostForPostList {
+  slug: string;
+  date: string;
+  title: string;
+  description: string;
+  path: string;
+}
+
+type Props = {
+  posts: PostForPostList[];
+};
+
+export default function PostList({ posts = [] }: Props) {
+  const { locale } = useRouter();
+
+  return (
+    <ul className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+      {!posts.length && "No posts found."}
+      {posts.map((post) => {
+        const { slug, date, title, description, path } = post;
+        return (
+          <li key={slug} className="group transition-colors">
+            <CustomLink href={path}>
+              <article className="space-y-2 rounded-xl p-4 transition-colors group-hover:bg-gray-100 dark:group-hover:bg-gray-800 xl:grid xl:grid-cols-4  xl:items-baseline xl:space-y-0">
+                <dl>
+                  <dt className="sr-only">Published on</dt>
+                  <dd className="text-sm font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400 md:text-base">
+                    <time dateTime={date}>{formatDate(date, locale)}</time>
+                  </dd>
+                </dl>
+                <div className="space-y-3 xl:col-span-3">
+                  <div>
+                    <h3 className="text-lg font-bold tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-xl md:text-2xl">
+                      {title}
+                    </h3>
+                  </div>
+                  <div className="prose prose-sm max-w-none text-gray-500 transition-colors dark:text-gray-400 md:prose-base">
+                    {description}
+                  </div>
+                </div>
+              </article>
+            </CustomLink>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+```
+
+修改 `/src/pages/index.tsx`：
+
+```tsx
+import type { NextPage } from "next";
+import { GetStaticProps } from "next";
+import Head from "next/head";
+
+import PostList, { PostForPostList } from "@/components/PostList";
+import { allPostsNewToOld } from "@/lib/contentLayerAdapter";
+
+type PostForIndexPage = PostForPostList;
+
+type Props = {
+  posts: PostForIndexPage[];
+};
+
+export const getStaticProps: GetStaticProps<Props> = () => {
+  const posts = allPostsNewToOld.map((post) => ({
+    slug: post.slug,
+    date: post.date,
+    title: post.title,
+    description: post.description,
+    path: post.path,
+  })) as PostForIndexPage[];
+  return { props: { posts } };
+};
+
+const Home: NextPage<Props> = ({ posts }) => {
+  return (
+    <div>
+      <Head>
+        <title>Next.js Tailwind Contentlayer Blog Starter</title>
+        <meta name="description" content="Welcome to my blog" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <div className="prose my-12 space-y-2 transition-colors dark:prose-dark md:prose-lg md:space-y-5">
+        <h1 className="text-center sm:text-left">Hey，I am Iron Man ?</h1>
+        <p>我是 Tony Stark，不是 Stank！</p>
+        <p>老子很有錢，拯救過很多次世界。</p>
+        <p>我討厭外星人、紫色的東西、和紫色外星人。</p>
+      </div>
+
+      <div className="my-4 divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+        <div className="prose prose-lg my-8 dark:prose-dark">
+          <h2>最新文章</h2>
+        </div>
+
+        <PostList posts={posts} />
+      </div>
+    </div>
+  );
+};
+
+export default Home;
+```
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入首頁，就會看到首頁樣式變漂亮了！
+
+結果截圖如下：
+
+![Home page](https://i.imgur.com/gEMLqww.jpg)
+
+![Home page in dark mode](https://i.imgur.com/CRmwFht.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day11-basic-site-ui...day12-basic-index-page-ui
+
+## References
+
+- [timlrx/tailwind-nextjs-starter-blog: This is a Next.js, Tailwind CSS blogging starter template. Comes out of the box configured with the latest technologies to make technical writing a breeze. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.](https://github.com/timlrx/tailwind-nextjs-starter-blog)
+
+## 下一篇
+
+恭喜你！我們成功在 Next.js 裡使用 Tailwind CSS 完成首頁樣式切版！
+
+下一篇我們會繼續切版文章內頁的樣式！

@@ -1,0 +1,121 @@
+---
+title: "使用 nprogress 加入換頁進度條 - Modern Next.js Blog 系列 #23"
+description: "使用 nprogress 套件加入頁面切換進度條，改善讀者體感效能"
+slug: "nprogress"
+language: zh-TW
+socialImage: ""
+date: 2022-10-08
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10306167)
+
+這是「Modern Blog 30 天」系列第 23 篇文章。
+
+上一篇優化完了內文圖片效能，這篇我們繼續來改善讀者體感效能，使用 [nprogress](https://github.com/rstacruz/nprogress) 來加入換頁進度條！
+
+最終效果如下：
+
+![progress bar animation](https://i.imgur.com/BpakgNT.gif)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day22-custom-image...day23-nprogress
+
+---
+
+## 使用 nprogress 加入換頁進度條
+
+### 在 Next.js 安裝 nprogress
+
+```shell
+pnpm add nprogress
+pnpm add -D @types/nprogress
+```
+
+修改 `src/pages/_app.tsx`：
+
+```tsx
+// ...
+// 引入 nprogress/nprogress.css
+import "nprogress/nprogress.css";
+
+// ...
+// 引入 NProgress、useRouter、useEffect
+import { useRouter } from "next/router";
+import NProgress from "nprogress";
+import { useEffect } from "react";
+
+// 呼叫 NProgress.configure 來初始化
+NProgress.configure({ showSpinner: false });
+
+function MyApp({ Component, pageProps }: AppProps) {
+  // 新增下面這塊 useEffect，在 Next.js 換頁時開始 Nprogress 讀條，並在換頁完成時停止
+  const router = useRouter();
+
+  // Integrate nprogress
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => NProgress.start());
+    router.events.on("routeChangeComplete", () => NProgress.done());
+    router.events.on("routeChangeError", () => NProgress.done());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ...
+}
+```
+
+### 調整進度條顏色
+
+進度條預設是水藍色的，如果要修改的話能寫 css 改顏色。
+
+新增 `src/styles/nprogress-custom.scss`：
+
+```scss
+#nprogress {
+  .bar {
+    @apply h-1 bg-primary-500;
+  }
+
+  .peg {
+    @apply shadow-[0_0_10px] shadow-primary-500;
+  }
+}
+```
+
+修改 `src/pages/_app.tsx`，在全站引入新的 scss 檔：
+
+```tsx
+import "@/styles/globals.css";
+import "@/styles/prism-dracula.css";
+import "@/styles/prism-plus.css";
+import "nprogress/nprogress.css";
+// 新增下面這行引入 nprogress-custom.scss
+import "@/styles/nprogress-custom.scss";
+
+// ...
+```
+
+## 成果
+
+完成了！使用 `pnpm dev`，進網站後點連結切換頁面，就會看到最上面多出一條換頁進度條了！讓更願意留在網站等待換頁。
+
+最終效果如下：
+
+![progress bar animation](https://i.imgur.com/BpakgNT.gif)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day22-custom-image...day23-nprogress
+
+## References
+
+- [rstacruz/nprogress: For slim progress bars like on YouTube, Medium, etc](https://github.com/rstacruz/nprogress)
+- [The comprehensive guide to use NProgress in Next.js [easy guide]](https://learnjsx.com/category/4/posts/nextjs-nprogress)
+
+## 下一篇
+
+恭喜你成功使用 nprogress 加入了換頁進度條！
+
+下一篇我們繼續加入更多炫砲功能，讓我們在文章內頁加入「目錄」吧，讓讀者一目瞭然文章結構。

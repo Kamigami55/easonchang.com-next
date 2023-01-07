@@ -1,0 +1,109 @@
+---
+title: "加入程式碼區塊標題，使用 rehype-code-titles - Modern Next.js Blog 系列 #15"
+description: "使用 rehype-code-titles，為每個程式碼區塊加入標題"
+slug: "rehype-code-titles"
+language: zh-TW
+socialImage: ""
+date: 2022-09-30
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10301271)
+
+上一篇我們讓程式碼區塊支援 Syntax Highlighting 了，這篇我們來讓它多出區塊標題！
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day14-code-syntax-highlight...day15-code-block-title
+
+結果截圖如下：
+
+![Post with code](https://i.imgur.com/FCKHNvh.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/jAr8Isc.jpg)
+
+---
+
+## 使用 rehype-code-titles，為每個程式碼區塊加入標題
+
+安裝 [rehype-code-titles](https://github.com/rockchalkwushock/rehype-code-titles)：
+
+```shell
+pnpm add rehype-code-titles
+```
+
+啟用它，修改 `/contentlayer.config.ts`，將 rehype-code-titles 加入到 `rehypePlugins` 列表：
+
+```ts
+import rehypeCodeTitles from "rehype-code-titles"; // 新增這行
+import rehypePrism from "rehype-prism-plus";
+
+import { defineDocumentType, makeSource } from "./src/lib/contentLayerAdapter";
+
+// ...
+
+export default makeSource({
+  contentDirPath: "content",
+  documentTypes: [Post],
+  mdx: {
+    // 新增到 rehypePlugins 列表裡
+    rehypePlugins: [rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],
+  },
+});
+```
+
+到此為止就完成 rehype-code-titles 的安裝了，但他預設不會有任何樣式，我們需要自己指定。
+
+修改 `/src/components/PostBody/PostBody.module.scss`：
+
+```scss
+.postBody {
+  # 新增下面這兩塊
+  :global(.rehype-code-title) {
+    @apply -mb-3 rounded-tl rounded-tr bg-slate-600 px-4 pt-1 pb-2 font-mono text-sm text-gray-200;
+  }
+
+  div:global(.rehype-code-title) + pre {
+    @apply rounded-tl-none rounded-tr-none;
+  }
+
+  # ...
+}
+```
+
+這樣就完成所有設定了！
+
+## 修改文章，在程式碼區塊加入標題
+
+在程式碼區塊 Markdown 的程式語言標示後，加入 `:` 冒號，並輸入任意文字，這些文字就會被 rehype-code-title 當成標題了。
+
+像是這樣，修改 `/content/posts/20220901-post-with-code.mdx`：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/4f042ea8861adaa2d53fd7fc1a461459862719de
+
+![Post modification for code title](https://i.imgur.com/fWZ72A0.jpg)
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入剛剛修改的文章，就會看到程式碼區塊多了各自的標題了！
+
+http://localhost:3000/posts/post-with-code
+
+結果截圖如下：
+
+![Post with code](https://i.imgur.com/FCKHNvh.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/jAr8Isc.jpg)
+
+## References
+
+- [rockchalkwushock/rehype-code-titles: Rehype plugin for parsing code blocks and adding titles to code blocks](https://github.com/rockchalkwushock/rehype-code-titles)
+
+## 下一篇
+
+恭喜你成功讓程式碼區塊多出標題了。
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day14-code-syntax-highlight...day15-code-block-title
+
+下一篇是最後一篇針對程式碼區塊調整，我們會加上一鍵複製程式的「複製按鈕」！

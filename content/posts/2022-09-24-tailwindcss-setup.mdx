@@ -1,0 +1,266 @@
+---
+title: "安裝 Tailwind CSS 和相關 ESLint、Prettier 設定 - Modern Next.js Blog 系列 #09"
+description: "安裝 Tailwind CSS 這套 CSS 工具，設定好對應的 ESLint, Prettier 規則"
+slug: "tailwindcss-setup"
+language: zh-TW
+socialImage: ""
+date: 2022-09-24
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10297905)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 9 篇文章，上一篇我們讓 Contentlayer 也支援了 MDX 格式。這篇讓我們來安裝 Tailwind CSS 這套 CSS 工具，設定好對應的 ESLint, Prettier 規則，準備開始美化畫面！
+
+結果截圖如下：
+
+![Index Page result of Tailwind CSS](https://i.imgur.com/gJiZP1Q.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day08-mdx-support...day09-install-tailwindcss
+
+---
+
+## 安裝 Tailwind CSS
+
+```shell
+pnpm add -D tailwindcss autoprefixer postcss
+npx tailwindcss init -p
+```
+
+微調 `/tailwind.config.js`：
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+微調 `/postcss.config.js`：
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+修改 `/src/styles/globals.css`，刪除所有內容，替換成這三行：
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## 在首頁套用基本樣式，試用看看 Tailwind CSS
+
+移除 `/src/styles/Home.module.css`。
+
+修改 `/src/pages/index.tsx`，改成下面這樣：
+
+```tsx
+import type { NextPage } from "next";
+import Head from "next/head";
+
+import { allPostsNewToOld, Post } from "@/lib/contentLayerAdapter";
+
+export function getStaticProps() {
+  const posts = allPostsNewToOld;
+  return { props: { posts } };
+}
+
+type Props = {
+  posts: Post[];
+};
+
+const Home: NextPage<Props> = ({ posts }) => {
+  return (
+    <div>
+      <Head>
+        <title>My blog</title>
+        <meta name="description" content="Welcome to my blog" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className="p-4">
+        <h1 className="mb-6 text-4xl font-bold">Welcome to my blog!</h1>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {posts.map((post) => (
+            <div key={post.slug} className="rounded-lg border border-black p-6">
+              <a href={post.path}>
+                <h2 className="mb-4 text-2xl font-semibold">{post.title}</h2>
+                <p>{post.description}</p>
+              </a>
+            </div>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default Home;
+```
+
+修改 `/src/pages/[slug].tsx`，改成下面這樣：
+
+```tsx
+import { format, parseISO } from "date-fns";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import { useMDXComponent } from "next-contentlayer/hooks";
+
+import { allPosts, Post } from "@/lib/contentLayerAdapter";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const post = allPosts.find((post) => post.slug === params?.slug);
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+    },
+  };
+};
+
+type Props = {
+  post: Post;
+};
+
+const PostPage: NextPage<Props> = ({ post }) => {
+  const MDXContent = useMDXComponent(post.body.code);
+
+  return (
+    <div>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main>
+        <h1>{post.title}</h1>
+
+        <time dateTime={post.date}>
+          {format(parseISO(post.date), "LLLL d, yyyy")}
+        </time>
+
+        <MDXContent />
+      </main>
+    </div>
+  );
+};
+
+export default PostPage;
+```
+
+## 安裝 Tailwind CSS 相關 ESLint, Prettier 規則
+
+```shell
+pnpm add -D eslint-plugin-tailwindcss prettier-plugin-tailwindcss
+```
+
+修改 `.prettierrc.js`，加入 prettier-plugin-tailwindcss 這個 plugin，最後結果如下：
+
+```js
+module.exports = {
+  trailingComma: "es5",
+  singleQuote: true,
+  printWidth: 80,
+  semi: true,
+  plugins: ["prettier-plugin-tailwindcss"],
+};
+```
+
+修改 `.eslintrc.js`：
+
+```js
+module.exports = {
+  extends: [
+    "eason",
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended", // Make this the last element so prettier config overrides other formatting rules
+  ],
+  plugins: ["tailwindcss"],
+  rules: {
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        components: ["Link"],
+        specialLink: ["hrefLeft", "hrefRight"],
+        aspects: ["invalidHref", "preferButton"],
+      },
+    ],
+    "tailwindcss/classnames-order": "off", // Respect prettier-plugin-tailwindcss order
+  },
+  settings: {
+    // Support absolute imports
+    // https://www.npmjs.com/package/eslint-import-resolver-alias
+    "import/resolver": {
+      alias: {
+        map: [["@", "./src"]],
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
+    "import/ignore": ["contentLayerAdapter.js"],
+  },
+  overrides: [
+    {
+      files: "**/*.{ts,tsx}",
+      extends: [
+        "eason/typescript",
+        "plugin:prettier/recommended", // Make this the last element so prettier config overrides other formatting rules
+      ],
+    },
+  ],
+};
+```
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入首頁，就會看到首頁樣式改變了，全部都是由 Tailwind CSS 的 Utility classes 實現的樣式！
+
+結果如下：
+
+![Index Page result of Tailwind CSS](https://i.imgur.com/gJiZP1Q.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day08-mdx-support...day09-install-tailwindcss
+
+## References
+
+https://tailwindcss.com/docs/guides/nextjs
+
+## 下一篇
+
+恭喜你！我們成功在 Next.js 專案安裝了 Tailwind CSS 和對應的 ESLint, Prettier 規則了，並簡單試用了一下。
+
+下一篇我們會再加入 Modern Blog 必備的要素：暗黑模式！也是使用 Tailwind CSS 實現的。
+
+實作完之後就會開始真正美化全站的樣式了！

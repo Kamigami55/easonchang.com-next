@@ -1,0 +1,120 @@
+---
+title: "將 Next.js 專案部署上 Vercel 平台 - Modern Next.js Blog 系列 #03"
+description: "Vercel 架站平台介紹、將上一篇的 Next.js 空專案部署上 Vercel，並串接 Github CI/CD"
+slug: "nextjs-to-vercel"
+language: zh-TW
+socialImage: ""
+date: 2022-09-18
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10293504)
+
+這篇文章會介紹 Vercel 架站平台、如何把 Next.js 專案部署上去、以及綁定 Github 實現持續部署。
+
+內容如下：
+
+- Vercel 架站平台介紹
+- 將上一篇做完的 Next.js 空專案部署上 Vercel
+- Vercel x Github CI/CD 持續部署
+
+---
+
+## 雖然我們啥都還沒開發，但先來部署網站吧！
+
+通常來說「部署」是網站開發的最後一步。
+
+但因為環境不同，在你電腦上跑得好好的網站，未必能在你選擇的架站平台上運作順利。
+
+如果一次全部開發完再部署上去，最後發現架不起來，因為專案大了，要追查問題會比較困難，問題可能出在套件支援度、程式語言版本、或程式寫法等地方，任何地方！
+
+如果你將開發的專案不需要非常保密的話，建議越早部署、打通部署流程越好。提早把部落格上線，並在開發過程中定期上來玩玩看，如果發現問題的話，就知道問題只會出現在最近幾個有修改的地方，能更快找到問題根源。
+
+因此讓我們先把部落格部署上線吧！
+
+## Vercel：開發者體驗最棒的架站平台
+
+[Vercel](https://vercel.com/home) 是開發 [Next.js](https://nextjs.org/) 的公司，他們也提供了同名的「Vercel」平台，能讓我們部署網站上去。
+
+（文章後續講到 Vercel，都是指他們的架站平台。）
+
+![Vercel](https://i.imgur.com/3BIOqos.jpg)
+
+Vercel 平台支援所有主流前端框架部署，包含 Next.js、React.js、Vue.js、Nuxt.js、Anguer、Svelte、Hugo、Gatsby 等。
+
+Vercel 也支援各種渲染類型的前端專案，包含打包完的純靜態網站、Client-side Rendering 網站、Server-side Rendering 網站、Serverless function。
+
+最後 Vercel 也內建讓網頁讀取速度更快的 CDN，和串接 Github CI/CD 功能。
+
+除開沒有資料庫（Database）功能，一個現代前端專案該有的功能，Vercel 都提供了。並且我們只需要專心寫 code 實現邏輯，剩下的架構、擴展性問題 Vercel 都會幫我們處理。
+
+Vercel 費用（[Pricing](https://vercel.com/pricing)）也很佛心，個人非商業性專案，每月流量不超過 100GB 的話，正常使用是完全免費的，以個人部落格來說綽綽有餘。
+
+總結來說 Vercel 對於部落格、Side Project 來說，是非常好的架站平台，開發者體驗極佳，不需要太多設定，未來即使要搬遷到其他平台也沒啥轉移成本，同一份 Code 重新部署上其他平台即可。
+
+## 將 Next.js 專案部署上 Vercel
+
+### Code
+
+上一篇文章我們在自己電腦上建立的基本 Next.js 專案，程式碼在 Github 上 Kamigami55/nextjs-tailwind-contentlayer-blog-starter repo 的 day02-init-nextjs branch，連結如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day02-init-nextjs
+
+### Vercel x Github CI/CD
+
+Vercel 提供了 Github CI/CD 功能。CI/CD 指的是 Continuous Integration 持續整合、Continuous Deployment 持續部署，講人話就是自動把 code 部署成網站，不用按任何按鈕或下任何指令，超方便！
+
+我們會使用這方式來自動部署網站。
+
+### 將 Next.js 放上 Github
+
+首先你需要將 Next.js 專案程式碼推上自己的 Github 帳號上，以我為例我是建成 [Kamigami55/nextjs-tailwind-contentlayer-blog-starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter) repo。
+
+### 註冊 Vercel 帳號
+
+接著進到 [Vercel 註冊頁面](https://vercel.com/signup)，使用 Github 帳號來註冊並登入，或是用其他方式註冊登入也行，但後續需要另外綁定 Github 帳號。
+
+### 在 Vercel Dashboard 建立新專案，從 Github repo 建立
+
+接著進到 [Vercel Dashboard](https://vercel.com/dashboard) 頁面，按下右上角建立新專案按鈕（Add new... -> Project）：
+
+![New Project](https://i.imgur.com/ge96JN0.jpg)
+
+下個畫面如果你的帳號跟 Github 綁定完了，就會看到所有 Github 專案列在這裡，選取你要部署的專案，按下「Import」按鈕：
+
+![Import](https://i.imgur.com/gTd0eiq.jpg)
+
+再來做一些基礎設定，這邊不需要修改什麼，Vercel 都會自動偵測專案內容（使用的框架和打包指令等），直接按「Deploy」按鈕開始部署：
+
+![Settings](https://i.imgur.com/ep7al5e.jpg)
+
+Vercel 就會開始部署你的專案了，過程約一分鐘：
+
+![Deploying](https://i.imgur.com/SAxAIqQ.jpg)
+
+等他跑完後，看到禮砲特效就代表部署成功了！
+
+![Success](https://i.imgur.com/Uc1vb2n.jpg)
+
+Vercel 會自動分配一個 XXX.vercel.app 的網域給你的專案，點選中間的大框框就可以瀏覽你的網頁了，恭喜你！
+
+以我的專案為例，我的專案會自動被部署在這個網址上：
+
+https://nextjs-tailwind-contentlayer-blog-starter.vercel.app/
+
+### Github CI/CD
+
+還記得前面提過 CI/CD 嗎？當我們做完剛剛那套流程後，我們也完成 CI/CD 的設定了！未來當你 push code 到專案 repo 上時，Vercel 都會自動偵測到，並執行新一輪部署，將最新的 code 部署上去。
+
+推到 main branch 時，新改動會被部署成 Production，給所有讀者使用。
+
+而推到其他任何 branch 時，Vercel 則會部署成 Preview site，他會自動分配一個隨機網址給這個改動，並 Email 通知你，讓你能在上面測試改動是否符合預期。
+
+所以未來我們幾乎不需要回到 Vercel Dashboard 做操作，或下任何指令。我們只需要開發完新功能，Push 上 Github，幾分鐘後就能在網站看到最新的改動了，非常方便！
+
+## 小結＆下一篇
+
+現在我們瞭解了 Vercel 架站平台，和把 Next.js 專案架設上去了，並且會根據 Github 最新的改動持續部署。
+
+下一篇，我們會繼續改 Next.js 專案的 code，做一些 ESLint、Prettier、TypeScript 等基礎設定！

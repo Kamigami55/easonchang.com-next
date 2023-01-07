@@ -1,0 +1,159 @@
+---
+title: "總結與回顧：一個炫砲技術部落格的誕生 - Modern Next.js Blog 系列 #30"
+description: "總結這系列 30 天內從零開始、用現代前端技術打造的炫砲個人部落格，回顧學到的內容、實作出的功能、及用到的技術"
+slug: "modern-nextjs-blog-summary"
+language: zh-TW
+socialImage: ""
+date: 2022-10-15
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10308942)
+
+這是「**從零開始打造炫砲個人部落格，使用 Next.js、ContentLayer、i18next 等現代技術**」系列第 30 篇文章。
+
+在這 30 天裡，我們一起從無到有、使用現代技術、打造出了一個炫砲的技術部落格。
+
+## Show me the code & demo!
+
+我把這 30 天的成果開源成「[Next.js Tailwind Contentlayer Blog Starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter)」template 專案，並放在 Github 上。
+
+![Next.js Tailwind Contentlayer Blog Starter](https://i.imgur.com/oNtgi9e.png)
+
+### Github repo
+
+你可以點下面 repo 網址，看到所有程式碼：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter
+
+![Github repo](https://i.imgur.com/vYRUaL3.jpg)
+
+歡迎使用它來建立你自己的技術部落格，點綠色「Use this template」或「Fork」按鈕就行了！
+
+也希望你能點個「Star」支持我，如果這系列有幫助到你的話！
+
+發現任何 bug 或想加入更多 feature 的話，也歡迎開 issue 和 PR 一起合作！
+
+### Demo
+
+你可以在這裡玩玩它：
+
+[https://nextjs-tailwind-contentlayer-blog-starter.vercel.app/](https://nextjs-tailwind-contentlayer-blog-starter.vercel.app/)
+
+> 我自己的個人部落格 [https://easonchang.com/](https://easonchang.com/) 也是用這套模板開發的。
+> Repo 在這兒：[https://github.com/Kamigami55/easonchang.com-next](https://github.com/Kamigami55/easonchang.com-next) 。
+> 裡面還有更多前端開發相關技術文章，歡迎來逛逛！
+
+## 回顧這 30 天，我們做到了什麼
+
+我們一起在 30 天內從零開始，用最現代的前端技術，從最基礎的環境配置、到最後的網站部署及維護，做出了一個炫砲個人部落格。
+
+### 回顧系列內容
+
+這 30 天我們經歷了 3 階段迭代：
+
+第 1 ~ 13 天，我們先做出了一個有基本功能、且不錯看的部落格。
+
+第 14 ~ 19 天，做完程式碼區塊、SEO 處理、sitemap、RSS 後，完成一個技術部落格該有的一切條件了。
+
+而最後第 20 ~ 30 天，我們繼續加入更多炫砲且實用的功能，讓我們的部落格脫穎而出！
+
+這 30 天目錄如下：
+
+1. [「從零開始打造炫砲個人部落格」系列簡介](https://ithelp.ithome.com.tw/articles/10291960)
+2. [簡介前端開發生態＆建立 Next.js 專案](https://ithelp.ithome.com.tw/articles/10292743)
+3. [將 Next.js 專案部署上 Vercel 平台](https://ithelp.ithome.com.tw/articles/10293504)
+4. [ESLint、Prettier、TypeScript 等 Next.js 專案基礎設定](https://ithelp.ithome.com.tw/articles/10294414)
+5. [Markdown 簡介 & 安裝 ContentLayer](https://ithelp.ithome.com.tw/articles/10295154)
+6. [首頁功能實作，加入 Contentlayer 文章列表](https://ithelp.ithome.com.tw/articles/10295835)
+7. [文章內頁功能實作，渲染 Markdown 文章內容](https://ithelp.ithome.com.tw/articles/10296357)
+8. [讓 Contentlayer 文章支援 MDX](https://ithelp.ithome.com.tw/articles/10297205)
+9. [安裝 Tailwind CSS 和相關 ESLint、Prettier 設定](https://ithelp.ithome.com.tw/articles/10297905)
+10. [Dark Mode 深色模式支援，使用 Tailwind CSS、next-themes](https://ithelp.ithome.com.tw/articles/10298268)
+11. [全站樣式切版](https://ithelp.ithome.com.tw/articles/10299066)
+12. [首頁樣式切版](https://ithelp.ithome.com.tw/articles/10299241)
+13. [文章內頁樣式切版](https://ithelp.ithome.com.tw/articles/10300526)
+14. [加入程式碼 Syntax Highlighting，使用 rehype-prism-plus](https://ithelp.ithome.com.tw/articles/10301243)
+15. [加入程式碼區塊標題，使用 rehype-code-titles](https://ithelp.ithome.com.tw/articles/10301271)
+16. [加入程式碼區塊「複製按鈕」，使用客製化 MDX 元件](https://ithelp.ithome.com.tw/articles/10302397)
+17. [加入 Open Graph、LD-JSON 等 SEO meta data](https://ithelp.ithome.com.tw/articles/10302724)
+18. [使用 next-sitemap 生成 Sitemap](https://ithelp.ithome.com.tw/articles/10303553)
+19. [使用 feed 生成 RSS Feed](https://ithelp.ithome.com.tw/articles/10304162)
+20. [為內文小標題加入 anchor 錨點連結](https://ithelp.ithome.com.tw/articles/10304682)
+21. [強化內文連結換頁速度、加入外部連結 icon](https://ithelp.ithome.com.tw/articles/10305241)
+22. [圖片效能最佳化，使用 Next.js Image、plaiceholder、客製 MDX 元件](https://ithelp.ithome.com.tw/articles/10305758)
+23. [使用 nprogress 加入換頁進度條](https://ithelp.ithome.com.tw/articles/10306167)
+24. [在 MDX 文章側邊加入目錄](https://ithelp.ithome.com.tw/articles/10306476)
+25. [使用 giscus 在 Next.js 加入留言系統](https://ithelp.ithome.com.tw/articles/10306883)
+26. [使用 kbar 加入 Command Palette 指令面板](https://ithelp.ithome.com.tw/articles/10307584)
+27. [在 kbar Command Palette 實作文章搜尋](https://ithelp.ithome.com.tw/articles/10307994)
+28. [使用 next-i18next 實作中英文多語系](https://ithelp.ithome.com.tw/articles/10308315)
+29. [在 Next.js Contentlayer blog 實作舊路徑轉址](https://ithelp.ithome.com.tw/articles/10308729)
+30. 總結與回顧：一個炫砲技術部落格的誕生（You are here）
+
+### 回顧使用的前端技術
+
+- [Next.js](https://nextjs.org/)：現代全端框架
+- [Vercel](https://vercel.com/home)：網站託管
+- [Contentlayer](https://github.com/contentlayerdev/contentlayer)：Markdown/MDX 文章處理
+- [Tailwind CSS](https://tailwindcss.com/)：UI 樣式
+- [next-i18next](https://github.com/i18next/next-i18next)：多語系
+- [next-seo](https://github.com/garmeeh/next-seo)：SEO meta tags
+- [kbar](https://github.com/timc1/kbar)：指令面板
+- [giscus](https://github.com/giscus/giscus)：留言系統
+- [nprogress](https://github.com/rstacruz/nprogress)：換頁進度條
+- [TypeScript](https://www.typescriptlang.org/)：更扎實的 JavaScript
+- [ESLint](https://eslint.org/), [Prettier](https://prettier.io/)：統一程式碼格式
+
+### 回顧實作出的功能
+
+除了基本部落格功能，我們也實作下列這些酷炫 feature：
+
+- 編輯 local Markdown / MDX 檔案來寫作
+- 網頁效能極佳
+- SEO 友善
+- 深色模式
+- 中文、英文多語系
+- 指令面板 Command Palette
+- 留言系統
+- 換頁進度條
+- RSS Feed
+- Sitemap
+- 好讀的程式碼區塊
+
+## 未來展望
+
+我會持續維護「[Next.js Tailwind Contentlayer Blog Starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter)」專案，畢竟我的個人部落格（[easonchang.com](https://easonchang.com/)）就是基於它開發的。
+
+我還有很多想做的，我的部落格會持續進化，這份專案也會！
+
+下面簡單列出一些未來預計加入的功能，應該會繼續寫成第 31、32... 篇文章：
+
+1. 文章 OG image 自動產生：預計使用 Vercel 最新推出的 @vercel/og 搭配 Vercel Edge Function 來實作，參見 [Introducing OG Image Generation: Fast, dynamic social card images at the Edge - Vercel](https://vercel.com/blog/introducing-vercel-og-image-generation-fast-dynamic-social-card-images)
+2. 可編輯的程式碼區塊：預計使用 [Sandpack](https://sandpack.codesandbox.io/) 搭配這篇教學文（[Building a Next-Level Code Playground / Sandbox / REPL with Sandpack](https://www.joshwcomeau.com/react/next-level-playground/)）
+3. 加入更多頁面（About、Projects、Resume）
+4. 快速生成文章 .mdx 檔：預計使用 [Hygen](https://www.hygen.io/) code generator
+5. 加入 Analytics：預計使用 Google Analytics 4
+6. 串接 Google Search Console
+7. 讓 RSS 分語系
+8. 改善寫作體驗
+9. 加入推薦文章區塊
+10. 加入 Storybook
+11. 還有很多...!
+
+## 關於我
+
+我是 [Eason Chang](https://easonchang.com/about)，最愛挖坑給自己跳的全端工程師。
+
+如果這系列文章對你有幫助，或是想追蹤後續更多文章，歡迎透過各種方式追蹤我，一起交流切磋！
+
+> 個人部落格：https://easonchang.com/
+>
+> Facebook：https://www.facebook.com/chang.ying.hsiang
+>
+> Twitter：https://twitter.com/EasonChang_me
+>
+> Github：https://github.com/Kamigami55
+>
+> LinkedIn：https://www.linkedin.com/in/easonchang101/

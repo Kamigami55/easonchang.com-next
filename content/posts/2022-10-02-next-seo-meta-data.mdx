@@ -1,0 +1,428 @@
+---
+title: "加入 Open Graph、LD-JSON 等 SEO meta data - Modern Next.js Blog 系列 #17"
+description: "使用 next-seo 為全站設定標題、描述文字、縮圖、Open Graph、LD-JSON，讓搜尋引擎理解每個頁面意義，強化 SEO"
+slug: "next-seo-meta-data"
+language: zh-TW
+socialImage: ""
+date: 2022-10-02
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於[it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10302724)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 17 篇文章，上一篇我們完成所有樣式切版了，這篇我們會使用 [next-seo](https://github.com/garmeeh/next-seo)，為全站設定標題、描述文字、縮圖、Open Graph、LD-JSON，讓搜尋引擎知道每個頁面意義，做好 SEO！
+
+結果截圖如下：
+
+![Home page meta data](https://i.imgur.com/ADTXxJ2.jpg)
+
+![Post page meta data](https://i.imgur.com/6fvyZaR.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day16-copy-code-button...day17-open-graph-meta
+
+---
+
+## 為全站及各頁面加入 meta data
+
+經營部落格就是希望人們能來閱讀，能在搜尋引擎搜到你寫的文章。
+
+而要做好搜尋引擎優化（Search Engine Optimization、SEO），除了內容好、樣式好看，我們也需要做些設定，讓搜尋引擎的爬蟲知道每個頁面在描述什麼，以及讓文章被貼到社群平台時，社群平台能知道該使用哪張縮圖。
+
+方法是透過在各頁面 `<head>` 裡插入許多 `<meta>` tag，標註頁面標題、概述、縮圖。
+
+要在 Next.js 網站加入 meta tags，可以使用官方的 `next/head` 元件，在裡面插入 `<meta>` 來實作，可參考此處官方文件：[next/head | Next.js](https://nextjs.org/docs/api-reference/next/head)。
+
+另外一種方法是使用 [next-seo](https://github.com/garmeeh/next-seo) 套件，它提供了包裝更完整的元件幫助渲染出所有必要的 meta tags，能簡化我們需要自己加的程式碼行數。
+
+### 安裝 next-seo
+
+```shell
+pnpm add next-seo
+```
+
+### 為文章加入 socialImage 欄位，指定文章縮圖
+
+我們希望能為每篇文章指定縮圖，在文章配貼到社群平台時會顯示的圖片。
+
+圖片 socialImage 是一個 string，可以是 /public 資料夾內的圖片路徑，也可以是遠端圖片的網址。並且它不是必填的，如果寫文章時沒有指定，就會使用另一張全站共用的縮圖。
+
+新增文章欄位需要修改 `/contentlayer.config.ts`：
+
+```ts
+// ...
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `content/posts/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    // ...
+    date: {
+      type: "date",
+      required: true,
+    },
+    // 新增 socialImage
+    socialImage: {
+      type: "string",
+    },
+  },
+  // ...
+}));
+// ...
+```
+
+### 為文章指定 socialImage
+
+接著就能在文章最前面區塊指定 socialImage 了，你可以挑一篇現成文章來加，或是像我這個 commit 一樣，新增一張圖片在 /public 裡面，並新增一篇文章來使用它當縮圖：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/799d5ec203ac227fe7a8500c2f9ddcb3677a0e1a
+
+### 使用 next-seo 設定各頁面 meta data
+
+完整改動可以看這支 commit：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/9c105bc2ba84286eac0d26580240a93e104ddee6
+
+新增 `/src/configs/siteConfigs.ts`，並修改成你的網站想要的內容：
+
+```ts
+const fqdn = "https://nextjs-tailwind-contentlayer-blog-starter.vercel.app";
+const logoPath = "/logo.png";
+const bannerPath = "/og-image.png";
+
+export const siteConfigs = {
+  title: "Next.js Tailwind Contentlayer Blog Starter",
+  titleShort: "Next Blog",
+  description:
+    "Blog starter template with modern frontend technologies like Next.js, Tailwind CSS, Contentlayer, i18Next",
+  author: "Tony Stark",
+  fqdn: fqdn,
+  logoPath: logoPath,
+  logoUrl: fqdn + logoPath,
+  bannerPath: bannerPath,
+  bannerUrl: fqdn + bannerPath,
+  twitterID: "@EasonChang_me",
+  datePublished: "2022-09-01",
+};
+```
+
+新增 `/src/lib/getPostOGImage.ts`：
+
+```ts
+import { siteConfigs } from "@/configs/siteConfigs";
+
+export const getPostOGImage = (socialImage: string | null): string => {
+  if (!socialImage) {
+    return siteConfigs.bannerUrl;
+  }
+  if (socialImage.startsWith("http")) {
+    return socialImage;
+  }
+  return siteConfigs.fqdn + socialImage;
+};
+```
+
+修改 `/src/pages/_app.tsx`：
+
+```tsx
+import "@/styles/globals.css";
+import "@/styles/prism-dracula.css";
+import "@/styles/prism-plus.css";
+
+import type { AppProps } from "next/app";
+import { DefaultSeo } from "next-seo";
+import { ThemeProvider } from "next-themes";
+
+import LayoutWrapper from "@/components/LayoutWrapper";
+import { siteConfigs } from "@/configs/siteConfigs";
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <ThemeProvider attribute="class">
+      <DefaultSeo
+        titleTemplate={`%s | ${siteConfigs.titleShort}`}
+        defaultTitle={siteConfigs.title}
+        description={siteConfigs.description}
+        canonical={siteConfigs.fqdn}
+        openGraph={{
+          title: siteConfigs.title,
+          description: siteConfigs.description,
+          url: siteConfigs.fqdn,
+          images: [
+            {
+              url: siteConfigs.bannerUrl,
+            },
+          ],
+          site_name: siteConfigs.title,
+          type: "website",
+        }}
+        twitter={{
+          handle: siteConfigs.twitterID,
+          site: siteConfigs.twitterID,
+          cardType: "summary_large_image",
+        }}
+        additionalMetaTags={[
+          {
+            name: "viewport",
+            content: "width=device-width, initial-scale=1",
+          },
+        ]}
+        additionalLinkTags={[
+          {
+            rel: "icon",
+            href: siteConfigs.logoPath,
+          },
+        ]}
+      />
+
+      <LayoutWrapper>
+        <Component {...pageProps} />
+      </LayoutWrapper>
+    </ThemeProvider>
+  );
+}
+
+export default MyApp;
+```
+
+修改 `/src/pages/index.tsx`：
+
+```tsx
+import type { NextPage } from "next";
+import { GetStaticProps } from "next";
+import { ArticleJsonLd } from "next-seo";
+
+import PostList, { PostForPostList } from "@/components/PostList";
+import { siteConfigs } from "@/configs/siteConfigs";
+import { allPostsNewToOld } from "@/lib/contentLayerAdapter";
+
+type PostForIndexPage = PostForPostList;
+
+type Props = {
+  posts: PostForIndexPage[];
+};
+
+export const getStaticProps: GetStaticProps<Props> = () => {
+  const posts = allPostsNewToOld.map((post) => ({
+    slug: post.slug,
+    date: post.date,
+    title: post.title,
+    description: post.description,
+    path: post.path,
+  })) as PostForIndexPage[];
+  return { props: { posts } };
+};
+
+const Home: NextPage<Props> = ({ posts }) => {
+  return (
+    <>
+      <ArticleJsonLd
+        type="Blog"
+        url={siteConfigs.fqdn}
+        title={siteConfigs.title}
+        images={[siteConfigs.bannerUrl]}
+        datePublished={siteConfigs.datePublished}
+        authorName={siteConfigs.author}
+        description={siteConfigs.description}
+      />
+
+      <div className="prose my-12 space-y-2 transition-colors dark:prose-dark md:prose-lg md:space-y-5">
+        <h1 className="text-center sm:text-left">Hey，I am Iron Man ?</h1>
+        <p>我是 Tony Stark，不是 Stank！</p>
+        <p>老子很有錢，拯救過很多次世界。</p>
+        <p>我討厭外星人、紫色的東西、和紫色外星人。</p>
+      </div>
+
+      <div className="my-4 divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+        <div className="prose prose-lg my-8 dark:prose-dark">
+          <h2>最新文章</h2>
+        </div>
+
+        <PostList posts={posts} />
+      </div>
+    </>
+  );
+};
+
+export default Home;
+```
+
+修改 `/src/pages/posts/[slug].tsx`：
+
+```tsx
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { useMDXComponent } from "next-contentlayer/hooks";
+import { ArticleJsonLd, NextSeo } from "next-seo";
+
+import PostLayout, {
+  PostForPostLayout,
+  RelatedPostForPostLayout,
+} from "@/components/PostLayout";
+import { siteConfigs } from "@/configs/siteConfigs";
+import { allPosts, allPostsNewToOld } from "@/lib/contentLayerAdapter";
+import { getPostOGImage } from "@/lib/getPostOGImage";
+import mdxComponents from "@/lib/mdxComponents";
+
+type PostForPostPage = PostForPostLayout & {
+  title: string;
+  description: string;
+  date: string;
+  path: string;
+  socialImage: string | null;
+  body: {
+    code: string;
+  };
+};
+
+type Props = {
+  post: PostForPostPage;
+  prevPost: RelatedPostForPostLayout;
+  nextPost: RelatedPostForPostLayout;
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const postIndex = allPostsNewToOld.findIndex(
+    (post) => post.slug === params?.slug
+  );
+  if (postIndex === -1) {
+    return {
+      notFound: true,
+    };
+  }
+  const prevFull = allPostsNewToOld[postIndex + 1] || null;
+  const prevPost: RelatedPostForPostLayout = prevFull
+    ? { title: prevFull.title, path: prevFull.path }
+    : null;
+  const nextFull = allPostsNewToOld[postIndex - 1] || null;
+  const nextPost: RelatedPostForPostLayout = nextFull
+    ? { title: nextFull.title, path: nextFull.path }
+    : null;
+  const postFull = allPostsNewToOld[postIndex];
+  const post: PostForPostPage = {
+    title: postFull.title,
+    date: postFull.date,
+    description: postFull.description,
+    path: postFull.path,
+    socialImage: postFull.socialImage || null,
+    body: {
+      code: postFull.body.code,
+    },
+  };
+
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+      prevPost,
+      nextPost,
+    },
+  };
+};
+
+const PostPage: NextPage<Props> = ({ post, prevPost, nextPost }) => {
+  const {
+    description,
+    title,
+    date,
+    path,
+    socialImage,
+    body: { code },
+  } = post;
+  const url = siteConfigs.fqdn + path;
+  const ogImage = getPostOGImage(socialImage);
+
+  const MDXContent = useMDXComponent(code);
+
+  return (
+    <>
+      <NextSeo
+        title={title}
+        description={description}
+        canonical={url}
+        openGraph={{
+          title: title,
+          description: description,
+          url: url,
+          images: [
+            {
+              url: ogImage,
+            },
+          ],
+          type: "article",
+          article: {
+            publishedTime: date,
+            modifiedTime: date,
+          },
+        }}
+      />
+
+      <ArticleJsonLd
+        url={url}
+        title={title}
+        images={[ogImage]}
+        datePublished={date}
+        dateModified={date}
+        authorName={siteConfigs.author}
+        description={description}
+      />
+
+      <PostLayout post={post} prevPost={prevPost} nextPost={nextPost}>
+        <MDXContent components={mdxComponents} />
+      </PostLayout>
+    </>
+  );
+};
+
+export default PostPage;
+```
+
+新增網站 Logo 圖片，放在 `/public/logo.png`。
+
+新增網站預設 socialImage，放在 `/public/og-image.png`。
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入首頁和文章頁面，打開 F12 查看原始碼 `<head>` 裡面內容，就會看到多出很多 meta data 了！
+
+可以安裝這套 Chrome 瀏覽器 extension 來更方便查看每個頁面的 meta data：[META SEO inspector - Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/meta-seo-inspector/ibkclpciafdglkjkcibmohobjkcfkaef)
+
+http://localhost:3000/
+
+http://localhost:3000/posts/post-with-code
+
+結果截圖如下：
+
+![Home page meta data](https://i.imgur.com/ADTXxJ2.jpg)
+
+![Post page meta data](https://i.imgur.com/6fvyZaR.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day16-copy-code-button...day17-open-graph-meta
+
+## References
+
+- [garmeeh/next-seo: Next SEO is a plug in that makes managing your SEO easier in Next.js projects.](https://github.com/garmeeh/next-seo)
+- [META SEO inspector - Chrome 線上應用程式商店](https://chrome.google.com/webstore/detail/meta-seo-inspector/ibkclpciafdglkjkcibmohobjkcfkaef)
+- [next-seo 初體驗](https://blog.errorbaker.tw/posts/clay/next-seo/)
+- [Free Render Image on Unsplash](https://unsplash.com/photos/aSJAalMXCvI)
+
+## 下一篇
+
+下一篇我們繼續處理 SEO，來加入 sitemap！

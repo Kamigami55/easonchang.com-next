@@ -1,0 +1,230 @@
+---
+title: "圖片效能最佳化，使用 Next.js Image、plaiceholder、客製 MDX 元件 - Modern Next.js Blog 系列 #22"
+description: "使用客製化 MDX 元件 CustomImage，搭配 Next.js <Image/> 及 plaiceholder 套件，最佳化內文圖片效能"
+slug: "post-custom-image"
+language: zh-TW
+socialImage: ""
+date: 2022-10-07
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10305758)
+
+網站效能瓶頸通常是圖片讀取速度太慢。為了提升讀者體驗、和 SEO 分數，這一篇我們來最佳化內文圖片效能！
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day21-custom-link...day22-custom-image
+
+---
+
+## 加入客製化 `<CustomImage/>`，最佳化圖片讀取速度
+
+### 安裝相關套件
+
+```shell
+pnpm add image-size plaiceholder sharp unist-util-visit
+```
+
+### 允許 Next.js Image 使用 webp, avif 格式
+
+修改 `next.config.mjs`，加入 images 區塊：
+
+```js
+import { withContentlayer } from "next-contentlayer";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = withContentlayer({
+  // ...
+  // 加入 images 區塊
+  images: {
+    // Enable modern image formats
+    formats: ["image/avif", "image/webp"],
+  },
+});
+
+export default nextConfig;
+```
+
+### 使用客製 imageMetadata rehype plugin，幫圖片加入長寬屬性和 LQIP
+
+新增 `src/plugins/imageMetadata.ts`：
+
+```ts
+// Custom rehype plugin to add width and height to local images
+// To make Next.js <Image/> works
+// Ref: https://kylepfromer.com/blog/nextjs-image-component-blog
+
+// Similiar structure to:
+// https://github.com/JS-DevTools/rehype-inline-svg/blob/master/src/inline-svg.ts
+import imageSize from "image-size";
+import path from "path";
+import { getPlaiceholder } from "plaiceholder";
+import { Node, visit } from "unist-util-visit";
+import { promisify } from "util";
+
+const sizeOf = promisify(imageSize);
+
+/**
+ * An `<img>` HAST node
+ */
+interface ImageNode extends Node {
+  type: "element";
+  tagName: "img";
+  properties: {
+    src: string;
+    height?: number;
+    width?: number;
+    base64?: string;
+  };
+}
+
+/**
+ * Determines whether the given HAST node is an `<img>` element.
+ */
+function isImageNode(node: Node): node is ImageNode {
+  const img = node as ImageNode;
+  return (
+    img.type === "element" &&
+    img.tagName === "img" &&
+    img.properties &&
+    typeof img.properties.src === "string"
+  );
+}
+
+/**
+ * Filters out non absolute paths from the public folder.
+ */
+function filterImageNode(node: ImageNode): boolean {
+  return node.properties.src.startsWith("/");
+}
+
+/**
+ * Adds the image's `height` and `width` to it's properties.
+ */
+async function addMetadata(node: ImageNode): Promise<void> {
+  const res = await sizeOf(
+    path.join(process.cwd(), "public", node.properties.src)
+  );
+
+  if (!res) throw Error(`Invalid image with src "${node.properties.src}"`);
+  const { base64 } = await getPlaiceholder(node.properties.src, { size: 10 }); // 10 is to increase detail (default is 4)
+
+  node.properties.width = res.width;
+  node.properties.height = res.height;
+  node.properties.base64 = base64;
+}
+
+/**
+ * This is a Rehype plugin that finds image `<img>` elements and adds the height and width to the properties.
+ * Read more about Next.js image: https://nextjs.org/docs/api-reference/next/image#layout
+ */
+export default function imageMetadata() {
+  return async function transformer(tree: Node): Promise<Node> {
+    const imgNodes: ImageNode[] = [];
+
+    visit(tree, "element", (node) => {
+      if (isImageNode(node) && filterImageNode(node)) {
+        imgNodes.push(node);
+      }
+    });
+
+    for (const node of imgNodes) {
+      await addMetadata(node);
+    }
+
+    return tree;
+  };
+}
+```
+
+修改 `contentlayer.config.ts`，套用上面寫的 imageMetadata rehype plugin：
+
+```ts
+import imageMetadata from "./src/plugins/imageMetadata";
+
+// ...
+
+export default makeSource({
+  // ...
+  mdx: {
+    rehypePlugins: [
+      // ...
+      imageMetadata, // For adding image metadata (width, height)
+    ],
+  },
+});
+```
+
+新增 `src/components/CustomImage.tsx`：
+
+```tsx
+import Image, { ImageProps } from "next/image";
+
+type Props = ImageProps & { base64?: string };
+
+export default function CustomImage({
+  src,
+  height,
+  width,
+  base64,
+  alt,
+  ...otherProps
+}: Props) {
+  if (!src) return null;
+  if (typeof src === "string" && (!height || !width)) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={src} height={height} width={width} alt={alt} {...otherProps} />
+    );
+  }
+  return (
+    <Image
+      layout="responsive"
+      src={src}
+      alt={alt}
+      height={height}
+      width={width}
+      sizes="(min-width: 40em) 40em, 100vw"
+      placeholder={base64 ? "blur" : "empty"}
+      blurDataURL={base64}
+      {...otherProps}
+    />
+  );
+}
+```
+
+修改 `src/lib/mdxComponents.ts`，讓 MDX 裡面的 img 都使用 CustomImage 來渲染：
+
+```ts
+import CustomImage from "@/components/CustomImage";
+// ...
+
+// Custom components/renderers to pass to MDX.
+const mdxComponents = {
+  // ...
+  img: CustomImage,
+};
+
+export default mdxComponents;
+```
+
+## 成果
+
+完成了！使用 `pnpm dev`，進到任何一篇有圖片的文章，就會看到讀取速度變快了！
+
+在讀取時也會先顯示模糊版本的圖片，讓讀者知道那邊將有圖片，也避免版面位移。
+
+## References
+
+- [next/image | Next.js](https://nextjs.org/docs/api-reference/next/image#acceptable-formats)
+- [Using the Next.js Image Component with MDX](https://kylepfromer.com/blog/nextjs-image-component-blog/)
+
+## 下一篇
+
+恭喜你成功客製化了內文圖片，加快了讀取速度！
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day21-custom-link...day22-custom-image
+
+下一篇我們會來用另一個手段，最佳化讀者的體感換頁速度，使用 nprogress 加入換頁進度條！

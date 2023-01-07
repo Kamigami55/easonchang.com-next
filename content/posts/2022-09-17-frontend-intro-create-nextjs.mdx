@@ -1,0 +1,131 @@
+---
+title: "簡介前端開發生態＆建立 Next.js 專案 - Modern Next.js Blog 系列 #02"
+description: "開幹部落格之前，先來了解前端開發生態、安裝 JS 套件管理器 npm 及 pnpm，並建立基礎 Next.js 前端專案"
+slug: "frontend-intro-create-nextjs"
+language: zh-TW
+socialImage: ""
+date: 2022-09-17
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10292743)
+
+開工之前，讓我們先來了解前端開發生態，以及 JS 套件管理器 pnpm，接著建立基礎 Next.js 前端專案，並在電腦上打開它！
+
+這篇文章會講這些：
+
+- 堆積木式的網頁開發、JS 套件生態系
+- npm JavaScript 套件庫介紹
+- pnpm 安裝
+- Next.js 專案建立
+
+---
+
+## 堆積木式的前端網頁開發
+
+網頁開發生態系已經非常成熟了。有無窮無盡的網頁開發框架（Web Framework）和各種功能的套件（Package）供我們使用，每天也不斷有新東西誕生，追也追不完。
+
+所以在現代要開發網站，有一大部分時間是花在尋找符合需求的套件，學習它的用法，並導入自己的專案，最後在做些客製化。就像堆積木一樣，組合各種套件，最後堆成一個完整的網站。
+
+## npm：JavaScript 套件寶庫
+
+網頁開發的主要語言是 JavaScript。全世界開發者們開發的 JS 套件，都會放上 [npm (Node Package Manager)](https://www.npmjs.com/) 這個平台。
+
+我們只要在電腦上安裝了 npm，輸入一行指令，就能把上面的任何套件安裝到網頁裡使用。
+
+舉個例子，如果我們想在網頁裡加入 QRCode 生成功能，想使用 [qrcode](https://www.npmjs.com/package/qrcode) 這個套件
+
+那我們只要依照套件介紹頁指令，輸入：
+
+```shell
+npm install qrcode
+```
+
+就能將此套件安裝進我們的網站裡了！接著再繼續根據介紹，修改你的網頁就完成了！
+
+![node-qrcode](https://i.imgur.com/Qfwew7U.jpg)
+
+## pnpm：更高效的套件管理器，這系列會使用它
+
+npm 是一個 JS 套件平台，有許多套件管理器都能從 npm 平台上安裝套件。
+
+目前主流有三個套件管理器：npm、[yarn](https://yarnpkg.com/)、[pnpm](https://pnpm.io/zh-TW/)，我們這系列會使用 pnpm，因為 pnpm 是裡面最新的，安裝套件速度更快，硬碟空間佔用更少。
+
+![pnpm](https://i.imgur.com/Ff418og.jpg)
+
+### 安裝 pnpm
+
+pnpm 官網的安裝說明頁，有提供各種安裝方式：
+
+https://pnpm.io/zh-TW/installation
+
+我建議[使用 npm 安裝](https://pnpm.io/zh-TW/installation#%E4%BD%BF%E7%94%A8-npm-%E5%AE%89%E8%A3%9D)，輸入以下指令來安裝：
+
+```
+npm install -g pnpm
+```
+
+安裝完後可以檢查 pnpm 版本來驗證是否安裝成功：
+
+```bash
+pnpm -v
+# 7.11.0
+```
+
+## 建立 Next.js 專案
+
+Next.js 官網的 Getting Started 頁面，有說明 Next.js 安裝方法及基本使用：
+
+https://nextjs.org/docs/getting-started
+
+最方便的方式是使用官方提供的 create-next-app 工具，來生成整個專案結構。
+
+並且我們這系列的程式都會以 TypeScript 來撰寫，所以生成專案的指令如下：
+
+```shell
+pnpm create next-app --typescript
+```
+
+輸入指令後它會問你你希望專案名稱叫什麼，輸入一個喜歡的名稱，以我的例子名稱叫做「nextjs-tailwind-contentlayer-blog-starter」，輸入完後按 Enter，他就會在你當前目錄裡面新增一個全新的 Next.js 專案了！
+
+![create-next-app](https://i.imgur.com/6Bfwz84.png)
+
+用 VSCode 或你喜歡的編輯器打開後，裡面會包含這些檔案：
+
+![files](https://i.imgur.com/RFJ1kAk.jpg)
+
+讓我們嘗試執行它看看！
+
+### 啟動 Next.js 專案
+
+package.json 裡面預先定義了幾個可執行的指令，我們可以使用 pnpm 來執行它們。
+
+在你們電腦上要執行它的話，輸入這個指令：
+
+```shell
+pnpm dev
+```
+
+就會在電腦上開啟一個網頁伺服器，可以看到專案目前的網頁。通常他會跑在 http://localhost:3000/ 這頁面，用瀏覽器瀏覽他，你應該會看到下圖的畫面：
+
+![nextjs-project](https://i.imgur.com/vTqTtMx.png)
+
+這就是 Next.js 初始專案的樣子！恭喜你成功建立了一個全新的 Next.js 專案
+
+## Source code
+
+這系列的原始碼都會放在這個 Github repo 上：
+[Kamigami55/nextjs-tailwind-contentlayer-blog-starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter)
+
+並且每一篇有寫到 code 的文章，都會有一個對應的 branch，標出每篇的進度。
+
+目前為止的原始碼在這裡：
+
+[Kamigami55/nextjs-tailwind-contentlayer-blog-starter 的 **day02-init-nextjs** branch](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day02-init-nextjs)
+
+## 小結＆下一篇
+
+我們成功安裝 pnpm 套件管理器，並建立了全新的 Next.js 專案。
+
+下一篇，雖然我們現在啥功能都沒有，但我們會先介紹 Vercel 架站平台，並將我們的 Next.js 專案部署上去！

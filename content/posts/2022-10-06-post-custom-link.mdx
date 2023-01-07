@@ -1,0 +1,131 @@
+---
+title: "強化內文連結換頁速度、加入外部連結 icon - Modern Next.js Blog 系列 #21"
+description: "修改內文 CustomLink，針對內部連結使用 Next.js 提供的 <Link/> 加速頁面切換；針對外部連結則加入外聯 icon 提示"
+slug: "post-custom-link"
+language: zh-TW
+socialImage: ""
+date: 2022-10-06
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10305241)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 21 篇文章，上一篇我們在內文小標題加入 anchor 錨點了，這篇我們會來修改內文 CustomLink。針對內部連結使用 Next.js 提供的 `<Link/>` 加速頁面切換；針對外部連結則加入 icon 提示使用者這是外部連結！
+
+結果截圖如下：
+
+![post links](https://i.imgur.com/BILvjrj.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day20-custom-heading-anchor...day21-custom-link
+
+---
+
+## 加入客製化 `<CustomLink/>`，強化內文連結換頁速度、加入外部連結 icon
+
+我們來擴充之前 [Day 11 全站樣式切版](https://ithelp.ithome.com.tw/articles/10299066) 時就已經新增的 `src/components/CustomLink.tsx`。
+
+將 `src/components/CustomLink.tsx` 移動到 `src/components/CustomLink/CustomLink.tsx`，並修改內容如下：
+
+```tsx
+import Link from "next/link";
+
+import ExternalLinkIcon from "./external-link.svg";
+
+type Props = React.ComponentPropsWithoutRef<"a">;
+
+const CustomLink = ({ href, children, ...rest }: Props) => {
+  const isInternalLink = href && href.startsWith("/");
+  const isAnchorLink = href && href.startsWith("#");
+
+  if (isInternalLink) {
+    return (
+      <Link href={href}>
+        <a {...rest}>{children}</a>
+      </Link>
+    );
+  }
+
+  if (isAnchorLink) {
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <a target="_blank" rel="noopener noreferrer" href={href} {...rest}>
+      {children}
+      {typeof children === "string" && (
+        <ExternalLinkIcon className="ml-1 inline-block h-4 w-4" />
+      )}
+    </a>
+  );
+};
+
+export default CustomLink;
+```
+
+上面的 `<CustomLink/>` 會判斷 href 來知道連結是連往部落格其他頁面的內部連結、錨點連結、或是外部連結。
+
+針對內部連結會渲染成 [Next.js 的 Link](https://nextjs.org/docs/routing/introduction#linking-between-pages)，做 client-side 換頁會快速很多。
+
+針對錨點連結不做任何處理，渲染常規 a link。
+
+針對外部連結，則會加入 `target="_blank"` 以開新分頁方式打開連結，並在連結右邊多加 icon，讓讀者知道這連結會連到外部。
+
+再來加入 `src/components/CustomLink/external-link.svg`，這個是標注外部連結的 icon：
+
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+</svg>
+```
+
+加入 `src/components/CustomLink/index.ts`，讓之前就有用到 CustomLink 的地方不用改 import 路徑：
+
+```ts
+import CustomLink from "./CustomLink";
+
+export default CustomLink;
+```
+
+修改 `src/lib/mdxComponents.ts`，加入 a 的客製化元件：
+
+```ts
+// ...
+import CustomLink from "@/components/CustomLink";
+
+// Custom components/renderers to pass to MDX.
+const mdxComponents = {
+  // ...
+  a: CustomLink,
+};
+
+export default mdxComponents;
+```
+
+這樣就完成了！
+
+## 成果
+
+完成了！使用 `pnpm dev`，進到任何一篇內文有連結的文章內，就會看到內部連結換頁變順暢了，而外部連結多了 icon 提示，點下去時也會用開新分頁的方式開連結。
+
+結果截圖如下：
+
+![post links](https://i.imgur.com/BILvjrj.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day20-custom-heading-anchor...day21-custom-link
+
+## 下一篇
+
+恭喜你成功客製化了內文連結，讓連結更友善、更好用。
+
+下一篇是三篇內文客製化元件的最後一篇，我們來客製化內文「圖片」，使用 Next.js 的 Image 元件，加快圖片讀取速度！

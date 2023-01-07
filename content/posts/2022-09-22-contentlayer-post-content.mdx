@@ -1,0 +1,115 @@
+---
+title: "文章內頁功能實作，渲染 Markdown 文章內容 - Modern Next.js Blog 系列 #07"
+description: "實作 Contentlayer 文章內頁，呈現完整文章 Markdown 內容"
+slug: "contentlayer-post-content"
+language: zh-TW
+socialImage: ""
+date: 2022-09-22
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10296357)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 7 篇文章，上一篇我們做完了首頁文章列表功能，這篇我們接著實作文章內頁，呈現完整文章 Markdown 內容。
+
+結果截圖如下：
+
+![Post Page Result](https://i.imgur.com/w6pTHUJ.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day06-index-page-bare-bone...day07-post-apge-bare-bone
+
+---
+
+## 新增文章內頁，呈現文章內容
+
+新增 **src/pages/posts/[slug].tsx** 檔案：
+
+```tsx
+import { format, parseISO } from "date-fns";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+
+import { allPosts, Post } from "@/lib/contentLayerAdapter";
+import styles from "@/styles/Home.module.css";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const post = allPosts.find((post) => post.slug === params?.slug);
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+    },
+  };
+};
+
+type Props = {
+  post: Post;
+};
+
+const PostPage: NextPage<Props> = ({ post }) => {
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <h1 className={styles.title}>{post.title}</h1>
+
+        <time dateTime={post.date}>
+          {format(parseISO(post.date), "LLLL d, yyyy")}
+        </time>
+
+        <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
+      </main>
+    </div>
+  );
+};
+
+export default PostPage;
+```
+
+## 成果
+
+完成了！使用 `pnpm dev` 並點擊首頁的文章，就能進到文章內頁，看到 Markdown 文章內容呈現在畫面上。
+
+網址會長得像這樣：
+
+http://localhost:3000/posts/markdown-demo
+
+截圖如下：
+
+![Post Page Result](https://i.imgur.com/w6pTHUJ.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day06-index-page-bare-bone...day07-post-apge-bare-bone
+
+## 下一篇
+
+目前為止我們已經能用 Markdown 格式撰寫文章了！
+
+但我們目標是做出「Modern Blog」，有限的 Markdown 元素無法滿足我們寫文章的需求。
+
+我們希望文章內能插入客製化 React 元件，讓文章更有互動性！
+
+因此下一篇，我們會擴充 Contentlayer 的設定，支援 [MDX](https://mdxjs.com/) 格式的文章，讓我們能在 Markdown 文章內插入客製化 React 文件！

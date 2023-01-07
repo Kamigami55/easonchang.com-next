@@ -1,0 +1,260 @@
+---
+title: "加入程式碼區塊「複製按鈕」，使用客製化 MDX 元件 - Modern Next.js Blog 系列 #16"
+description: "使用客製化 MDX 元件 CustomPre，在程式碼區塊加入「複製按鈕」"
+slug: "code-copy-button"
+language: zh-TW
+socialImage: ""
+date: 2022-10-01
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10302397)
+
+上一篇我們讓程式碼區塊顯示了標題，這篇我們繼續讓它更好用，來加入「複製按鈕」！
+
+結果截圖如下：
+
+![Code block copy button in dark mode](https://i.imgur.com/ByJtP4Z.jpg)
+
+![Code block copy button copied](https://i.imgur.com/eq2Ermv.jpg)
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day15-code-block-title...day16-copy-code-button
+
+---
+
+## 在程式碼區塊加入複製按鈕
+
+我們將使用 MDX 客製化元件的方法來加入複製按鈕。
+
+Markdown 在渲染程式碼區塊時，會渲染成 `<pre>` 元素。
+
+我們可以新增自己的 `<CustomPre/>` React 元件，並稍做設定，來讓 MDX 渲染程式碼區塊時，改用我們提供的 `<CustomPre/>` 來渲染。
+
+具體實作方法是參考這篇文章：[How to add a copy code button to your blog posts - Phil Stainer](https://philstainer.io/blog/copy-code-button-markdown)。
+
+### 新增 `<CustomPre/>`
+
+新增 `/src/components/CustomPre.tsx`：
+
+```tsx
+// ref: https://philstainer.io/blog/copy-code-button-markdown
+
+import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
+
+import { copyToClipboard } from "@/lib/copyToClipboard";
+import { removeDuplicateNewLine } from "@/lib/removeDuplicateNewLine";
+
+type Props = React.ComponentPropsWithoutRef<"pre">;
+
+function CustomPre({ children, className, ...props }: Props) {
+  const preRef = useRef<HTMLPreElement>(null);
+
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setCopied(false), 2000);
+
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+  const onClick = async () => {
+    if (preRef.current?.innerText) {
+      await copyToClipboard(removeDuplicateNewLine(preRef.current.innerText));
+      setCopied(true);
+    }
+  };
+
+  return (
+    <div className="group relative">
+      <pre
+        {...props}
+        ref={preRef}
+        className={clsx(className, "focus:outline-none")}
+      >
+        <div className="absolute top-0 right-0 m-2 flex items-center rounded-md bg-[#282a36] dark:bg-[#262626]">
+          <span
+            className={clsx("hidden px-2 text-xs text-green-400 ease-in", {
+              "group-hover:flex": copied,
+            })}
+          >
+            已複製！
+          </span>
+
+          <button
+            type="button"
+            aria-label="Copy to Clipboard"
+            onClick={onClick}
+            disabled={copied}
+            className={clsx(
+              "hidden rounded-md border bg-transparent p-2 transition ease-in focus:outline-none group-hover:flex",
+              {
+                "border-green-400": copied,
+                "border-gray-600 hover:border-gray-400 focus:ring-4 focus:ring-gray-200/50 dark:border-gray-700 dark:hover:border-gray-400":
+                  !copied,
+              }
+            )}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={clsx("pointer-events-none h-4 w-4", {
+                "text-gray-400 dark:text-gray-400": !copied,
+                "text-green-400": copied,
+              })}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
+                className={clsx({ block: !copied, hidden: copied })}
+              />
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+                className={clsx({ block: copied, hidden: !copied })}
+              />
+            </svg>
+          </button>
+        </div>
+
+        {children}
+      </pre>
+    </div>
+  );
+}
+
+export default CustomPre;
+```
+
+### 新增處理複製邏輯的 2 個 Function
+
+新增 `/src/lib/copyToClipboard.ts`：
+
+```ts
+// ref: https://philstainer.io/blog/copy-code-button-markdown
+
+export const copyToClipboard = (text: string) => {
+  return new Promise((resolve, reject) => {
+    if (navigator?.clipboard) {
+      const cb = navigator.clipboard;
+
+      cb.writeText(text).then(resolve).catch(reject);
+    } else {
+      try {
+        const body = document.querySelector("body");
+
+        const textarea = document.createElement("textarea");
+        body?.appendChild(textarea);
+
+        textarea.value = text;
+        textarea.select();
+        document.execCommand("copy");
+
+        body?.removeChild(textarea);
+
+        resolve(void 0);
+      } catch (e) {
+        reject(e);
+      }
+    }
+  });
+};
+```
+
+新增 `/src/lib/removeDuplicateNewLine.ts`：
+
+```ts
+// Workaround to work with rehype-prism-plus generated Pre blog for copy to clipboard feature
+export const removeDuplicateNewLine = (text: string): string => {
+  if (!text) return text;
+
+  return text
+    .replace(/(\r\n\r\n)/gm, `\r\n`)
+    .replace(/(\n\n)/gm, `\n`)
+    .replace(/(\r\r)/gm, `\r`);
+};
+```
+
+### 用 `<CustomPre/>` 替換掉文章內文程式碼區塊
+
+新增 `/src/lib/mdxComponents.ts`：
+
+```ts
+import CustomPre from "@/components/CustomPre";
+
+// Custom components/renderers to pass to MDX.
+const mdxComponents = {
+  pre: CustomPre,
+};
+
+export default mdxComponents;
+```
+
+修改 `/src/pages/posts/[slug].tsx`，import mdxComponents 傳給 `<MDXContent>`：
+
+```tsx
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+// ...
+// 新增下面這行，import mdxComponents
+import mdxComponents from "@/lib/mdxComponents";
+
+// ...
+
+const PostPage: NextPage<Props> = ({ post, prevPost, nextPost }) => {
+  // ...
+  const MDXContent = useMDXComponent(code);
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <PostLayout post={post} prevPost={prevPost} nextPost={nextPost}>
+        // 修改下面這行，把 mdxComponents 傳給 MDXContent
+        <MDXContent components={mdxComponents} />
+      </PostLayout>
+    </>
+  );
+};
+
+export default PostPage;
+```
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入含有程式碼區塊的文章，就會看到程式碼區塊多出複製按鈕了！
+
+http://localhost:3000/posts/post-with-code
+
+結果截圖如下：
+
+![Code block copy button in dark mode](https://i.imgur.com/ByJtP4Z.jpg)
+
+![Code block copy button copied](https://i.imgur.com/eq2Ermv.jpg)
+
+## References
+
+- [How to add a copy code button to your blog posts - Phil Stainer](https://philstainer.io/blog/copy-code-button-markdown)
+
+## 小結＆下一篇
+
+恭喜你成功加入「複製按鈕」到程式碼區塊了。
+
+這是我們最後一篇部落格樣式調整了，目前它已經相當好看了。
+
+> 這篇修改的程式碼如下：
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day15-code-block-title...day16-copy-code-button
+
+下一篇讓我們來使用 [next-seo](https://github.com/garmeeh/next-seo)，為全站加入 Open Graph、meta data 等 SEO 優化手法！

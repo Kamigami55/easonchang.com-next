@@ -1,0 +1,164 @@
+---
+title: "全站樣式切版 - Modern Next.js Blog 系列 #11"
+description: "使用 Tailwind CSS 開始 Modern Blog 全站樣式切版，包含 Header、Footer 等"
+slug: "blog-site-style"
+language: zh-TW
+socialImage: ""
+date: 2022-09-26
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10299066)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 11 篇文章，上一篇我們在 Next.js blog 搭配 Tailwind CSS 加入了「暗黑模式 Dark mode」。這篇讓我們使用 Tailwind CSS 開始全站切版，美化樣式！
+
+結果截圖如下：
+
+![Home page](https://i.imgur.com/gNT9ZDg.jpg)
+
+![Home page in dark mode](https://i.imgur.com/Gf0hn2v.jpg)
+
+![Post page](https://i.imgur.com/KPgE8x0.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day10-darkmode...day11-basic-site-ui
+
+---
+
+## 安裝 clsx，方便根據不同條件組合 className
+
+我們主要使用各種現成 [Tailwind CSS](https://tailwindcss.com/) 的 className 來切版。
+
+在許多元件裡，我們都會需要根據不同條件（prop 或 state 等），給定不同 className 組合。
+
+這裡我們使用 [clsx](https://github.com/lukeed/clsx) 這個套件幫助我們寫出簡單易讀又強大的 className 組合邏輯。
+
+使用 pnpm 來安裝它：
+
+```shell
+pnpm add clsx
+```
+
+## @tailwindcss/typography，開箱即用的文字樣式
+
+Tailwind CSS 優點是方便客製化、修改迅速。但在一開始要針對基本的標題、內文、列表設定好看的樣式時，需要加入大量 className，font-size、font-weight、letter-spacing 等等都要明確指定，非常費工。
+
+好在 Tailwind CSS 官方提供了數個 [Plugins](https://tailwindcss.com/docs/plugins)，其中包含了 [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)，安裝之後會提供 `prose` 系列的 className，一個 className 就能指定完一系列好看的文字樣式。
+
+### 安裝 @tailwindcss/typography
+
+輸入以下指令安裝套件：
+
+```shell
+pnpm add -D @tailwindcss/typography
+```
+
+並修改 `/tailwind.config.js`，將它新增到 `plugins` 陣列中：
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  theme: {
+    extend: {},
+  },
+  // 修改下面這行
+  plugins: [require("@tailwindcss/typography")],
+};
+```
+
+這樣就完成安裝了，文章稍後我們會實際使用到它。
+
+## @svgr/webpack，讓 Next.js 支援 svg 圖檔 import
+
+切版過程我們會用到 svg 圖檔，但要能在 Next.js 的 JSX/TSX 裡直接 import svg 圖檔，方便對圖檔做客製化的話，需要做些設定才能實現。
+
+這裡我們參照這邊文章來實現：
+[Importing SVGs to Next.js - DEV Community ?‍??‍?](https://dev.to/dolearning/importing-svgs-to-next-js-nna)
+
+### 安裝 @svgr/webpack
+
+輸入指令來安裝 [@svgr/webpack](https://www.npmjs.com/package/@svgr/webpack)：
+
+```shell
+pnpm add -D @svgr/webpack
+```
+
+### 修改 `/next.config.mjs`
+
+修改 `/next.config.mjs`，加入客製 webpack 設定，使用 @svgr/webpack 來支援在 JS 裡 import svg 圖檔：
+
+```js
+import { withContentlayer } from "next-contentlayer";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = withContentlayer({
+  reactStrictMode: true,
+  swcMinify: true,
+  // 加入以下 custom webpack 設定
+  // Support svg import
+  // ref: https://dev.to/dolearning/importing-svgs-to-next-js-nna
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
+  // 加入以上 custom webpack 設定
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: true,
+  },
+});
+
+export default nextConfig;
+```
+
+## 全站樣式切版
+
+這裡我們會新增許多 component 和做不少修改，因為篇幅關係就不全部貼上來了，這些改動從這個 git commit 看會比較清楚：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/61d2999b326d1dcefcc3ecb64108946ca78062b5
+
+我們這個部落格的樣式主要是參照 [timlrx/tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) 專案下去修改的，比起原專案多調整了一些配色、component 結構，和支援 TypeScript。
+
+## 成果
+
+完成了！使用 `pnpm dev` 並進入首頁和文章內頁，就會看到全站樣式變漂亮了！多出 navbar 和 footer，排版也變漂亮了，並且也支援手機版 RWD 和暗黑模式。
+
+結果截圖如下：
+
+![Home page](https://i.imgur.com/gNT9ZDg.jpg)
+
+![Home page in dark mode](https://i.imgur.com/Gf0hn2v.jpg)
+
+![Post page](https://i.imgur.com/KPgE8x0.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day10-darkmode...day11-basic-site-ui
+
+## References
+
+- [Importing SVGs to Next.js - DEV Community](https://dev.to/dolearning/importing-svgs-to-next-js-nna)
+- [timlrx/tailwind-nextjs-starter-blog: This is a Next.js, Tailwind CSS blogging starter template. Comes out of the box configured with the latest technologies to make technical writing a breeze. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.](https://github.com/timlrx/tailwind-nextjs-starter-blog)
+- [lukeed/clsx: A tiny (228B) utility for constructing \`className\` strings conditionally.](https://github.com/lukeed/clsx)
+- [Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.](https://tailwindcss.com/)
+
+## 下一篇
+
+恭喜你！我們成功在 Next.js 裡使用 Tailwind CSS 完成全站樣式切版！
+
+下一篇我們會繼續切版首頁本體的樣式！

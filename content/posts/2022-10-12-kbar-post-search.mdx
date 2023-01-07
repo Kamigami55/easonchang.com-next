@@ -1,0 +1,252 @@
+---
+title: "在 kbar Command Palette 實作文章搜尋 - Modern Next.js Blog 系列 #27"
+description: "讓 Command Palette 指令面板能搜尋所有文章，並跳轉到特定文章內頁"
+slug: "kbar-post-search"
+language: zh-TW
+socialImage: ""
+date: 2022-10-12
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10307994)
+
+這是「Modern Blog 30 天」系列第 27 篇文章。
+
+上一篇加完了 Command Palette 指令面板，這篇我們來繼續擴充它，讓 Command Palette 能搜尋所有文章並跳轉到特定文章內頁！
+
+最終效果如下：
+
+![Command palette search post light](https://i.imgur.com/76PWNBj.jpg)
+
+![Command palette search post dark](https://i.imgur.com/9L1tBBS.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day26-command-palette...day27-search-post
+
+---
+
+## 實作 kbar Command Palette 文章搜尋功能
+
+理想上要擴充 [kbar](https://github.com/timc1/kbar) 的選項，只需要修改 CommandPalette.tsx 裡 actions array 就好，import Contentlayer 提供的 allPosts 文章列表放進去應該就行了。
+
+但這邊遇到各種技術限制，所以要改用比較複雜的方式實現。如果你有找到更簡單的方法，歡迎跟我說！
+
+遇到的技術限制如下，跟 Next.js、Contentlayer、kbar 有關：
+
+- Contentlayer 沒辦法直接在 `CommandPalette.tsx` 裡 import **allPosts**，只能在 Next.js pages 的 **getStaticProps** 裡 import
+- Next.js 目前還不支援在 `_app.tsx` 裡寫 **getStaticProps** 給全站用，因此每個頁面的 **getStaticProps** 都要修改
+- 在各頁面動態加入 Command Palette 選項，需要使用 kbar 提供的 [useRegisterActions](https://kbar.vercel.app/docs/concepts/actions)
+
+所以最終我們的實作方向是：
+
+1. 新增 `getCommandPalettePosts` 並放在所有頁面的 **getStaticProps** 裡，取得所有文章
+2. 新增 `useCommandPalettePostActions` 並放在所有頁面的 component 內，利用 **useRegisterActions** 動態加入所有文章到 Command Palette 選項
+3. 修改 CommandPalette component，加入一個「搜尋文章」的 action，集結所有 **2.** 的文章選項，比較好用
+
+讓我們開始實作吧！
+
+新增 `src/components/CommandPalette/getCommandPalettePosts.ts`：
+
+```ts
+import { allPostsNewToOld } from "@/lib/contentLayerAdapter";
+
+export type PostForCommandPalette = {
+  slug: string;
+  title: string;
+  path: string;
+};
+
+export const getCommandPalettePosts = (): PostForCommandPalette[] => {
+  const commandPalettePosts = allPostsNewToOld.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    path: post.path,
+  }));
+  return commandPalettePosts;
+};
+```
+
+新增 `src/components/CommandPalette/useCommandPalettePostActions.tsx`：
+
+```tsx
+import { useRegisterActions } from "kbar";
+import { useRouter } from "next/router";
+
+import { PostForCommandPalette } from "./getCommandPalettePosts";
+
+export const useCommandPalettePostActions = (
+  posts: PostForCommandPalette[]
+): void => {
+  const router = useRouter();
+
+  useRegisterActions(
+    posts.map((post) => ({
+      id: post.slug,
+      name: post.title,
+      perform: () => router.push(post.path),
+      section: "搜尋文章",
+      parent: "search-posts",
+    })),
+    []
+  );
+};
+```
+
+接著修改每個 Next.js 頁面，加入 `getCommandPalettePosts` 和 `useCommandPalettePostActions` 邏輯。
+
+修改 `src/pages/index.tsx`：
+
+```tsx
+// ...
+
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from "@/components/CommandPalette/getCommandPalettePosts";
+import { useCommandPalettePostActions } from "@/components/CommandPalette/useCommandPalettePostActions";
+
+// ...
+
+type Props = {
+  posts: PostForIndexPage[];
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+export const getStaticProps: GetStaticProps<Props> = () => {
+  const commandPalettePosts = getCommandPalettePosts();
+
+  // ...
+
+  return { props: { posts, commandPalettePosts } };
+};
+
+const Home: NextPage<Props> = ({ posts, commandPalettePosts }) => {
+  useCommandPalettePostActions(commandPalettePosts);
+
+  // ...
+};
+
+// ...
+```
+
+修改 `src/pages/posts/[slug].tsx`：
+
+```tsx
+// ...
+
+import {
+  getCommandPalettePosts,
+  PostForCommandPalette,
+} from "@/components/CommandPalette/getCommandPalettePosts";
+import { useCommandPalettePostActions } from "@/components/CommandPalette/useCommandPalettePostActions";
+
+// ...
+
+type Props = {
+  post: PostForPostPage;
+  prevPost: RelatedPostForPostLayout;
+  nextPost: RelatedPostForPostLayout;
+  commandPalettePosts: PostForCommandPalette[];
+};
+
+// ...
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const commandPalettePosts = getCommandPalettePosts();
+
+  // ...
+
+  return {
+    props: {
+      post,
+      prevPost,
+      nextPost,
+      commandPalettePosts,
+    },
+  };
+};
+
+const PostPage: NextPage<Props> = ({
+  post,
+  prevPost,
+  nextPost,
+  commandPalettePosts,
+}) => {
+  useCommandPalettePostActions(commandPalettePosts);
+
+  // ...
+};
+
+// ...
+```
+
+最後修改 `src/components/CommandPalette/CommandPalette.tsx`，在 actions array 加入 Search section：
+
+```tsx
+import {
+  MagnifyingGlassIcon,
+  // ...
+} from "@heroicons/react/24/outline";
+// ...
+
+export default function CommandPalette({ children }: Props) {
+  // ...
+
+  const actions = [
+    // Page section
+    // ...
+
+    // 加入這個 section
+    // Search section
+    // - Search posts
+    {
+      id: "search-posts",
+      name: "文章",
+      keywords:
+        "search find posts writing words blog articles thoughts 搜尋 尋找 文章 寫作 部落格",
+      icon: <MagnifyingGlassIcon className="h-6 w-6" />,
+      section: "搜尋",
+    },
+
+    // Operation section
+    // - Theme toggle
+    // ...
+  ];
+
+  return (
+    <KBarProvider actions={actions}>
+      <CommandBar />
+      {children}
+    </KBarProvider>
+  );
+}
+
+// ...
+```
+
+## 成果
+
+這樣就完成了！使用 `pnpm dev`，進去網站裡按下 `Ctrl + K` (Windows) 或 `Cmd + K` (Mac)，或是點右上角的 Command icon，開啟 Command Palette 後，就會看到多出「搜尋文章」的操作可以執行了！
+
+最終效果如下：
+
+![Command palette search post light](https://i.imgur.com/76PWNBj.jpg)
+
+![Command palette search post dark](https://i.imgur.com/9L1tBBS.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day26-command-palette...day27-search-post
+
+## References
+
+- [timc1/kbar: fast, portable, and extensible cmd+k interface for your site](https://github.com/timc1/kbar)
+- [kbar - command+k interface for your site](https://kbar.vercel.app/docs/concepts/actions)
+
+## 下一篇
+
+恭喜你成功在 Command Palette 指令面板加入文章搜尋功能了！
+
+下一篇我們終於要來完成這個系列最後一塊重點功能：「i18next 多語系支援」了！

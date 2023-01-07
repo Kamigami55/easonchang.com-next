@@ -1,0 +1,195 @@
+---
+title: "為內文小標題加入 anchor 錨點連結 - Modern Next.js Blog 系列 #20"
+description: "使用 rehype-slug 套件在內文小標題補上 id 屬性，並使用客製 MDX 元件 CustomHeading 加入 anchor 連結"
+slug: "post-heading-anchor"
+language: zh-TW
+socialImage: ""
+date: 2022-10-05
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10304682)
+
+## TL;DR
+
+這是「Modern Blog 30 天」系列第 20 篇文章，上一篇我們做完 RSS Feed 生成，完成所有部落格功能了。後續讓我們繼續加入更多炫砲細節。這篇先來為內文 heading 加入 anchor 連結！
+
+結果截圖如下：
+
+![title anchor](https://i.imgur.com/paQPqU5.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day19-rss-feed...day20-custom-heading-anchor
+
+---
+
+## 為內文小標題加入 anchor 錨點連結
+
+### 使用 rehype-slug 套件在內文小標題補上 id 屬性
+
+首先要讓每個內文小標題最後顯示的 HTML 都有 `id` 屬性，我們使用 [rehype-slug](https://github.com/rehypejs/rehype-slug) 幫我們完成這件事。
+
+它能在 Contentlayer 將 Markdown 內容轉成 HTML 時，將小標題補上 `id`。
+
+像是能把下列 HTML：
+
+```html
+<h1 id="some-id">Lorem ipsum</h1>
+<h2>Dolor sit amet ?</h2>
+<h3>consectetur & adipisicing</h3>
+<h4>elit</h4>
+<h5>elit</h5>
+```
+
+補上 id 轉換成這樣：
+
+```html
+<h1 id="some-id">Lorem ipsum</h1>
+<h2 id="dolor-sit-amet-">Dolor sit amet ?</h2>
+<h3 id="consectetur--adipisicing">consectetur & adipisicing</h3>
+<h4 id="elit">elit</h4>
+<h5 id="elit-1">elit</h5>
+```
+
+（範例取自 [rehype-slug README.md](https://github.com/rehypejs/rehype-slug#use)）
+
+### 安裝 rehype-slug
+
+```shell
+pnpm add rehype-slug
+```
+
+修改 `contentlayer.config.ts`，將 rehype-slug 加入 rehypePlugins 列表：
+
+```ts
+// ...
+import rehypeSlug from "rehype-slug";
+
+// ...
+
+export default makeSource({
+  // ...
+  mdx: {
+    rehypePlugins: [
+      // 加入 rehypeSlug
+      rehypeSlug, // For generating slugs for headings
+      rehypeCodeTitles, // For adding titles to code blocks
+      [rehypePrism, { ignoreMissing: true }], // For code syntax highlighting
+    ],
+  },
+});
+```
+
+### 使用 CustomHeading 元件顯示 anchor 按鈕
+
+接著讓每個小標題在 hover 時，顯示 anchor 按鈕。
+
+這裡使用跟 Day 16 [程式碼區塊樣式優化：複製按鈕 - Modern Blog 30 系列 #16](https://ithelp.ithome.com.tw/articles/10302397) 一樣的手法，用客製化 MDX 元件的方法實作。
+
+當初實作複製按鈕時，我們實作了 `<CustomPre/>`，這次我們來實作 `<CustomHeading/>`。
+
+新增 `src/components/CustomHeading.tsx`：
+
+```tsx
+type CustomHeadingProps = React.ComponentPropsWithRef<
+  "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+> & { Component: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" };
+
+function CustomHeading({
+  Component,
+  id,
+  children,
+  ...otherProps
+}: CustomHeadingProps) {
+  return (
+    <Component
+      id={id}
+      className="group scroll-mt-24 whitespace-pre-wrap"
+      {...otherProps}
+    >
+      <span className="mr-3">{children}</span>
+      <a
+        href={id && `#${id}`}
+        className="inline-flex h-6 w-6 items-center justify-center rounded-md text-lg text-slate-400 no-underline opacity-0 shadow-sm ring-1 ring-slate-900/5 transition-all hover:bg-slate-100 hover:text-slate-700 hover:shadow hover:ring-slate-900/10 group-hover:opacity-100 dark:text-slate-400 dark:ring-slate-400/20 dark:hover:text-slate-700"
+        aria-label="Anchor"
+      >
+        #
+      </a>
+    </Component>
+  );
+}
+
+export const CustomH1 = (props: React.ComponentPropsWithRef<"h1">) => (
+  <CustomHeading Component="h1" {...props} />
+);
+export const CustomH2 = (props: React.ComponentPropsWithRef<"h2">) => (
+  <CustomHeading Component="h2" {...props} />
+);
+export const CustomH3 = (props: React.ComponentPropsWithRef<"h3">) => (
+  <CustomHeading Component="h3" {...props} />
+);
+export const CustomH4 = (props: React.ComponentPropsWithRef<"h4">) => (
+  <CustomHeading Component="h4" {...props} />
+);
+export const CustomH5 = (props: React.ComponentPropsWithRef<"h5">) => (
+  <CustomHeading Component="h5" {...props} />
+);
+export const CustomH6 = (props: React.ComponentPropsWithRef<"h6">) => (
+  <CustomHeading Component="h6" {...props} />
+);
+```
+
+修改 `src/lib/mdxComponents.ts`，加入 H1 到 H6 的客製化元件：
+
+```ts
+import {
+  CustomH1,
+  CustomH2,
+  CustomH3,
+  CustomH4,
+  CustomH5,
+  CustomH6,
+} from "@/components/CustomHeading";
+import CustomPre from "@/components/CustomPre";
+
+// Custom components/renderers to pass to MDX.
+const mdxComponents = {
+  h1: CustomH1,
+  h2: CustomH2,
+  h3: CustomH3,
+  h4: CustomH4,
+  h5: CustomH5,
+  h6: CustomH6,
+  pre: CustomPre,
+};
+
+export default mdxComponents;
+```
+
+這樣就完成了！
+
+## 成果
+
+完成了！使用 `pnpm dev`，進到任何一篇內文有小標題的文章內，hover 小標題，就會看到旁邊多出井字號 anchor 按鈕，按下去畫面就會滾動到指定小標題，網址列也會隨之改變。
+
+把這個網址貼給別人，別人進來看時，就會直接看到你希望他看的段落了。
+
+結果截圖如下：
+
+![title anchor](https://i.imgur.com/paQPqU5.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day19-rss-feed...day20-custom-heading-anchor
+
+## References
+
+- [rehypejs/rehype-slug: plugin to add \`id\` attributes to headings](https://github.com/rehypejs/rehype-slug)
+
+## 下一篇
+
+恭喜你在內文小標題加入 anchor 錨點，讓內文更實用了！
+
+下一篇我們接著來修改內文 CustomLink，針對內部連結使用 Next.js 提供的 `<Link/>` 加速頁面切換，針對外部連結則加入 icon 提示使用者這是外部連結！

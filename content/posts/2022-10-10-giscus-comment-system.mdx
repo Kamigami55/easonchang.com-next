@@ -1,0 +1,209 @@
+---
+title: "使用 giscus 在 Next.js 加入留言系統 - Modern Next.js Blog 系列 #25"
+description: "使用 @giscus/react 來在 Next.js 部落格內加入留言系統，綁定 Github Discussions 來當作留言板"
+slug: "giscus-comment-system"
+language: zh-TW
+socialImage: ""
+date: 2022-10-10
+type: Post
+isDraft: false
+---
+
+> 本文同步發佈於 [it 邦幫忙 2022 iThome 鐵人賽](https://ithelp.ithome.com.tw/articles/10306883)
+
+這是「Modern Blog 30 天」系列第 25 篇文章。
+
+上一篇加完了文章側邊目錄，這篇我們再來加入另一個炫砲且實用的功能：留言系統！
+
+最終效果如下：
+
+![comment system light](https://i.imgur.com/OVeOIys.jpg)
+
+![comment system dark](https://i.imgur.com/CQFRPwL.jpg)
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day24-table-of-contents...day25-giscus-comment
+
+---
+
+## 在文章內加入留言系統
+
+我們辛辛苦苦產出許多文章，希望的就是跟這個世界、跟讀者們交流，因此我們需要一個地方讓讀者能留言、回饋意見。
+
+讓我們來加入留言系統吧！
+
+要實作留言系統，除了辛苦地自建資料庫和 API 來實作，也有其他更簡單的現成服務能直接使用，像是 [disqus-react](https://github.com/disqus/disqus-react)。
+
+這裡我們選用 [Giscus](https://giscus.app/zh-TW) 這套留言服務。
+
+giscus 是一個 Github 的 App，綁定指定 repo 的 Github Discussions 來當作留言板，支援多語系和客製化樣式，讀者只要登入 Github 帳號就能留言。
+
+### 將 giscus 綁定 Github repo
+
+首先你需要選一個 Public 的 Github repo 來放置留言，如果你在本系列文 [Day3 將 Next.js 專案部署上 Vercel 平台](https://ithelp.ithome.com.tw/articles/10293504) 裡面是從 Github repo 來部署上 Vercel 平台的話，你應該已經有 Github repo 了，可以使用它來放置留言。
+
+首先你需要進到你 repo 的設定頁，然後將 Discussions 功能打開：
+
+![Github repo settings page](https://i.imgur.com/hIiqcws.jpg)
+
+![Enable Github Discussions](https://i.imgur.com/EOr5NtV.jpg)
+
+接著在你的帳號啟用 giscus Github App，點下面連結進去啟用它：
+
+[https://github.com/apps/giscus](https://github.com/apps/giscus)
+
+啟用完會看到下圖的 giscus 設定頁，設定 Repository access，選擇剛剛的 repo，允許 giscus 操作它的 Discussions：
+
+![Enable giscus](https://i.imgur.com/Pd9WjVC.jpg)
+
+這樣就完成綁定了
+
+### 在 giscus 官網驗證綁定狀態，並取得 repo ID 和 category ID
+
+點下面連結進去 giscus 官網：
+
+[https://giscus.app/zh-TW](https://giscus.app/zh-TW)
+
+裡面可以驗證 repo 的 giscus 啟用狀況，並設定 giscus 主題、語言、留言框位置等設定，並產出對應程式碼。
+
+首先複製你的 repo 名稱（username/repo_name）進去，驗證是否已完成 giscus 綁定。
+
+接著選擇要用哪種 Github Discussions 的分類存放留言，這裡我們遵照 giscus 的建議，選擇「Announcements」：
+
+![Configure giscus](https://i.imgur.com/TkkIJZs.jpg)
+
+接著畫面往下滑，就會看到程式碼區塊了。
+
+請你複製這邊的 `data-repo-id` 和 `data-category-id`，等等在 Next.js 裡會用到：
+
+![Cpoy repo ID](https://i.imgur.com/PCM4IF2.jpg)
+
+### 在 Next.js 裡安裝 @giscus/react，加入留言區塊
+
+安裝 `@giscus/react`：
+
+```shell
+pnpm add @giscus/react
+```
+
+新增 `src/configs/giscusConfigs.ts`，並填入綁定好的 repo 名稱，和剛剛複製的、`repoId`、`categoryId`：
+
+```ts
+export const giscusConfigs = {
+  repo: "username/repo_name" as `${string}/${string}`,
+  repoId: "R_xxxxxxxxxxx",
+  category: "Announcements",
+  categoryId: "DIC_xxxxxxxxxxxx",
+};
+```
+
+新增 `src/components/Comment.tsx`：
+
+```tsx
+import Giscus from "@giscus/react";
+import { useTheme } from "next-themes";
+
+import { giscusConfigs } from "@/configs/giscusConfigs";
+
+const Comment = () => {
+  const { theme } = useTheme();
+
+  return (
+    <div id="comment" className="mx-auto max-w-prose py-6">
+      <Giscus
+        repo={giscusConfigs.repo}
+        repoId={giscusConfigs.repoId}
+        category={giscusConfigs.category}
+        categoryId={giscusConfigs.categoryId}
+        mapping="pathname"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme={theme === "dark" ? "transparent_dark" : "light"}
+        loading="lazy"
+      />
+    </div>
+  );
+};
+
+export default Comment;
+```
+
+修改 `src/components/PostLayout.tsx`，加入上面的 `<Comment/>` 元件：
+
+```tsx
+import { useRouter } from "next/router";
+
+import Comment from "@/components/Comment";
+// ...
+
+export default function PostLayout({
+  post,
+  nextPost,
+  prevPost,
+  children,
+}: Props) {
+  // ...
+
+  return (
+    <article>
+      <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+        // ...
+        <div
+          className="pb-8 transition-colors lg:grid lg:grid-cols-4 lg:gap-x-6"
+          style={{ gridTemplateRows: "auto 1fr" }}
+        >
+          <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700 lg:col-span-3">
+            <PostBody>{children}</PostBody>
+          </div>
+
+          {/* DESKTOP TABLE OF CONTENTS */}
+          <aside>
+            <div className="hidden lg:sticky lg:top-24 lg:col-span-1 lg:block">
+              <TableOfContents source={raw} />
+            </div>
+          </aside>
+        </div>
+        <div className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700">
+          <Comment />
+          // ...
+        </div>
+      </div>
+    </article>
+  );
+}
+```
+
+## 成果
+
+這樣就完成了！使用 `pnpm dev`，進文章內頁就會看到最下面多出留言區塊了。
+
+登入 Github 帳號就能留言和發送表情了。
+
+最終效果如下：
+
+![comment system light](https://i.imgur.com/OVeOIys.jpg)
+
+![comment system dark](https://i.imgur.com/CQFRPwL.jpg)
+
+進去你綁定的 Github repo 的 Discussions 頁面，也會看到留言實際上是存在 Discussions 裡面：
+
+![comments in Github Discussions](https://i.imgur.com/QqrH2ad.png)
+
+有讀者留言的話都會寄信到你的 Github email 信箱，不用擔心漏掉任何留言。
+
+這篇修改的程式碼如下：
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day24-table-of-contents...day25-giscus-comment
+
+## References
+
+- [giscus/giscus: A comment system powered by GitHub Discussions.](https://github.com/giscus/giscus)
+- [giscus homepage](https://giscus.app/zh-TW)
+
+## 下一篇
+
+恭喜你成功加完了留言系統，讓你有了跟讀者互動的機會！
+
+下一篇我們繼續加入更多實用炫砲的功能：「Command Palette 指令面板」！
