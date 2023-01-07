@@ -3,20 +3,8 @@ import rehypePrism from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
-import {
-  defineDocumentType,
-  defineNestedType,
-  makeSource,
-} from './src/lib/contentLayerAdapter';
+import { defineDocumentType, makeSource } from './src/lib/contentLayerAdapter';
 import imageMetadata from './src/plugins/image-metadata';
-
-const Meta = defineNestedType(() => ({
-  name: 'Meta',
-  fields: {
-    title: { type: 'string' },
-    description: { type: 'string' },
-  },
-}));
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -52,14 +40,6 @@ export const Post = defineDocumentType(() => ({
       description: 'Whether the post is a draft',
       default: false,
     },
-    tags: {
-      type: 'list',
-      of: { type: 'string' },
-    },
-    category: {
-      type: 'string',
-      description: 'The title of the post',
-    },
     language: {
       type: 'enum',
       options: ['en', 'zh-TW'],
@@ -68,10 +48,6 @@ export const Post = defineDocumentType(() => ({
     redirect_from: {
       type: 'list',
       of: { type: 'string' },
-    },
-    meta: {
-      type: 'nested',
-      of: Meta,
     },
   },
   computedFields: {
