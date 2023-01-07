@@ -1,5 +1,5 @@
 ---
-to: content/posts/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>.mdx
+to: content/posts/<%= date %>-<%= slug %>.mdx
 ---
 
 ---
@@ -11,7 +11,7 @@ tags:
   - Project
 language: zh-TW
 socialImage: ''
-date: <%= h.getDateTime('yyyy-MM-dd HH:mm') %>
+date: <%= date %>
 type: Post
 isDraft: true
 meta:
@@ -19,4 +19,4 @@ meta:
   - description: ''
 ---
 
-<!-- ![](/images/<%= h.getDateTime('yyyy-MM-dd') %>-<%= slug %>/.jpg) -->
+<!-- ![](/images/<%= date %>-<%= slug %>/.jpg) -->
