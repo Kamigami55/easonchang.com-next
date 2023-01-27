@@ -17,7 +17,7 @@ import siteMetadata from '@/data/siteMetadata';
 import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
 import generateRSS from '@/lib/utils/generateRSS';
 
-const MAX_DISPLAY = 5;
+const MAX_DISPLAY = 10;
 
 type PostForIndexPage = PostForPostList;
 
