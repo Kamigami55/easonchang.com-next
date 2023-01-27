@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "^4.5.12",
-    "@giscus/react": "^2.2.0",
+    "@giscus/react": "^2.2.6",
     "@heroicons/react": "^2.0.7",
     "clsx": "^1.2.1",
     "contentlayer": "^0.2.7",
