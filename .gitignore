@@ -55,3 +55,6 @@ posts-draft/
 
 # Contentlayer
 .contentlayer
+
+# VSCode
+.vscode/
