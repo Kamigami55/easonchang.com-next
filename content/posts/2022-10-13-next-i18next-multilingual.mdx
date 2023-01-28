@@ -339,7 +339,7 @@ export default function Header() {
 
 ### 在 Command Palette 指令面板加入語系切換選單
 
-在[第 26 篇](https://ithelp.ithome.com.tw/articles/10307584)我們加入了 Command Palette 指令面板，讓讀者能用鍵盤快速執行各種操作。
+在[第 26 篇](/posts/kbar-command-palette)我們加入了 Command Palette 指令面板，讓讀者能用鍵盤快速執行各種操作。
 
 切換語系也是一個很重要的動作，讓我們把它加入 Command Palette 吧。
 
@@ -347,7 +347,7 @@ export default function Header() {
 
 ![Command Palette](https://i.imgur.com/eci7bg3.jpg)
 
-> 這邊和[第 27 篇在 Command Palette 實作文章搜尋](https://ithelp.ithome.com.tw/articles/10307994)一樣有遇到技術問題。
+> 這邊和[第 27 篇在 Command Palette 實作文章搜尋](/posts/kbar-post-search)一樣有遇到技術問題。
 >
 > 如果把切換語系的 action 寫進 `<CommandPalette/>` 的 **actions** array，`changeLocale` 函式只會在全站 mount 時初始化一次，會記憶住第一頁 **useRouter** 的網址。
 > 進到第二頁後呼叫 `changeLocale` 時，雖然能切換語系，但會被強制導回第一頁。
@@ -487,7 +487,7 @@ const PostPage: NextPage<Props> = (
 
 ### 讓 giscus 留言區塊支援多語系
 
-在[第 25 篇](https://ithelp.ithome.com.tw/articles/10306883)加入的 [giscus](https://giscus.app/zh-TW) 留言板也支援多語系，我們可以把 locale 傳給 `<Giscus/>` 的 `lang`，來讓留言板語言與網站顯示的語言一致。
+在[第 25 篇](/posts/giscus-comment-system)加入的 [giscus](https://giscus.app/zh-TW) 留言板也支援多語系，我們可以把 locale 傳給 `<Giscus/>` 的 `lang`，來讓留言板語言與網站顯示的語言一致。
 
 修改 `src/components/Comment.tsx`：
 
