@@ -1,6 +1,7 @@
 // import Comments from '@/components/comments'
 import Giscus from '@giscus/react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { useTheme } from 'next-themes';
 
 import CustomLink from '@/components/CustomLink';
@@ -45,6 +46,7 @@ export default function PostLayout({ post, next, prev, children }: Props) {
 
   const { locale } = useRouter();
   const { theme } = useTheme();
+  const { t } = useTranslation(['common']);
 
   return (
     <>
@@ -118,7 +120,7 @@ export default function PostLayout({ post, next, prev, children }: Props) {
                 {prev && (
                   <div className="basis-6/12">
                     <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
-                      Previous Article
+                      {t('previous-article')}
                     </h2>
                     <CustomLink
                       href={prev.path}
@@ -131,7 +133,7 @@ export default function PostLayout({ post, next, prev, children }: Props) {
                 {next && (
                   <div className="basis-6/12">
                     <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
-                      Next Article
+                      {t('next-article')}
                     </h2>
                     <CustomLink
                       href={next.path}
