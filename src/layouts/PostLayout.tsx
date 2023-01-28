@@ -3,6 +3,7 @@ import Giscus from '@giscus/react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useTheme } from 'next-themes';
+import Balancer from 'react-wrap-balancer';
 
 import CustomLink from '@/components/CustomLink';
 import PostBody from '@/components/organisms/PostBody';
@@ -61,7 +62,7 @@ export default function PostLayout({ post, next, prev, children }: Props) {
       <ScrollTop />
 
       <article>
-        <div className="transition-colors xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
+        <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
               <div className="mb-4">
@@ -99,52 +100,60 @@ export default function PostLayout({ post, next, prev, children }: Props) {
             className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <div id="comment" className="mx-auto max-w-prose py-6">
-              <Giscus
-                repo={siteMetadata.giscusConfig.repo}
-                repoId={siteMetadata.giscusConfig.repoId}
-                category={siteMetadata.giscusConfig.category}
-                categoryId={siteMetadata.giscusConfig.categoryId}
-                mapping="pathname"
-                reactionsEnabled="1"
-                emitMetadata="0"
-                inputPosition="top"
-                theme={theme === 'dark' ? 'transparent_dark' : 'light'}
-                lang={locale}
-                loading="lazy"
-              />
-            </div>
-
             <footer>
-              <div className="flex flex-col gap-4 pt-4 text-sm font-medium sm:flex-row sm:justify-between sm:text-base xl:gap-8 xl:pt-8">
+              <div className="flex flex-col gap-8 py-8 text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
                 {prev && (
                   <div className="basis-6/12">
-                    <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
+                    <p className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
                       {t('previous-article')}
-                    </h2>
+                    </p>
                     <CustomLink
                       href={prev.path}
-                      className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+                      className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
                     >
-                      &larr; {prev.title}
+                      <span>&larr;</span>
+                      <span className="grow">
+                        <Balancer>{prev.title}</Balancer>
+                      </span>
                     </CustomLink>
                   </div>
                 )}
                 {next && (
                   <div className="basis-6/12">
-                    <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
+                    <p className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
                       {t('next-article')}
-                    </h2>
+                    </p>
                     <CustomLink
                       href={next.path}
-                      className="text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+                      className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400 sm:flex-row-reverse sm:text-right"
                     >
-                      {next.title} &rarr;
+                      <span>&rarr;</span>
+                      <span className="grow">
+                        <Balancer>{next.title}</Balancer>
+                      </span>
                     </CustomLink>
                   </div>
                 )}
               </div>
             </footer>
+
+            <div>
+              <div id="comment" className="mx-auto max-w-prose py-6">
+                <Giscus
+                  repo={siteMetadata.giscusConfig.repo}
+                  repoId={siteMetadata.giscusConfig.repoId}
+                  category={siteMetadata.giscusConfig.category}
+                  categoryId={siteMetadata.giscusConfig.categoryId}
+                  mapping="pathname"
+                  reactionsEnabled="1"
+                  emitMetadata="0"
+                  inputPosition="top"
+                  theme={theme === 'dark' ? 'transparent_dark' : 'light'}
+                  lang={locale}
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </article>
