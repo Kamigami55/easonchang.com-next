@@ -12,6 +12,7 @@ import { appWithTranslation } from 'next-i18next';
 import { ThemeProvider } from 'next-themes';
 import NProgress from 'nprogress';
 import { useEffect } from 'react';
+import { Provider as ReactWrapBalancerProvider } from 'react-wrap-balancer';
 
 // import { ClientReload } from '@/components/ClientReload'
 import LayoutWrapper from '@/components/LayoutWrapper';
@@ -49,16 +50,21 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
       <CommandPalette>
-        <Head>
-          <meta content="width=device-width, initial-scale=1" name="viewport" />
-        </Head>
-        <PageSEO
-          title={siteMetadata.title}
-          description={siteMetadata.description}
-        />
-        <LayoutWrapper>
-          <Component {...pageProps} />
-        </LayoutWrapper>
+        <ReactWrapBalancerProvider>
+          <Head>
+            <meta
+              content="width=device-width, initial-scale=1"
+              name="viewport"
+            />
+          </Head>
+          <PageSEO
+            title={siteMetadata.title}
+            description={siteMetadata.description}
+          />
+          <LayoutWrapper>
+            <Component {...pageProps} />
+          </LayoutWrapper>
+        </ReactWrapBalancerProvider>
       </CommandPalette>
     </ThemeProvider>
   );
