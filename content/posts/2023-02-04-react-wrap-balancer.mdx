@@ -1,0 +1,183 @@
+---
+title: "讓網頁標題文字更均衡、好讀，使用 react-wrap-balancer"
+description: "使用 react-wrap-balancer 在 React.js 網頁實作 Balance Text，平衡每一行文字寬度，讓視覺更舒服。輕量化簡單易用，支援 React 18 及 Next.js SSR"
+slug: "react-wrap-balancer"
+language: zh-TW
+socialImage: ""
+date: 2023-02-04
+type: Post
+isDraft: false
+---
+
+## 正常的文章標題有什麼問題？
+
+網頁的文字太長時，會自動換行到第二、第三行。
+
+例如我的[這篇文章](/posts/darkmode-tailwindcss)標題有三行：
+
+![Before](/images/2023-02-04-react-wrap-balancer/before.jpg)
+
+但你會發現第三行僅有 5 個字，跟前兩行相比視覺上非常不均衡。
+
+此時你可能直覺地想要修改標題，刪掉一些贅字。
+
+例如把「Dark Mode」文字刪掉後，效果如下，看起來好多了：
+
+![Remove some words](/images/2023-02-04-react-wrap-balancer/remove-words.jpg)
+
+但因為通常網頁都會做 RWD 響應式設計處理，在不同寬度的裝置閱讀時，標題的最大寬度也不同。
+
+例如當讀者使用 Surface Duo 平板（螢幕寬度 540px）閱讀時，不平衡的第三行又出現了！
+
+![View in Surface Duo tablet](/images/2023-02-04-react-wrap-balancer/view-in-surface-duo.jpg)
+
+你很難硬把標題改出一個完美的長度，在所有情況下保持視覺均衡，因為裝置可能性太多了！
+
+既然修改內容不可行，那怎麼辦呢？
+
+## Balance Text 均衡文字
+
+你可以使用 **「Balance Text 均衡文字」** 的技術，動態調整文字區塊寬度，平衡每一行的字數。
+
+套用後的效果如下，標題更均衡、更好讀了！
+
+![After](/images/2023-02-04-react-wrap-balancer/after.jpg)
+
+---
+
+## 使用 react-wrap-balancer 在 React 實作均衡文字
+
+在 React.js 專案內，你可以使用 **react-wrap-balancer** 套件來實作均衡文字。
+
+> 官網：[https://react-wrap-balancer.vercel.app/](https://react-wrap-balancer.vercel.app/)
+>
+> Github：[https://github.com/shuding/react-wrap-balancer](https://github.com/shuding/react-wrap-balancer)
+
+它有以下特點：
+
+- Bundle size 極小，只有 0.95 kB（Gzipped）
+- 不會造成版面位移（[CLS](https://web.dev/cls/)），不傷害 SEO 分數
+- 支援 Server-Side Render、[Next.js 13 app directory](https://beta.nextjs.org/docs/routing/fundamentals#the-app-directory)、React Server Component
+- 需要 React ≥ 18.0.0 以上，並且不支援 IE 11
+
+### react-wrap-balancer 效果 Demo
+
+[react-wrap-balancer 官網](https://react-wrap-balancer.vercel.app/)有數個互動式 demo，你可以先上去玩看看效果，
+
+它最適合用在**標題**，平衡每一行的寬度，讓視覺更舒服：
+
+![Demo title](/images/2023-02-04-react-wrap-balancer/demo-title.gif)
+
+也可以用在**中文等各種語系**上，也支援**置左對齊**的文字：
+
+![Demo Chinese left aligned title](/images/2023-02-04-react-wrap-balancer/demo-chinese-left-align-title.gif)
+
+除了標題，它也適合用在 **Tooltip 或 Toast 文字**上：
+
+![Demo tooltip](/images/2023-02-04-react-wrap-balancer/demo-tooltip.gif)
+
+或是套用**整個文字段落**也可以！使用上非常彈性：
+
+![Demo paragraph](/images/2023-02-04-react-wrap-balancer/demo-paragraph.gif)
+
+### 安裝 react-wrap-balancer
+
+react-wrap-balancer 安裝非常簡單，輸入指令，使用 npm 安裝即可：
+
+```bash
+npm install react-wrap-balancer
+```
+
+接著你可以評估一下你的使用情境，你是否會在畫面上同時顯示多組均衡文字。
+
+如果會的話，建議使用 react-wrap-balancer 的 `<Provider>`，包住整個 React App。
+
+雖然非必要，但這麼做可以提升整體效能、和減少 HTML 大小。
+
+若你使用 Create-React-App 的話請修改 `App.js`，而使用 Next.js 的話則改在 `_app.js` 裡：
+
+```tsx:_app.tsx showLineNumbers {3,5}
+import { Provider as ReactWrapBalancerProvider } from "react-wrap-balancer";
+
+<ReactWrapBalancerProvider>
+  <App />
+</ReactWrapBalancerProvider>;
+```
+
+### 使用 react-wrap-balancer
+
+假設你想套用它在下面這個 React component：
+
+```tsx:PageTitle.tsx showLineNumbers
+export default function PageTitle({ children }) {
+  return (
+    <h1 className="md:leading-14 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl">
+      {children}
+    </h1>
+  );
+}
+```
+
+> Note：這是我實際用在部落格內文標題的 component，使用 TailwindCSS 的簡單 `<h1>` 元素
+
+那只要 import react-wrap-balancer 的 `<Balancer>`，把文字包住，就完成了：
+
+```tsx:PageTitle.tsx showLineNumbers {1,6}
+import Balancer from "react-wrap-balancer";
+
+export default function PageTitle({ children }) {
+  return (
+    <h1 className="md:leading-14 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl">
+      <Balancer>{children}</Balancer>
+    </h1>
+  );
+}
+```
+
+效果就如同下圖這樣：
+
+![After](/images/2023-02-04-react-wrap-balancer/after.jpg)
+
+使用上超級簡單！
+
+## 渲染效能評估
+
+一個畫面用到越多 `<Balancer>` 時，對效能的影響會是指數性成長。
+
+因為每個 `<Balancer>` 算完時，可能會影響到其他 `<Balancer>` 而需要重算。
+
+作者的效能量測結果如下圖：
+
+![Benchmark](/images/2023-02-04-react-wrap-balancer/benchmark.jpg)
+
+當頁面用到 **100 個** `<Balancer>` 時，整體計算時間大約是 **0.025 秒**，體感不會察覺到。
+
+當用到 **1000 個** `<Balancer>` 時，整體計算時間大約是 **1 秒**，就會影響到畫面渲染速度了。
+
+當用到 **5000 個** `<Balancer>` 時，整體計算時間會指數成長到 **35 秒**，非常誇張。
+
+所以建議只在 **真正需要的元素** 才套用 `<Balancer>`，例如 **標題**、或 **Tooltip 等需要使用者操作才會顯示的元素** 上。
+
+## 「Balance Text 均衡文字」未來可能性
+
+Adobe 和紐約時報也有類似的專案在實作「Balance Text 均衡文字」效果：
+
+- Adobe：[https://github.com/adobe/balance-text](https://github.com/adobe/balance-text)
+- 紐約時報：[https://github.com/nytimes/text-balancer](https://github.com/nytimes/text-balancer)
+
+而目前也有 CSS 提案正在進行中，希望在 CSS 原生支援這效果：[https://drafts.csswg.org/css-text-4/#text-wrap](https://drafts.csswg.org/css-text-4/#text-wrap)。
+
+因此也許在不久的將來，當各大瀏覽器支援後，我們就能用下列方式輕鬆實現「Balance Text 均衡文字」效果了：
+
+```css:style.css {2}
+.balance-text {
+  text-wrap: balance;
+}
+```
+
+## Reference
+
+- [react-wrap-balancer 官網](https://react-wrap-balancer.vercel.app/)
+- [react-wrap-balancer Github](https://github.com/shuding/react-wrap-balancer)
+
+本文 Gif 動畫及 Benchmark 圖片擷取自 [react-wrap-balancer 官網](https://react-wrap-balancer.vercel.app/)。
