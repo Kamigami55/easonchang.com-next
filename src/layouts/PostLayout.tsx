@@ -18,7 +18,6 @@ export interface PostForPostLayout {
   date: string;
   title: string;
   description: string;
-  path: string;
   socialImage: string;
   body: { raw: string };
 }
@@ -46,7 +45,6 @@ export default function PostLayout({
   const {
     date,
     title,
-    path,
     description,
     socialImage,
     body: { raw },
@@ -59,7 +57,6 @@ export default function PostLayout({
   return (
     <>
       <BlogSEO
-        url={`${siteMetadata.siteUrl}${path}`}
         postTitle={title}
         description={description}
         date={date}

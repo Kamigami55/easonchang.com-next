@@ -11,16 +11,18 @@ type CommonSEOProps = {
 };
 const CommonSEO = ({ title, description, ogType, ogImage }: CommonSEOProps) => {
   const router = useRouter();
+  const locale = router.locale;
+  const url = `${siteMetadata.siteUrl}${locale === 'en' ? '/en' : ''}${
+    router.asPath
+  }`;
+
   return (
     <Head>
       <title>{title}</title>
       <meta name="robots" content="follow, index" />
       <meta name="description" key="description" content={description} />
-      <meta
-        property="og:url"
-        key="og:url"
-        content={`${siteMetadata.siteUrl}${router.asPath}`}
-      />
+      <link rel="canonical" key="canonical" href={url} />
+      <meta property="og:url" key="og:url" content={url} />
       <meta property="og:type" key="og:type" content={ogType} />
       <meta
         property="og:site_name"
@@ -52,6 +54,7 @@ type PageSEOProps = {
   title: string;
   description: string;
 };
+
 export const PageSEO = ({ title, description }: PageSEOProps) => {
   const ogImage = siteMetadata.siteUrl + siteMetadata.socialBanner;
   return (
@@ -86,7 +89,6 @@ type BlogSEOProps = {
   description: string;
   date: string;
   lastmod?: string;
-  url: string;
   images?: string[];
   socialImage: string;
 };
@@ -96,11 +98,14 @@ export const BlogSEO = ({
   description,
   date,
   lastmod = undefined,
-  url,
   images = [],
   socialImage,
 }: BlogSEOProps) => {
   const router = useRouter();
+  const locale = router.locale;
+  const url = `${siteMetadata.siteUrl}${locale === 'en' ? '/en' : ''}${
+    router.asPath
+  }`;
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();
   const imagesArr =
@@ -165,10 +170,6 @@ export const BlogSEO = ({
         {lastmod && (
           <meta property="article:modified_time" content={modifiedAt} />
         )}
-        <link
-          rel="canonical"
-          href={`${siteMetadata.siteUrl}${router.asPath}`}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

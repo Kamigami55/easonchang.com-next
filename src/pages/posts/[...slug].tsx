@@ -88,7 +88,6 @@ export const getStaticProps: GetStaticProps = async ({
       : onlyPostInAnotherLocale;
   const post: PostForPostPage = {
     title: postFull.title,
-    path: postFull.path,
     date: postFull.date,
     description: postFull.description,
     socialImage: postFull.socialImage,
