@@ -29,7 +29,7 @@ export default function handler(req: NextRequest) {
       hasTitle && searchParams.get('title')?.length > TITLE_LIMIT;
     let title = hasTitle
       ? searchParams.get('title')?.slice(0, TITLE_LIMIT)
-      : 'Title';
+      : '';
     if (isTitleTooLong) {
       title = `${title}...`;
     }
@@ -40,7 +40,7 @@ export default function handler(req: NextRequest) {
       hasDescription && searchParams.get('desc')?.length > DESCRIPTION_LIMIT;
     let description = hasDescription
       ? searchParams.get('desc')?.slice(0, DESCRIPTION_LIMIT)
-      : 'Description';
+      : '';
     if (isDescriptionTooLong) {
       description = `${description}...`;
     }
