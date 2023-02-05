@@ -46,6 +46,7 @@ specifiers:
   github-slugger: ^2.0.0
   husky: ^8.0.3
   hygen: ^6.2.11
+  i18next: ^22.4.9
   image-size: ^1.0.2
   kbar: 0.1.0-beta.40
   lint-staged: ^13.1.0
@@ -62,6 +63,7 @@ specifiers:
   prop-types: ^15.8.1
   react: 18.2.0
   react-dom: 18.2.0
+  react-i18next: ^12.1.5
   react-wrap-balancer: ^0.4.0
   rehype-code-titles: ^1.1.0
   rehype-prism-plus: ^1.5.1
@@ -86,6 +88,7 @@ dependencies:
   date-fns: 2.29.3
   feed: 4.2.2
   github-slugger: 2.0.0
+  i18next: 22.4.9
   image-size: 1.0.2
   kbar: 0.1.0-beta.40_biqbaboplfbrettd7655fr4n2y
   next: 13.1.6_fcop3xylqakmbilfhdeuva2xj4
@@ -97,6 +100,7 @@ dependencies:
   prop-types: 15.8.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-i18next: 12.1.5_iakk3dtjhjpukdoa4oua5khgci
   react-wrap-balancer: 0.4.0_react@18.2.0
   rehype-code-titles: 1.1.0
   rehype-prism-plus: 1.5.1
