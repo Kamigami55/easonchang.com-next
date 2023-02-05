@@ -58,7 +58,7 @@ export default function Index({ posts, commandPalettePosts }: Props) {
         description={siteMetadata.description}
       />
 
-      <div className="prose my-12 space-y-2 transition-colors dark:prose-dark md:prose-lg md:space-y-5">
+      <div className="prose my-12 space-y-2 transition-colors dark:prose-dark md:space-y-5 md:prose-lg">
         <h1 className="text-center sm:text-left">{t('intro-title')}</h1>
         <p>
           <Trans

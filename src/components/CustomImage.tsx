@@ -1,4 +1,4 @@
-import Image, { ImageProps } from "next/image";
+import Image, { ImageProps } from 'next/image';
 
 type Props = ImageProps & { base64?: string };
 
@@ -24,8 +24,9 @@ export default function CustomImage({
       {...otherProps}
       sizes="(min-width: 40em) 40em, 100vw"
       style={{
-        width: "100%",
-        height: "auto"
-      }} />
+        width: '100%',
+        height: 'auto',
+      }}
+    />
   );
 }
