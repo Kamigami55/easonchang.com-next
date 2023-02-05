@@ -32,10 +32,17 @@ type Props = {
   post: PostForPostLayout;
   next: RelatedPostForPostLayout;
   prev: RelatedPostForPostLayout;
+  onlyHavePostInAnotherLocale: boolean;
   children: React.ReactNode;
 };
 
-export default function PostLayout({ post, next, prev, children }: Props) {
+export default function PostLayout({
+  post,
+  next,
+  prev,
+  onlyHavePostInAnotherLocale,
+  children,
+}: Props) {
   const {
     date,
     title,
@@ -85,7 +92,14 @@ export default function PostLayout({ post, next, prev, children }: Props) {
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
             <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700 lg:col-span-3">
-              <PostBody>{children}</PostBody>
+              <PostBody>
+                {onlyHavePostInAnotherLocale && (
+                  <div className="mb-8 rounded-lg border border-gray-300 bg-gray-100 py-2 px-4 text-center font-medium text-gray-500 transition-colors dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                    <Balancer>{t('post-locale-not-available-notice')}</Balancer>
+                  </div>
+                )}
+                {children}
+              </PostBody>
             </div>
 
             {/* DESKTOP TABLE OF CONTENTS */}

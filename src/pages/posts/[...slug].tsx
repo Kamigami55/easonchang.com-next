@@ -13,7 +13,11 @@ import PostLayout, {
   PostForPostLayout,
   RelatedPostForPostLayout,
 } from '@/layouts/PostLayout';
-import { allPosts, allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
+import {
+  allPosts,
+  allPostsOfLocaleNewToOld,
+  Post,
+} from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
@@ -48,23 +52,40 @@ export const getStaticProps: GetStaticProps = async ({
     };
   }
 
-  const allPosts = allPostsOfLocaleNewToOld(locale);
+  const allPostsOfCurrentLocaleNewToOld = allPostsOfLocaleNewToOld(locale);
 
-  const postIndex = allPosts.findIndex((post) => post.slug === fullSlug);
+  const postIndex = allPostsOfCurrentLocaleNewToOld.findIndex(
+    (post) => post.slug === fullSlug
+  );
+  let onlyPostInAnotherLocale: Post | undefined = undefined;
   if (postIndex === -1) {
-    return {
-      notFound: true,
-    };
+    onlyPostInAnotherLocale = allPosts.find((post) => post.slug === fullSlug);
+    if (!onlyPostInAnotherLocale) {
+      return {
+        notFound: true,
+      };
+    }
   }
-  const prevFull = allPosts[postIndex + 1] || null;
+  const onlyHavePostInAnotherLocale = !!onlyPostInAnotherLocale;
+
+  const prevFull =
+    postIndex !== -1
+      ? allPostsOfCurrentLocaleNewToOld[postIndex + 1] || null
+      : null;
   const prev: RelatedPostForPostLayout = prevFull
     ? { title: prevFull.title, path: prevFull.path }
     : null;
-  const nextFull = allPosts[postIndex - 1] || null;
+  const nextFull =
+    postIndex !== -1
+      ? allPostsOfCurrentLocaleNewToOld[postIndex - 1] || null
+      : null;
   const next: RelatedPostForPostLayout = nextFull
     ? { title: nextFull.title, path: nextFull.path }
     : null;
-  const postFull = allPosts[postIndex];
+  const postFull =
+    postIndex !== -1
+      ? allPostsOfCurrentLocaleNewToOld[postIndex]
+      : onlyPostInAnotherLocale;
   const post: PostForPostPage = {
     title: postFull.title,
     path: postFull.path,
@@ -85,6 +106,7 @@ export const getStaticProps: GetStaticProps = async ({
       prev,
       next,
       commandPalettePosts,
+      onlyHavePostInAnotherLocale: onlyHavePostInAnotherLocale,
     },
   };
 };
@@ -101,9 +123,16 @@ type Props = {
   next: RelatedPostForPostLayout;
   prev: RelatedPostForPostLayout;
   commandPalettePosts: PostForCommandPalette[];
+  onlyHavePostInAnotherLocale: boolean;
 };
 
-export default function Blog({ post, prev, next, commandPalettePosts }: Props) {
+export default function Blog({
+  post,
+  prev,
+  next,
+  commandPalettePosts,
+  onlyHavePostInAnotherLocale,
+}: Props) {
   useCommandPalettePostActions(commandPalettePosts);
 
   const MDXContent = useMDXComponent(post.body.code);
@@ -111,7 +140,12 @@ export default function Blog({ post, prev, next, commandPalettePosts }: Props) {
   return (
     <>
       {post.isDraft !== true ? (
-        <PostLayout post={post} prev={prev} next={next}>
+        <PostLayout
+          post={post}
+          prev={prev}
+          next={next}
+          onlyHavePostInAnotherLocale={onlyHavePostInAnotherLocale}
+        >
           <MDXContent components={mdxComponents} />
         </PostLayout>
       ) : (

@@ -24,5 +24,6 @@
   "operation": "Operation",
   "toggle-language": "Toggle language",
   "english": "English",
-  "chinese": "中文"
+  "chinese": "中文",
+  "post-locale-not-available-notice": "Currently displaying Chinese version content. This article doesn't have a English version yet. Please stay tuned!"
 }

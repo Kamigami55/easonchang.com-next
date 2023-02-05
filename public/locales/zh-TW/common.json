@@ -24,5 +24,6 @@
   "operation": "操作",
   "toggle-language": "切換語言",
   "english": "English",
-  "chinese": "中文"
+  "chinese": "中文",
+  "post-locale-not-available-notice": "正在顯示英文版內容，此文章還沒有中文版哦，敬請期待！"
 }
