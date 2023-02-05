@@ -1,4 +1,4 @@
-import { StaticImageData } from 'next/legacy/image';
+import { StaticImageData } from 'next/image';
 
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
 import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';

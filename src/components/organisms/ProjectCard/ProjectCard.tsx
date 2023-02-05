@@ -1,4 +1,4 @@
-import Image from 'next/legacy/image';
+import Image from "next/image";
 import { useTranslation } from 'next-i18next';
 
 import CustomLink from '@/components/CustomLink';
@@ -33,12 +33,13 @@ export default function ProjectCard({ project }: Props) {
             alt={imgAlt}
             src={imgSrc}
             className="bg-gray-300 object-cover object-center dark:bg-gray-700"
-            layout="fill"
-            objectFit="cover"
             quality="30"
-            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 344px, 472px"
             placeholder={imgPlaceholder}
-          />
+            fill
+            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 344px, 472px"
+            style={{
+              objectFit: "cover"
+            }} />
         </CustomLink>
         <div className="p-6">
           <h2 className="mb-3 text-2xl font-bold leading-8 tracking-tight">
