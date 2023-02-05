@@ -8,6 +8,9 @@ export const config = {
 const TITLE_LIMIT = 100;
 const DESCRIPTION_LIMIT = 130;
 
+// ! NOTE cannot use custom Traditional Chinese font now, because Vercel Edge only allow import 1mb of data
+// and the font is 5mb...
+
 // Make sure the font exists in the specified path:
 // const NotoSansTCRegular = fetch(
 //   new URL('../../assets/NotoSansTC-Regular.otf', import.meta.url)
@@ -82,7 +85,7 @@ export default function handler(req: NextRequest) {
             <h1 tw="w-full text-[48px] font-bold leading-none text-slate-900 mb-2 overflow-hidden max-h-[176px] shrink-0">
               {title}
             </h1>
-            <h3 tw="w-full text-[32px] leading-tight font-normal text-slate-700 overflow-hidden max-h-[140px] shrink-0">
+            <h3 tw="w-full text-[32px] leading-tight font-normal text-slate-600 overflow-hidden max-h-[140px] shrink-0">
               {description}
             </h3>
           </div>
