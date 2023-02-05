@@ -14,7 +14,7 @@ import PostList from '@/components/organisms/PostList';
 import { PostForPostList } from '@/components/organisms/PostList/PostList';
 import { PageSEO } from '@/components/SEO';
 import siteMetadata from '@/data/siteMetadata';
-import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
+import { allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 import generateRSS from '@/lib/utils/generateRSS';
 
 const MAX_DISPLAY = 10;
@@ -23,13 +23,15 @@ type PostForIndexPage = PostForPostList;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
-  const posts = allPostsNewToOld.slice(0, MAX_DISPLAY).map((post) => ({
-    slug: post.slug,
-    date: post.date,
-    title: post.title,
-    description: post.description,
-    path: post.path,
-  })) as PostForIndexPage[];
+  const posts = allPostsOfLocaleNewToOld(locale)
+    .slice(0, MAX_DISPLAY)
+    .map((post) => ({
+      slug: post.slug,
+      date: post.date,
+      title: post.title,
+      description: post.description,
+      path: post.path,
+    })) as PostForIndexPage[];
 
   generateRSS();
 

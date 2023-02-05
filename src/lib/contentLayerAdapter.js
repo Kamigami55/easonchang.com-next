@@ -11,3 +11,10 @@ export { allPages, allPosts, defineDocumentType, defineNestedType, makeSource, P
 export const allPostsNewToOld = allPosts?.sort((a, b) => {
   return compareDesc(new Date(a.date), new Date(b.date));
 }) || [];
+
+export const allPostsOfLocaleNewToOld = (locale) =>
+  allPosts
+    ?.filter((post) => post.language === locale)
+    ?.sort((a, b) => {
+      return compareDesc(new Date(a.date), new Date(b.date));
+    }) || [];

@@ -12,7 +12,7 @@ import { PageSEO } from '@/components/SEO';
 import { LOCALES, POSTS_PER_PAGE } from '@/constants/siteMeta';
 import siteMetadata from '@/data/siteMetadata';
 import ListLayout from '@/layouts/ListLayout';
-import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
+import { allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
 
@@ -26,7 +26,9 @@ type PathType = {
 export const getStaticPaths: GetStaticPaths = () => {
   let paths: PathType[] = [];
   LOCALES.forEach((locale) => {
-    const totalPages = Math.ceil(allPostsNewToOld.length / POSTS_PER_PAGE);
+    const totalPages = Math.ceil(
+      allPostsOfLocaleNewToOld(locale).length / POSTS_PER_PAGE
+    );
     const pathsToAppend = Array.from({ length: totalPages }, (_, i) => ({
       params: { page: (i + 1).toString() },
       locale: locale,
@@ -57,7 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
     };
   }
 
-  const posts = allPostsNewToOld.map((post) => ({
+  const posts = allPostsOfLocaleNewToOld(locale).map((post) => ({
     title: post.title,
     description: post.description,
     date: post.date,

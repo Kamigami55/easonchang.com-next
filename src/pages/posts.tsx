@@ -12,14 +12,14 @@ import { PageSEO } from '@/components/SEO';
 import { POSTS_PER_PAGE } from '@/constants/siteMeta';
 import siteMetadata from '@/data/siteMetadata';
 import ListLayout from '@/layouts/ListLayout';
-import { allPostsNewToOld } from '@/lib/contentLayerAdapter';
+import { allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 
 type PostForPostsPage = PostForPostList;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const commandPalettePosts = getCommandPalettePosts();
 
-  const posts = allPostsNewToOld.map((post) => ({
+  const posts = allPostsOfLocaleNewToOld(locale).map((post) => ({
     title: post.title,
     description: post.description,
     date: post.date,
