@@ -15,6 +15,7 @@ module.exports = {
       },
     },
   ],
+  staticDirs: ['../public'],
   webpackFinal: async (config, { configType }) => {
     config.resolve.modules = [path.resolve(__dirname, '..'), 'node_modules']
     config.resolve.alias = {
