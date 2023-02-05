@@ -17,7 +17,7 @@ import { allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 type PostForPostsPage = PostForPostList;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
 
   const posts = allPostsOfLocaleNewToOld(locale).map((post) => ({
     title: post.title,

@@ -9,7 +9,7 @@ import { useCommandPalettePostActions } from '@/components/organisms/CommandPale
 import ProjectLayout from '@/layouts/ProjectLayout';
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
 
   return {
     props: {

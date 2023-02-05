@@ -22,7 +22,7 @@ const MAX_DISPLAY = 10;
 type PostForIndexPage = PostForPostList;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
   const posts = allPostsOfLocaleNewToOld(locale)
     .slice(0, MAX_DISPLAY)
     .map((post) => ({

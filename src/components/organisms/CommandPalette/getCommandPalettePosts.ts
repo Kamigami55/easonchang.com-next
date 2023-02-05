@@ -1,6 +1,4 @@
-import { compareDesc } from 'date-fns';
-
-import { allPosts } from '@/lib/contentLayerAdapter';
+import { allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 
 export type PostForCommandPalette = {
   slug: string;
@@ -8,15 +6,13 @@ export type PostForCommandPalette = {
   path: string;
 };
 
-export const getCommandPalettePosts = (): PostForCommandPalette[] => {
-  const commandPalettePosts = allPosts
-    .sort((a, b) => {
-      return compareDesc(new Date(a.date), new Date(b.date));
-    })
-    .map((post) => ({
-      slug: post.slug,
-      title: post.title,
-      path: post.path,
-    }));
+export const getCommandPalettePosts = (
+  locale: string
+): PostForCommandPalette[] => {
+  const commandPalettePosts = allPostsOfLocaleNewToOld(locale).map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    path: post.path,
+  }));
   return commandPalettePosts;
 };

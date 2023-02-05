@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps = async ({
   params: { slug },
   locale,
 }) => {
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
   const fullSlug = typeof slug === 'string' ? slug : slug.join('/');
 
   // Handle post redirect logic

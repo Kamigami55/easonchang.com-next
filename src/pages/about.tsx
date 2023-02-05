@@ -17,7 +17,7 @@ const LOCALE_TO_PAGE_NAME = {
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
 
   const aboutPage = allPages.find(
     (page) => page.name === LOCALE_TO_PAGE_NAME[locale]

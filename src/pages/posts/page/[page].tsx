@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   const { page } = params;
   const pageStr = typeof page === 'string' ? page : page.join('');
 
-  const commandPalettePosts = getCommandPalettePosts();
+  const commandPalettePosts = getCommandPalettePosts(locale);
 
   // Handle redirect logic
   const path = unifyPath('/page/' + pageStr);
