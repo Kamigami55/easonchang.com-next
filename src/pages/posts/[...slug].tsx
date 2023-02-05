@@ -13,7 +13,7 @@ import PostLayout, {
   PostForPostLayout,
   RelatedPostForPostLayout,
 } from '@/layouts/PostLayout';
-import { allPosts, allPostsNewToOld } from '@/lib/contentLayerAdapter';
+import { allPosts, allPostsOfLocaleNewToOld } from '@/lib/contentLayerAdapter';
 import mdxComponents from '@/lib/mdxComponents';
 import { allRedirects } from '@/utils/getAllRedirects';
 import { unifyPath } from '@/utils/unifyPath';
@@ -48,23 +48,23 @@ export const getStaticProps: GetStaticProps = async ({
     };
   }
 
-  const postIndex = allPostsNewToOld.findIndex(
-    (post) => post.slug === fullSlug
-  );
+  const allPosts = allPostsOfLocaleNewToOld(locale);
+
+  const postIndex = allPosts.findIndex((post) => post.slug === fullSlug);
   if (postIndex === -1) {
     return {
       notFound: true,
     };
   }
-  const prevFull = allPostsNewToOld[postIndex + 1] || null;
+  const prevFull = allPosts[postIndex + 1] || null;
   const prev: RelatedPostForPostLayout = prevFull
     ? { title: prevFull.title, path: prevFull.path }
     : null;
-  const nextFull = allPostsNewToOld[postIndex - 1] || null;
+  const nextFull = allPosts[postIndex - 1] || null;
   const next: RelatedPostForPostLayout = nextFull
     ? { title: nextFull.title, path: nextFull.path }
     : null;
-  const postFull = allPostsNewToOld[postIndex];
+  const postFull = allPosts[postIndex];
   const post: PostForPostPage = {
     title: postFull.title,
     path: postFull.path,
