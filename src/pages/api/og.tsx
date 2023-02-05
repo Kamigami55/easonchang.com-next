@@ -9,14 +9,14 @@ const TITLE_LIMIT = 100;
 const DESCRIPTION_LIMIT = 130;
 
 // Make sure the font exists in the specified path:
-const NotoSansTCRegular = fetch(
-  new URL('../../assets/NotoSansTC-Regular.otf', import.meta.url)
-).then((res) => res.arrayBuffer());
-const NotoSansTCBold = fetch(
-  new URL('../../assets/NotoSansTC-Bold.otf', import.meta.url)
-).then((res) => res.arrayBuffer());
+// const NotoSansTCRegular = fetch(
+//   new URL('../../assets/NotoSansTC-Regular.otf', import.meta.url)
+// ).then((res) => res.arrayBuffer());
+// const NotoSansTCBold = fetch(
+//   new URL('../../assets/NotoSansTC-Bold.otf', import.meta.url)
+// ).then((res) => res.arrayBuffer());
 
-export default async function handler(req: NextRequest) {
+export default function handler(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
 
@@ -42,8 +42,8 @@ export default async function handler(req: NextRequest) {
       description = `${description}...`;
     }
 
-    const NotoSansTCRegularData = await NotoSansTCRegular;
-    const NotoSansTCBoldData = await NotoSansTCBold;
+    // const NotoSansTCRegularData = await NotoSansTCRegular;
+    // const NotoSansTCBoldData = await NotoSansTCBold;
 
     return new ImageResponse(
       (
@@ -56,7 +56,7 @@ export default async function handler(req: NextRequest) {
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: 'gray',
-            fontFamily: 'Noto Sans TC, sans-serif',
+            // fontFamily: 'Noto Sans TC, sans-serif',
           }}
         >
           <img
@@ -91,20 +91,20 @@ export default async function handler(req: NextRequest) {
       {
         width: 1200,
         height: 630,
-        fonts: [
-          {
-            name: 'Noto Sans TC',
-            data: NotoSansTCRegularData,
-            weight: 400,
-            style: 'normal',
-          },
-          {
-            name: 'Noto Sans TC',
-            data: NotoSansTCBoldData,
-            weight: 700,
-            style: 'normal',
-          },
-        ],
+        // fonts: [
+        //   {
+        //     name: 'Noto Sans TC',
+        //     data: NotoSansTCRegularData,
+        //     weight: 400,
+        //     style: 'normal',
+        //   },
+        //   {
+        //     name: 'Noto Sans TC',
+        //     data: NotoSansTCBoldData,
+        //     weight: 700,
+        //     style: 'normal',
+        //   },
+        // ],
       }
     );
   } catch (e: any) {
