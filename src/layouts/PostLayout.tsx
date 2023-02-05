@@ -100,42 +100,44 @@ export default function PostLayout({ post, next, prev, children }: Props) {
             className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
             style={{ gridTemplateRows: 'auto 1fr' }}
           >
-            <footer>
-              <div className="flex flex-col gap-8 py-8 text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
-                {prev && (
-                  <div className="basis-6/12">
-                    <p className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
-                      {t('previous-article')}
-                    </p>
-                    <CustomLink
-                      href={prev.path}
-                      className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
-                    >
-                      <span>&larr;</span>
-                      <span className="grow">
-                        <Balancer>{prev.title}</Balancer>
-                      </span>
-                    </CustomLink>
-                  </div>
-                )}
-                {next && (
-                  <div className="basis-6/12">
-                    <p className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
-                      {t('next-article')}
-                    </p>
-                    <CustomLink
-                      href={next.path}
-                      className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400 sm:flex-row-reverse sm:text-right"
-                    >
-                      <span>&rarr;</span>
-                      <span className="grow">
-                        <Balancer>{next.title}</Balancer>
-                      </span>
-                    </CustomLink>
-                  </div>
-                )}
-              </div>
-            </footer>
+            {(prev || next) && (
+              <footer>
+                <div className="flex flex-col gap-8 py-8 text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
+                  {prev && (
+                    <div className="basis-6/12">
+                      <p className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
+                        {t('previous-article')}
+                      </p>
+                      <CustomLink
+                        href={prev.path}
+                        className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400"
+                      >
+                        <span>&larr;</span>
+                        <span className="grow">
+                          <Balancer>{prev.title}</Balancer>
+                        </span>
+                      </CustomLink>
+                    </div>
+                  )}
+                  {next && (
+                    <div className="basis-6/12">
+                      <p className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
+                        {t('next-article')}
+                      </p>
+                      <CustomLink
+                        href={next.path}
+                        className="flex gap-1 text-primary-500 transition-colors hover:text-primary-600 dark:hover:text-primary-400 sm:flex-row-reverse sm:text-right"
+                      >
+                        <span>&rarr;</span>
+                        <span className="grow">
+                          <Balancer>{next.title}</Balancer>
+                        </span>
+                      </CustomLink>
+                    </div>
+                  )}
+                </div>
+              </footer>
+            )}
 
             <div>
               <div id="comment" className="mx-auto max-w-prose py-6">
