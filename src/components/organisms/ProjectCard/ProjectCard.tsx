@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useTranslation } from 'next-i18next';
 
 import CustomLink from '@/components/CustomLink';
