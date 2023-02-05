@@ -53,7 +53,7 @@ export default function PostLayout({ post, next, prev, children }: Props) {
     <>
       <BlogSEO
         url={`${siteMetadata.siteUrl}${path}`}
-        title={`${title} - ${siteMetadata.title}`}
+        postTitle={title}
         description={description}
         date={date}
         socialImage={socialImage}

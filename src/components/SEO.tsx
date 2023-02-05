@@ -64,7 +64,11 @@ export const PageSEO = ({ title, description }: PageSEOProps) => {
   );
 };
 
-export const getPostOGImage = (socialImage: string): string => {
+export const getPostOGImage = (
+  socialImage: string,
+  title: string,
+  description: string
+): string => {
   if (socialImage) {
     if (socialImage.startsWith('http')) {
       return socialImage;
@@ -72,11 +76,13 @@ export const getPostOGImage = (socialImage: string): string => {
       return siteMetadata.siteUrl + socialImage;
     }
   }
-  return siteMetadata.siteUrl + siteMetadata.socialBanner;
+  return `${siteMetadata.siteUrl}/api/og?title=${encodeURIComponent(
+    title
+  )}&desc=${encodeURIComponent(description)}`;
 };
 
 type BlogSEOProps = {
-  title: string;
+  postTitle: string;
   description: string;
   date: string;
   lastmod?: string;
@@ -86,7 +92,7 @@ type BlogSEOProps = {
 };
 
 export const BlogSEO = ({
-  title,
+  postTitle,
   description,
   date,
   lastmod = undefined,
@@ -103,6 +109,8 @@ export const BlogSEO = ({
       : typeof images === 'string'
       ? [images]
       : images;
+
+  const fullTitle = `${postTitle} - ${siteMetadata.title}`;
 
   // TODO get images from post content
   const featuredImages = imagesArr.map((img) => {
@@ -124,7 +132,7 @@ export const BlogSEO = ({
       '@type': 'WebPage',
       '@id': url,
     },
-    headline: title,
+    headline: fullTitle,
     image: featuredImages,
     datePublished: publishedAt,
     dateModified: modifiedAt,
@@ -140,12 +148,12 @@ export const BlogSEO = ({
     description: description,
   };
 
-  const ogImage = getPostOGImage(socialImage);
+  const ogImage = getPostOGImage(socialImage, postTitle, description);
 
   return (
     <>
       <CommonSEO
-        title={title}
+        title={fullTitle}
         description={description}
         ogType="article"
         ogImage={ogImage}
