@@ -70,7 +70,7 @@ export default function PostLayout({
 
       <article>
         <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
-          <header className="pt-6 xl:pb-6">
+          <header className="py-6">
             <div className="space-y-1 text-center">
               <div className="mb-4">
                 <PageTitle>{title}</PageTitle>
