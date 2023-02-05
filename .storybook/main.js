@@ -20,6 +20,9 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname, '../src/'),
+      // Alias next-i18next to react-i18next
+      // https://github.com/i18next/next-i18next/issues/935#issuecomment-784668711
+      'next-i18next': 'react-i18next',
     }
     // add SCSS support for CSS Modules
     // https://github.com/storybookjs/storybook/issues/12464#issuecomment-824107014
