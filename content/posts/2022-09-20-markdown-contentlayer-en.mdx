@@ -1,0 +1,140 @@
+---
+title: "Introduction to Markdown & Installing ContentLayer - Modern Next.js Blog Series #05"
+description: "Writing articles using Markdown syntax and installing Contentlayer to convert Markdown files into articles"
+slug: "markdown-contentlayer"
+language: en-US
+socialImage: ""
+date: 2022-09-20
+type: Post
+isDraft: false
+---
+
+> This article is also published on [iT邦幫忙 2022 iThome Ironman](https://ithelp.ithome.com.tw/articles/10295154)
+
+In this article, we will introduce how to write articles using Markdown syntax, as well as install Contentlayer to convert Markdown files into articles.
+
+> The complete code changes for this article can be seen here:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day04-prepare...day05-markdown-contentlayer
+
+---
+
+## Writing in Markdown Format
+
+[Markdown](https://markdown.tw/) is a typography syntax that is easy to read and write. By adding a few special symbols in a plain text file, you can mark up headings, links, code blocks, bold, italics, bullet points, etc.
+
+Examples are as follows:
+
+````markdown
+# Big Title
+
+## H2 Title
+
+### H3 Title
+
+A normal paragraph of text, with **bold** and _italics_.
+
+[Hyperlink](https://www.google.com/)
+
+![Image](https://i.imgur.com/oNtgi9e.png)
+
+- Bullet point
+- Bullet point 2
+
+> Callout quote block
+> Tony Stark: "I am Iron Man"
+
+> ```
+> Code block
+> ```
+````
+
+Markdown is very popular among developers, writers, and note-takers. Github's README.md or various comment boxes can use Markdown syntax. The iT邦幫忙 Ironman articles you see now are also written in Markdown. Modern note-taking software like Notion, [Craft](https://obsidian.md/), [Obsidian](https://obsidian.md/), [HackMD](https://hackmd.io/), etc., also support it.
+
+The main advantage of writing in Markdown is that it allows us to focus on the content. It provides just the right amount of formatting syntax, not so little that it can't be beautifully typeset, nor so much that we spend too much time dealing with the formatting.
+
+Next, it's easy to write, modifying the format just by adding a symbol, your hands don't have to leave the keyboard, which won't slow down your typing speed.
+
+Lastly, because it's plain text and the format is uniform, it's easy to move between platforms. You don't have to worry too much about not being able to retrieve your hard work from a writing platform if it stops being maintained.
+
+Therefore, our blog will use Markdown for writing!
+
+## Contentlayer, Handling Markdown Articles in Next.js
+
+To write in Markdown or MDX (introduced in [part 8](/posts/contentlayer-mdx)) in Next.js, there are several tools available:
+
+- Official MDX support from Next.js ([Advanced Features: Using MDX | Next.js](https://nextjs.org/docs/advanced-features/using-mdx))
+- [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)
+- [mdx-bundler](https://github.com/kentcdodds/mdx-bundler)
+- [Contentlayer](https://www.contentlayer.dev/)
+
+In this series, we will use [Contentlayer](https://www.contentlayer.dev/), which is the youngest and offers the best development experience among these solutions.
+
+![Contentlayer](https://i.imgur.com/mlDKJBZ.jpg)
+
+Contentlayer is a JS package, a content management SDK that can convert various formats of articles into programmatically readable, Type-safe JSON format.
+
+Contentlayer is currently in beta, supporting Markdown and MDX format sources, as well as integration with Next.js.
+
+Here's how Contentlayer works: First, we need to define the format of the articles, the fields, and types they have. Then, during `pnpm dev` runtime or `pnpm build` packaging, it will convert all specified directory articles into TypeScript-supported JSON format, which can be directly imported in Next.js to render onto the screen.
+
+Contentlayer is easy to set up and supports live-reload; when editing articles, the Next.js front-end will also update in real-time, providing a great developer experience.
+
+### Installing Contentlayer
+
+Enter the command to install related packages:
+
+```shell
+pnpm add contentlayer next-contentlayer
+pnpm add -D esbuild
+```
+
+Rename `next.config.js` to `next.config.mjs` and modify its content as follows:
+
+```js
+import { withContentlayer } from "next-contentlayer";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = withContentlayer({
+  reactStrictMode: true,
+  swcMinify: true,
+  eslint:
+
+ {
+    // Only run ESLint on the 'pages/' and 'components/' directories during production builds (next build)
+    dirs: ["pages", "components"],
+  },
+  // Add more Next.js config options here
+});
+
+export default nextConfig;
+```
+
+Next, we create a new file `contentlayer.config.ts` in the root directory, defining the format of the articles:
+
+```ts
+import { defineDocumentType, makeSource } from "contentlayer/source-files";
+
+const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `posts/*.md`,
+  fields: {
+    title: { type: "string", required: true },
+    date: { type: "date", required: true },
+    slug: { type: "string", required: true },
+  },
+  computedFields: {
+    // Define computed fields here
+  },
+}));
+
+export default makeSource({
+  contentDirPath: "data",
+  documentTypes: [Post],
+});
+```
+
+This completes the basic setup for Contentlayer. In the next article, we'll discuss how to display articles on the screen using Contentlayer!
+
+---
+
+> This series of articles are written as part of participating in [iT邦幫忙 2022 iThome Ironman](https://ithelp.ithome.com.tw/articles/10295154), documenting the learning process of Next.js. If you're interested in learning more about web development, feel free to follow this series!

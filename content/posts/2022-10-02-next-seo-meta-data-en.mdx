@@ -1,0 +1,165 @@
+---
+title: "Adding Open Graph, LD-JSON, and Other SEO Meta Data - Modern Next.js Blog Series #17"
+description: "Using next-seo to configure titles, descriptions, thumbnails, Open Graph, LD-JSON for the entire site, making each page understandable to search engines and enhancing SEO"
+slug: "next-seo-meta-data"
+language: en
+socialImage: ""
+date: 2022-10-02
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10302724)
+
+## TL;DR
+
+This is the 17th article in the "Modern Blog 30 Days" series. In the previous article, we completed all style cutovers. In this article, we will use [next-seo](https://github.com/garmeeh/next-seo) to set up titles, descriptions, thumbnails, Open Graph, LD-JSON for the entire site. This allows search engines to understand the meaning of each page and optimize SEO!
+
+Screenshot results as follows:
+
+![Home page meta data](https://i.imgur.com/ADTXxJ2.jpg)
+
+![Post page meta data](https://i.imgur.com/6fvyZaR.jpg)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day16-copy-code-button...day17-open-graph-meta
+
+---
+
+## Adding Meta Data for the Entire Site and Individual Pages
+
+Running a blog means wanting people to read it and having your articles found in search engines.
+
+To optimize for search engines (Search Engine Optimization, SEO), besides having good content and attractive designs, we also need to make some configurations. These configurations let search engine crawlers know what each page is about and allow social platforms to know which thumbnail to use when an article is shared.
+
+This is achieved by inserting many `<meta>` tags in the `<head>` of each page, marking the page title, summary, and thumbnail.
+
+To add meta tags to a Next.js site, you can use the official `next/head` component and insert `<meta>` tags directly, as documented here: [next/head | Next.js](https://nextjs.org/docs/api-reference/next/head).
+
+Another method is to use the [next-seo](https://github.com/garmeeh/next-seo) package, which provides a more comprehensive component to help render all necessary meta tags, simplifying the code we need to write.
+
+### Installing next-seo
+
+```shell
+pnpm add next-seo
+```
+
+### Adding a socialImage Field for Posts to Specify Article Thumbnails
+
+We wish to specify thumbnails for each article, the images displayed when an article is shared on social platforms.
+
+The `socialImage` is a string that can be a path to an image in the /public folder or a URL to an external image. It is not mandatory; if not specified in an article, a shared thumbnail for the entire site will be used.
+
+To add a new article field, modify `/contentlayer.config.ts`:
+
+```ts
+// ...
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: `content/posts/**/*.mdx`,
+  contentType: "mdx",
+  fields: {
+    // ...
+    date: {
+      type: "date",
+      required: true,
+    },
+    // Add socialImage
+    socialImage: {
+      type: "string",
+    },
+  },
+  // ...
+}));
+// ...
+```
+
+### Specifying socialImage for Articles
+
+Now you can specify `socialImage` in the front matter of your articles. You can choose an existing article to add to, or like this commit, add a new image to /public and create a new article to use it as a thumbnail:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/799d5ec203ac227fe7a8500c2f9ddcb3677a0e1a
+
+### Configuring Meta Data for Each Page with next-seo
+
+See this commit for complete changes:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/9c105bc2ba84286eac0d26580240a93e104ddee6
+
+Add `/src/configs/siteConfigs.ts` and modify it with your site's desired content:
+
+```ts
+const fqdn = "https://nextjs-tailwind-contentlayer-blog-starter.vercel.app";
+const logoPath = "/logo.png";
+const bannerPath = "/og-image.png";
+
+export const siteConfigs = {
+  title: "Next.js Tailwind Contentlayer Blog Starter",
+  titleShort: "Next Blog",
+
+  description:
+    "Blog starter template with modern frontend technologies like Next.js, Tailwind CSS, Contentlayer, i18Next",
+  author: "Tony Stark",
+  fqdn: fqdn,
+  logoPath: logoPath,
+  logoUrl: fqdn + logoPath,
+  bannerPath: bannerPath,
+  bannerUrl: fqdn + bannerPath,
+  twitterID: "@EasonChang_me",
+  datePublished: "2022-09-01",
+};
+```
+
+Add `/src/lib/getPostOGImage.ts`:
+
+```ts
+import { siteConfigs } from "@/configs/siteConfigs";
+
+export const getPostOGImage = (socialImage: string | null): string => {
+  if (!socialImage) {
+    return siteConfigs.bannerUrl;
+  }
+  if (socialImage.startsWith("http")) {
+    return socialImage;
+  }
+  return siteConfigs.fqdn + socialImage;
+};
+```
+
+Modify `/src/pages/_app.tsx`:
+
+(Code snippet for setting up default SEO configuration)
+
+Modify `/src/pages/index.tsx`:
+
+(Code snippet for adding ArticleJsonLd to the homepage)
+
+Modify `/src/pages/posts/[slug].tsx`:
+
+(Code snippet for setting up SEO and ArticleJsonLd for individual post pages)
+
+Add the site logo image to `/public/logo.png`.
+
+Add the default socialImage for the site to `/public/og-image.png`.
+
+## Results
+
+Done! By running `pnpm dev` and entering the homepage and article pages, then opening the F12 developer tools to check the `<head>` content, you'll see many new meta data tags!
+
+You can install this Chrome browser extension for a more convenient way to check meta data on each page: [META SEO inspector - Chrome Web Store](https://chrome.google.com/webstore/detail/meta-seo-inspector/ibkclpciafdglkjkcibmohobjkcfkaef)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day16-copy-code-button...day17-open-graph-meta
+
+## References
+
+- [garmeeh/next-seo: Next SEO is a plugin that makes managing your SEO easier in Next.js projects.](https://github.com/garmeeh/next-seo)
+- [META SEO inspector - Chrome Web Store](https://chrome.google.com/webstore/detail/meta-seo-inspector/ibkclpciafdglkjkcibmohobjkcfkaef)
+- [First experience with next-seo](https://blog.errorbaker.tw/posts/clay/next-seo/)
+- [Free Render Image on Unsplash](https://unsplash.com/photos/aSJAalMXCvI)
+
+## Next Article
+
+In the next article, we continue to deal with SEO by adding a sitemap!

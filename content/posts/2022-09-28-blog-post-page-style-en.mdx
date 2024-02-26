@@ -1,0 +1,365 @@
+---
+title: "Styling the Article Detail Page - Modern Next.js Blog Series #13"
+description: "Using Tailwind CSS to style the blog post detail page"
+slug: "blog-post-page-style"
+language: en
+socialImage: ""
+date: 2022-09-28
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10300526)
+
+## TL;DR
+
+This is the 13th article in the "Modern Blog 30 Days" series. In the last article, we beautified the homepage style using Tailwind CSS, and in this article, we will continue to beautify the style of the article detail pages!
+
+Screenshot results as follows:
+
+![Post page](https://i.imgur.com/AUAUAC5.jpg)
+
+![Post page in dark mode](https://i.imgur.com/6M1zNID.jpg)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day12-basic-index-page-ui...day13-basic-post-page-ui
+
+---
+
+## Installing the sass package to Support SCSS in Next.js
+
+In the forthcoming styling, we will add many deep CSS properties for article content.
+
+To make CSS more readable, we will switch to using the more convenient and readable [SCSS](https://sass-lang.com/documentation/syntax#scss) syntax.
+
+To support SCSS syntax in Next.js, we need to install the [sass](https://github.com/sass/sass) package:
+
+```shell
+pnpm add -D sass
+```
+
+No configuration is needed after installation, and you can now import .scss files in Next.js.
+
+For more details, refer to the official Next.js documentation: [Basic Features: Built-in CSS Support | Next.js](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support)
+
+## Styling the Article Detail Page
+
+Let's start styling! We will add 5 new files and modify 1 file.
+
+The style mainly modifies the project based on [timlrx/tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog).
+
+Add `/src/components/PageTitle.tsx`:
+
+```tsx
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function PageTitle({ children }: Props) {
+  return (
+    <h1 className="md:leading-14 text-3xl font-extrabold leading-9 tracking-tight text-gray-900 transition-colors dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl">
+      {children}
+    </h1>
+  );
+}
+```
+
+Add `/src/components/PostBody/PostBody.module.scss`:
+
+```scss
+.postBody {
+  :global(.rehype-code-title) {
+    @apply -mb-3 rounded-tl rounded-tr bg-slate-600 px-4 pt-1 pb-2 font-mono text-sm text-gray-200;
+  }
+
+  div:global(.rehype-code-title) + pre {
+    @apply rounded-tl-none rounded-tr-none;
+  }
+
+  img {
+    @apply ml-auto mr-auto;
+  }
+
+  blockquote {
+    @apply not-italic;
+
+    p:first-of-type::before {
+      content: none;
+    }
+    p:last-of-type::after {
+      content: none;
+    }
+  }
+}
+```
+
+Add `/src/components/PostBody/PostBody.tsx`:
+
+```tsx
+import clsx from "clsx";
+
+import styles from "./PostBody.module.scss";
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function PostBody({ children }: Props) {
+  return (
+    <div
+      className={clsx(
+        "prose dark:prose-dark mx-auto transition-colors",
+        styles.postBody
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+Add `/src/components/PostBody/index.ts`:
+
+```ts
+import PostBody from "./PostBody";
+
+export default PostBody;
+```
+
+Add `/src/components/PostLayout.tsx`:
+
+```tsx
+import { useRouter } from "next/router";
+
+import CustomLink from "@/components/CustomLink";
+import PageTitle from "@/components/PageTitle";
+import PostBody from "@/components/PostBody";
+import formatDate from "@/lib/formatDate";
+
+export interface PostForPostLayout {
+  date: string;
+  title: string;
+}
+
+export type RelatedPostForPostLayout = {
+  title: string;
+  path: string;
+} | null;
+
+type Props = {
+  post: PostForPostLayout;
+  nextPost: RelatedPostForPostLayout;
+  prevPost: RelatedPostForPostLayout;
+
+  children: React.ReactNode;
+};
+
+export default function PostLayout({
+  post,
+  nextPost,
+  prevPost,
+  children,
+}: Props) {
+  const { date, title } = post;
+
+  const { locale } = useRouter();
+
+  return (
+    <article>
+      <div className="divide-y divide-gray-200 transition-colors dark:divide-gray-700">
+        <header className="py-6">
+          <div className="space-y-1 text-center">
+            <div className="mb-4">
+              <PageTitle>{title}</PageTitle>
+            </div>
+
+            <dl className="space-y-10">
+              <div>
+                <dt className="sr-only">發佈時間</dt>
+                <dd className="text-base font-medium leading-6 text-gray-500 transition-colors dark:text-gray-400">
+                  <time dateTime={date}>{formatDate(date, locale)}</time>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </header>
+
+        <div className="divide-y divide-gray-200 pt-10 pb-8 transition-colors dark:divide-gray-700">
+          <PostBody>{children}</PostBody>
+        </div>
+
+        <div
+          className="divide-y divide-gray-200 pb-8 transition-colors dark:divide-gray-700"
+          // style={{ gridTemplateRows: 'auto 1fr' }}
+        >
+          <footer>
+            <div className="flex flex-col gap-4 pt-4 text-base font-medium sm:flex-row sm:justify-between xl:gap-8 xl:pt-8">
+              {prevPost ? (
+                <div className="basis-6/12">
+                  <h2 className="mb-1 text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400">
+                    Previous Post
+                  </h2>
+                  <CustomLink
+                    href={prevPost.path}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  >
+                    ← {prevPost.title}
+                  </CustomLink>
+                </div>
+              ) : (
+                <div />
+              )}
+              {nextPost && (
+                <div className="basis-6/12">
+                  <h2 className="mb-1 text-left text-xs uppercase tracking-wide text-gray-500 transition-colors dark:text-gray-400 sm:text-right">
+                    Next Post
+                  </h2>
+                  <CustomLink
+                    href={nextPost.path}
+                    className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 block transition-colors sm:text-right"
+                  >
+                    {nextPost.title} →
+                  </CustomLink>
+                </div>
+              )}
+            </div>
+          </footer>
+        </div>
+      </div>
+    </article>
+  );
+}
+```
+
+Modify `/src/pages/posts/[slug].tsx`:
+
+```tsx
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import { useMDXComponent } from "next-contentlayer/hooks";
+
+import PostLayout, {
+  PostForPostLayout,
+  RelatedPostForPostLayout,
+} from "@/components/PostLayout";
+import { allPosts, allPostsNewToOld } from "@/lib/contentLayerAdapter";
+
+type PostForPostPage = PostForPostLayout & {
+  title: string;
+  description: string;
+  body: {
+    code: string;
+  };
+};
+
+type Props = {
+  post: PostForPostPage;
+  prevPost: RelatedPostForPostLayout;
+  nextPost: RelatedPostForPostLayout;
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const postIndex = allPostsNewToOld.findIndex(
+    (post) => post.slug === params?.slug
+  );
+  if (postIndex === -1) {
+    return {
+      notFound: true,
+    };
+  }
+  const prevFull = allPostsNewToOld[postIndex + 1] || null;
+  const prevPost: RelatedPostForPostLayout = prevFull
+    ? { title: prevFull.title, path: prevFull.path }
+    : null;
+  const nextFull = allPostsNewToOld[postIndex - 1] || null;
+  const nextPost: RelatedPostForPostLayout = nextFull
+    ? { title: nextFull.title, path: nextFull.path }
+    : null;
+  const postFull = allPostsNewToOld[postIndex];
+  const post: PostForPostPage = {
+    title: postFull.title,
+    date: postFull.date,
+    description: postFull.description,
+    body: {
+      code: postFull.body.code,
+    },
+  };
+
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+      prevPost,
+      nextPost,
+    },
+  };
+};
+
+const PostPage: NextPage<Props> = ({ post, prevPost, nextPost }) => {
+  const {
+    description,
+    title,
+    body: { code },
+  } = post;
+
+  const MDXContent = useMDXComponent(code);
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <PostLayout post={post} prevPost={prevPost} nextPost={nextPost}>
+        <MDXContent />
+      </PostLayout>
+    </>
+  );
+};
+
+export default PostPage;
+```
+
+## Results
+
+Done! Use `pnpm dev` and visit any article detail page to see the beautified styles!
+
+http://localhost:3000/posts/markdown-demo
+
+Screenshot results as follows:
+
+![Post page](https://i.imgur.com/AUAUAC5.jpg)
+
+![Post page in dark mode](https://i.imgur.com/6M1zNID.jpg)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day12-basic-index-page-ui...day13-basic-post-page-ui
+
+## References
+
+- [timlrx/tailwind-nextjs-starter-blog: This is a Next.js, Tailwind CSS blogging starter template. Comes out of the box configured with the latest technologies to make technical writing a breeze. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.](https://github.com/timlrx/tailwind-nextjs-starter-blog)
+- [Basic Features: Built-in CSS Support | Next.js](https://nextjs.org/docs/basic-features/built-in-css-support#sass-support)
+
+## Next Article
+
+Congratulations! We've successfully used Tailwind CSS to style the article detail page in Next.js!
+
+However, if you insert code blocks in your article, you'll find that the code does not have Syntax Highlighting, making it very hard to read.
+
+In the next article, we will use rehype-prism-plus to add Syntax Highlighting to the articles!

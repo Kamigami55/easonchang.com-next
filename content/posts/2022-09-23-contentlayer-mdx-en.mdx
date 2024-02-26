@@ -1,0 +1,214 @@
+---
+title: "Enabling MDX Support in Contentlayer Articles - Modern Next.js Blog Series #08"
+description: "Supporting MDX format in Contentlayer allows for the insertion of any React component within Markdown, enhancing the flexibility of article content"
+slug: "contentlayer-mdx"
+language: en
+socialImage: ""
+date: 2022-09-23
+type: Post
+isDraft: false
+---
+
+> This article is also published on [it 邦幫忙 2022 iThome Ironman Competition](https://ithelp.ithome.com.tw/articles/10297205)
+
+## TL;DR
+
+This is the 8th article in the "Modern Blog 30 Days" series. In the previous article, we implemented the article detail page in Markdown format. In this article, we will extend it to support the MDX format, which allows any React component to be inserted within Markdown, enhancing the flexibility of the article content!
+
+The result screenshot is as follows:
+
+![MDX post result](https://i.imgur.com/hTvMx05.jpg)
+
+The modified code for this article is as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day07-post-apge-bare-bone...day08-mdx-support
+
+---
+
+## Enabling MDX Format Support in Contentlayer
+
+### Modify the contentlayer.config.ts file
+
+Change the filePathPattern filename and add a contentType:
+
+```ts
+import { defineDocumentType, makeSource } from "./src/lib/contentLayerAdapter";
+
+export const Post = defineDocumentType(() => ({
+  name: "Post",
+  // Update filePathPattern from *.md to *.mdx,
+  filePathPattern: `content/posts/**/*.mdx`,
+  // and add the following line for contentType
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+      required: true,
+    },
+    slug: {
+      type: "string",
+      required: true,
+    },
+    date: {
+      type: "date",
+      required: true,
+    },
+  },
+  computedFields: {
+    path: {
+      type: "string",
+      resolve: (post) => `/posts/${post.slug}`,
+    },
+  },
+}));
+
+export default makeSource({
+  contentDirPath: "content",
+  documentTypes: [Post],
+});
+```
+
+### Modify the article detail page's **src/pages/posts/[slug].tsx** file
+
+Replace the div that renders HTML with `<MDXContent />`:
+
+```tsx
+import { format, parseISO } from "date-fns";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+// Add the following line
+import { useMDXComponent } from "next-contentlayer/hooks";
+
+import { allPosts, Post } from "@/lib/contentLayerAdapter";
+import styles from "@/styles/Home.module.css";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const post = allPosts.find((post) => post.slug === params?.slug);
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+    },
+  };
+};
+
+type Props = {
+  post: Post;
+};
+
+const PostPage: NextPage<Props> = ({ post }) => {
+  // Also add the following line
+  const MDXContent = useMDXComponent(post.body.code);
+
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <h1 className={styles.title}>{post.title}</h1>
+        <time dateTime={post.date}>
+          {format(parseISO(post.date), "LLLL d, yyyy")}
+        </time>
+        // Replace the div that renders HTML with <MDXContent />
+        // <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
+        <MDXContent />
+      </main>
+    </div>
+  );
+};
+
+export default PostPage;
+```
+
+### Change all article file extensions from .md to .mdx
+
+Change all article file extensions under `content/posts/` to .mdx
+
+This completes the support for the MDX format!
+
+## Add Any React Component and Insert It Into an MDX Article
+
+Next, let's test inserting a React component into the Markdown content of an MDX article.
+
+### Add `src/components/CustomInput.tsx`
+
+```tsx
+const CustomInput = () => {
+  return (
+    <div>
+      <p>Hello</p>
+      <input type="text" />
+    </div>
+  );
+};
+
+export default CustomInput;
+```
+
+### Modify `content/posts/20220831-markdown-demo.mdx`
+
+Insert the CustomInput component:
+
+```md
+---
+title: Markdown demo
+description: This is a demo of Markdown
+slug: markdown-demo
+date: 2022-08-31
+type: Post
+---
+
+import CustomInput from "../../src/components/CustomInput";
+
+## H2 title
+
+### H3 title
+
+Some content with [link](https://www.google.com)
+
+<CustomInput />
+```
+
+## Results
+
+Done! Using `pnpm dev` and entering an article with customized MDX components, you will see the MDX component displayed on the screen.
+
+The URL will look like this:
+
+http://localhost:3000/posts/markdown-demo
+
+The screenshot below shows an added text input box made with React:
+
+![MDX post result](https://i.imgur.com/hTvMx05.jpg)
+
+The modified code for this article is as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day07-post-apge-bare-bone...day08-mdx-support
+
+## Next Article
+
+Congratulations! So far, we can also write articles in MDX format! This allows us to insert any custom component made with React anywhere, making the content of articles more flexible!
+
+But the entire blog is still quite unattractive, so let's start beautifying it next!
+
+We will use [Tailwind CSS](https://tailwindcss.com/), a popular CSS Framework these days. In the next article, let's install and use it!

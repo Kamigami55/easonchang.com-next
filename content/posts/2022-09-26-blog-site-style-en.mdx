@@ -1,0 +1,162 @@
+---
+title: "Full Site Styling - Modern Next.js Blog Series #11"
+description: "Start styling the Modern Blog site using Tailwind CSS, including Header, Footer, and more."
+slug: "blog-site-style"
+language: en
+socialImage: ""
+date: 2022-09-26
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10299066)
+
+## TL;DR
+
+This is the eleventh article in the "Modern Blog 30 Days" series. In the previous article, we integrated "Dark Mode" with Tailwind CSS into our Next.js blog. This article will begin styling the entire site using Tailwind CSS, beautifying elements including the Header and Footer!
+
+Screenshot results are as follows:
+
+![Home page](https://i.imgur.com/gNT9ZDg.jpg)
+
+![Home page in dark mode](https://i.imgur.com/Gf0hn2v.jpg)
+
+![Post page](https://i.imgur.com/KPgE8x0.jpg)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day10-darkmode...day11-basic-site-ui
+
+---
+
+## Install clsx for Conveniently Combining className Based on Conditions
+
+We primarily use various ready-made Tailwind CSS classNames for styling. In many components, we need to provide different classNames combinations based on different conditions (props or state, etc.). Here, we use the [clsx](https://github.com/lukeed/clsx) package to help us write simple, readable, and powerful className combination logic.
+
+Use pnpm to install it:
+
+```shell
+pnpm add clsx
+```
+
+## @tailwindcss/typography for Out-of-the-box Text Styles
+
+One advantage of Tailwind CSS is its ease of customization and quick modification. However, when initially setting up good-looking styles for basic titles, text, lists, etc., you need to add a large number of classNames, explicitly specifying font-size, font-weight, letter-spacing, etc., which can be very labor-intensive.
+
+Fortunately, Tailwind CSS officially offers several [Plugins](https://tailwindcss.com/docs/plugins), including [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin). After installation, it provides `prose` series of classNames, allowing a single className to specify a series of good-looking text styles.
+
+### Install @tailwindcss/typography
+
+Use the following command to install the package:
+
+```shell
+pnpm add -D @tailwindcss/typography
+```
+
+And modify `/tailwind.config.js` to add it to the `plugins` array:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  theme: {
+    extend: {},
+  },
+  // Modify the following line
+  plugins: [require("@tailwindcss/typography")],
+};
+```
+
+This completes the installation. We will actually use it later in the article.
+
+## @svgr/webpack to Support SVG Import in Next.js
+
+We will use SVG files in the styling process, but to directly import SVG files in Next.js's JSX/TSX for customization, some settings are needed.
+
+We will follow this article to implement it:
+[Importing SVGs to Next.js - DEV Community](https://dev.to/dolearning/importing-svgs-to-next-js-nna)
+
+### Install @svgr/webpack
+
+Use the command to install [@svgr/webpack](https://www.npmjs.com/package/@svgr/webpack):
+
+```shell
+pnpm add -D @svgr/webpack
+```
+
+### Modify `/next.config.mjs`
+
+Modify `/next.config.mjs` by adding custom webpack settings, using @svgr/webpack to support importing SVG files in JS:
+
+```js
+import { withContentlayer } from "next-contentlayer";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = withContentlayer({
+  reactStrictMode: true,
+  swcMinify: true,
+  // Add the following custom webpack settings
+  // Support svg import
+  // ref: https://dev.to/dolearning/importing-svgs-to-next-js-nna
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+    return config;
+  },
+  // Add the above custom webpack settings
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: true,
+  },
+});
+
+export default nextConfig;
+```
+
+## Site-wide Style
+
+Here we will add many components and make numerous changes. Due to space constraints, they are not all listed here. You can see these changes more clearly from this git commit:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/61d2999b326d1dcefcc3ec
+
+b64108946ca78062b5
+
+Our blog's style mainly modifies the [timlrx/tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog) project, adjusting colors, component structure, and supporting TypeScript beyond the original project.
+
+## Results
+
+Done! Use `pnpm dev` and visit the homepage and article pages to see the beautified site-wide style! Added navbar and footer, the layout has also been beautified, and it supports mobile RWD and dark mode.
+
+Screenshot results are as follows:
+
+![Home page](https://i.imgur.com/gNT9ZDg.jpg)
+
+![Home page in dark mode](https://i.imgur.com/Gf0hn2v.jpg)
+
+![Post page](https://i.imgur.com/KPgE8x0.jpg)
+
+The code changes for this article are as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day10-darkmode...day11-basic-site-ui
+
+## References
+
+- [Importing SVGs to Next.js - DEV Community](https://dev.to/dolearning/importing-svgs-to-next-js-nna)
+- [timlrx/tailwind-nextjs-starter-blog: This is a Next.js, Tailwind CSS blogging starter template. Comes out of the box configured with the latest technologies to make technical writing a breeze. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.](https://github.com/timlrx/tailwind-nextjs-starter-blog)
+- [lukeed/clsx: A tiny (228B) utility for constructing `className` strings conditionally.](https://github.com/lukeed/clsx)
+- [Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.](https://tailwindcss.com/)
+
+## Next Article
+
+Congratulations! We've successfully used Tailwind CSS to style the entire site in Next.js!
+
+In the next article, we will continue to style the homepage body!

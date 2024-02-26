@@ -1,0 +1,496 @@
+---
+title: "Implementing Multilingual Support with next-i18next in a Next.js Contentlayer Blog - Modern Next.js Blog Series #28"
+description: "Implementing multilingual support for English and Chinese in a Next.js Contentlayer blog, including a language switch button and Command Palette"
+slug: "next-i18next-multilingual"
+language: en
+socialImage: ""
+date: 2022-10-13
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10308315)
+
+Let's complete the last key feature of this series: "i18next support for English and Chinese," making our blog internationally friendly!
+
+The final effect is as follows:
+
+![Chinese](https://i.imgur.com/GQxxTPA.jpg)
+
+![English](https://i.imgur.com/7Ko9i3i.jpg)
+
+![Command Palette](https://i.imgur.com/eci7bg3.jpg)
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day27-search-post...day28-i18next
+
+> Note:
+>
+> If your site does not plan to support multiple languages, you can skip this article.
+>
+> It will not affect the reading and implementation of the remaining two articles.
+
+---
+
+## Multilingual Support in Next.js
+
+Next.js natively supports multilingual routing, allowing for different languages based on the path, as follows:
+
+- [https://easonchang.com/](https://easonchang.com/) points to the Chinese version of the site
+- [https://easonchang.com/en](https://easonchang.com/en) points to the English version of the site
+
+Or based on subdomains, for example:
+
+- example.com for the English version of the site
+- example.fr for the French version of the site
+
+For more details, refer to the official document: [Advanced Features: Internationalized Routing | Next.js](https://nextjs.org/docs/advanced-features/i18n-routing).
+
+For actual multilingual string handling, additional packages such as [next-i18next](https://github.com/i18next/next-i18next) or [next-intl](https://github.com/amannn/next-intl) are needed.
+
+Here, we will use the most popular [next-i18next](https://github.com/i18next/next-i18next) for implementation.
+
+## Implementing English and Chinese Multilingual Support with next-i18next
+
+### Installing next-i18next
+
+Enter the command to install the package:
+
+```shell
+pnpm add next-i18next
+```
+
+Add `next-i18next.config.js`:
+
+```js
+module.exports = {
+  i18n: {
+    locales: ["en", "zh-TW"],
+    defaultLocale: "zh-TW",
+  },
+};
+```
+
+Modify `next.config.mjs` to enable next-i18next:
+
+```js
+// ...
+
+import i18nConfig from "./next-i18next.config.js";
+
+const { i18n } = i18nConfig;
+
+const nextConfig = withContentlayer({
+  // ...
+  i18n,
+});
+
+export default nextConfig;
+```
+
+Modify `src/pages/_app.tsx` to wrap the entire App with `appWithTranslation`:
+
+```tsx
+// ...
+import { appWithTranslation } from "next-i18next";
+
+import nextI18nConfig from "../../next-i18next.config";
+
+// ...
+
+export default appWithTranslation(MyApp, nextI18nConfig);
+```
+
+### Adding Language Files
+
+To display different text in next-i18next based on language, JSON files defining each i18n key in different languages are needed under `public/locales/<locale>/<namespace>.json`.
+
+We will add two locales, `en` and `zh-TW`, and two namespaces: `common` for site-wide use and `indexPage` for the homepage.
+
+Therefore, we need to add the following four files:
+
+- `public/locales/en/common.json`
+- `public/locales/en/indexPage.json`
+- `public/locales/zh-TW/common.json`
+- `public/locales/zh-TW/indexPage.json`
+
+The content of the key and value can be adjusted according to your site content.
+
+Add `public/locales/en/common.json`:
+
+```json
+{
+  "copied": "Copied!",
+  "table-of-contents": "Table of contents",
+  "home": "Home",
+  "posts": "Posts",
+  "search": "Search",
+  "search-posts": "Search Posts",
+  "next-article": "Next Article",
+  "previous-article": "Previous Article",
+  "published-time": "Published time",
+  "toggle-theme": "
+
+Toggle theme",
+  "dark-mode": "Dark mode",
+  "light-mode": "Light mode",
+  "page": "Page",
+  "operation": "Operation",
+  "toggle-language": "Toggle language",
+  "english": "English",
+  "chinese": "中文"
+}
+```
+
+### Using Language Files in Pages
+
+Modify `src/pages/index.tsx`:
+
+```tsx
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+// ...
+
+export const getStaticProps: GetStaticProps<Props> = async (context) => {
+  const locale = context.locale!;
+
+  // ...
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["indexPage", "common"])),
+      // ...
+    },
+  };
+};
+
+// ...
+```
+
+### Adding a Language Switch Button in the Header
+
+Next, add a language toggle button as shown in the image:
+
+![Language toggle button](https://i.imgur.com/blXVtA3.jpg)
+
+Add `src/components/LanguageSwitch.tsx`:
+
+```tsx
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+const LanguageSwitch = () => {
+  const router = useRouter();
+  const { pathname, query } = router;
+  const nextLocale = router.locale === "en" ? "zh-TW" : "en";
+
+  return (
+    <Link locale={nextLocale} href={{ pathname, query }}>
+      <a
+        aria-label="Toggle Language"
+        className="rounded p-2 text-2xl leading-6 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 sm:p-3"
+      >
+        {router.locale === "en" ? "中文" : "English"}
+      </a>
+    </Link>
+  );
+};
+
+export default LanguageSwitch;
+```
+
+Modify `src/components/Header.tsx` to display `LanguageSwitch`:
+
+```tsx
+import LanguageSwitch from "@/components/LanguageSwitch";
+// ...
+
+export default function Header() {
+  return (
+    <header className="sticky top-0 z-10 border-b border-slate-900/10 bg-white/70 py-3 backdrop-blur transition-colors dark:border-slate-50/[0.06] dark:bg-gray-900/60">
+      <SectionContainer>
+        <div className="flex items-baseline justify-between">
+          // ...
+          <div className="flex items-center text-base leading-5 sm:gap-1">
+            // ... // Add LanguageSwitch
+            <LanguageSwitch />
+            <ThemeSwitch />
+            <CommandPaletteToggle />
+            <MobileNav />
+          </div>
+        </div>
+      </SectionContainer>
+    </header>
+  );
+}
+```
+
+### Adding Language Switch Option to Command Palette
+
+In [Article 26](/posts/kbar-command-palette), we added a Command Palette allowing readers to perform various operations quickly with their keyboard.
+
+Switching languages is an important action, so let's add it to the Command Palette.
+
+The effect is shown in the image:
+
+![Command Palette](https://i.imgur.com/eci7bg3.jpg)
+
+> Similar to [Article 27 on implementing post search in Command Palette](/posts/kbar-post-search), there was a technical issue.
+>
+> If the language switch action is added directly into the `<CommandPalette/>` **actions** array, the `changeLocale` function is only initialized once when the site mounts, remembering the URL from the first page.
+> After navigating to the second page and calling `changeLocale`, although the language can be switched, it forces a redirection back to the first page.
+>
+> Therefore, a workaround is used here. In each page, we dynamically add each page's action using [useRegisterActions](https://kbar.vercel.app/docs/concepts/actions), so `changeLocale` is re-initialized on every page.
+
+Modify `src/components/CommandPalette/CommandPalette.tsx` to add the language section:
+
+```tsx
+import {
+  // ...
+  LanguageIcon,
+} from "@heroicons/react/24/outline";
+import { useTranslation } from "next-i18next";
+
+// ...
+
+export default function CommandPalette({ children }: Props) {
+  const { t } = useTranslation(["common"]);
+  // ...
+
+  const actions = [
+    // ...
+    // - Language toggle
+    {
+      id: "language",
+      name: t("toggle-language"),
+      keywords:
+        "change toggle locale language translation 切換 更換 語言 語系 翻譯",
+      icon: <LanguageIcon className="h-6 w-6" />,
+      section: t("operation"),
+    },
+  ];
+
+  // ...
+}
+
+// ...
+```
+
+Add `src/components/CommandPalette/useCommandPaletteLocaleActions.tsx` to dynamically add language switching actions:
+
+```tsx
+import { useRegister
+
+Actions } from "kbar";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+
+export const useCommandPaletteLocaleActions = () => {
+  const router = useRouter();
+  const { pathname, asPath, query } = router;
+  const { t } = useTranslation(["common"]);
+
+  const changeLocale = (locale: string) => {
+    router.push({ pathname, query }, asPath, { locale: locale });
+  };
+
+  useRegisterActions(
+    [
+      {
+        id: "language-english",
+        name: "English",
+        keywords: "locale language translation english 語言 語系 英文 英語",
+        perform: () => changeLocale("en"),
+        icon: <span className="p-1">EN</span>,
+        parent: "language",
+        section: t("operation"),
+      },
+      {
+        id: "language-chinese",
+        name: "中文",
+        keywords:
+          "locale language translation traditional chinese taiwanese 語言 語系 翻譯 中文 台灣 繁體",
+        perform: () => changeLocale("zh-TW"),
+        icon: <span className="p-1">中</span>,
+        parent: "language",
+        section: t("operation"),
+      },
+    ],
+    [asPath]
+  );
+};
+```
+
+Wrap each page with `<LayoutPerPage/>` to call `useCommandPaletteLocaleActions` on every page.
+
+Modify `src/pages/index.tsx`:
+
+```tsx
+// ...
+
+const Home: NextPage<Props> = ({ posts, commandPalettePosts }) => {
+  // ...
+
+  return <LayoutPerPage>// ...</LayoutPerPage>;
+};
+
+// ...
+```
+
+Modify `src/pages/posts/[slug].tsx`:
+
+```tsx
+// ...
+
+const PostPage: NextPage<Props> = (
+  {
+    // ...
+  }
+) => {
+  // ...
+
+  return <LayoutPerPage>// ...</LayoutPerPage>;
+};
+
+// ...
+```
+
+This successfully adds the language switching action to the Command Palette.
+
+### Supporting Multilingual Comments with giscus
+
+The [giscus](https://giscus.app/en) comment system added in [Article 25](/posts/giscus-comment-system) also supports multiple languages. We can pass the `locale` to `<Giscus/>`'s `lang` to synchronize the comment section's language with the site's displayed language.
+
+Modify `src/components/Comment.tsx`:
+
+```tsx
+import { useRouter } from "next/router";
+// ...
+
+const Comment = () => {
+  // ...
+  const { locale } = useRouter();
+
+  return (
+    <div id="comment" className="mx-auto max-w-prose py-6">
+      <Giscus
+        // ...
+        lang={locale}
+      />
+    </div>
+  );
+};
+
+// ...
+```
+
+### Converting All Page and Component Texts to i18n Keys
+
+Finally, convert all text in each page and component to i18n keys to complete the multilingual setup.
+
+> Many files are modified here, and the method is the same for all, so only 2 examples are listed. The complete changes can be seen in this commit:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/988eec15c02172c3de1b1de88630afc5bc5e5397
+
+Modify `src/components/Header.tsx`, converting text to translated text using the `t` function:
+
+```tsx
+import { useTranslation } from 'next-i18next';
+// ...
+
+export default function Header() {
+  const { t } = useTranslation(['common']);
+
+  return (
+    <header className="sticky top-0 z-10 border-b border-slate-900/10 bg-white/70 py-3 backdrop-blur transition-colors dark:border-slate-50/[0.06] dark:bg-gray-900/60">
+      <SectionContainer>
+        <div className="flex items-baseline justify-between">
+          // ...
+          <div className="flex items-center text-base leading-5 sm:gap-1">
+            <div className="hidden gap-1 sm:flex">
+              {headerConfigs.navLinks.map((link) => (
+                <CustomLink
+                  key={link.title}
+                  href={link.href}
+                  className="rounded p-3 font-medium text-gray-900 transition-colors hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
+                >
+                  {t(link.title)} // <-- Modified this line
+                </CustomLink>
+              ))}
+            </div>
+            // ...
+          </div>
+        </div>
+      </SectionContainer>
+    </header>
+  );
+}
+```
+
+Modify `src/components/CustomPre.tsx`, similarly converting text using the `t` function:
+
+```tsx
+// ...
+
+function CustomPre({
+
+ children, className, ...props }: Props) {
+  // ...
+
+  return (
+    <div className="group relative">
+      <pre
+        {...props}
+        ref={preRef}
+        className={clsx(className, 'focus:outline-none')}
+      >
+        <div className="absolute top-0 right-0 m-2 flex items-center rounded-md bg-[#282a36] dark:bg-[#262626]">
+          <span
+            className={clsx('hidden px-2 text-xs text-green-400 ease-in', {
+              'group-hover:flex': copied,
+            })}
+          >
+            {t('copied')} // <-- Modified this line
+          </span>
+        </div>
+
+        {children}
+      </pre>
+    </div>
+  );
+}
+
+// ...
+```
+
+## Results
+
+That's it! Run `pnpm dev`, go to the website, click the language toggle button in the header, or switch languages using the Command Palette. You'll be able to switch between English and Chinese languages and see the site in different languages!
+
+The URL will also change based on the language:
+
+- Chinese: http://localhost:3000/
+- English: http://localhost:3000/en
+
+The final effect is as follows:
+
+![Chinese](https://i.imgur.com/GQxxTPA.jpg)
+
+![English](https://i.imgur.com/7Ko9i3i.jpg)
+
+![Command Palette](https://i.imgur.com/eci7bg3.jpg)
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day27-search-post...day28-i18next
+
+## References
+
+- [i18next/next-i18next: The easiest way to translate your NextJs apps.](https://github.com/i18next/next-i18next)
+- [Advanced Features: Internationalized Routing | Next.js](https://nextjs.org/docs/advanced-features/i18n-routing)
+
+## Next Article
+
+Congratulations on successfully adding multilingual support with next-i18next!
+
+The next article, which is the last implementation piece of the 30-day series, will add a small but important feature: old path redirection!

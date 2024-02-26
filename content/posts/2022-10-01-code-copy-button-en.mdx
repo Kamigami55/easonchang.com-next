@@ -1,0 +1,262 @@
+---
+title: "Adding 'Copy Button' to Code Blocks Using Custom MDX Components - Modern Next.js Blog Series #16"
+description: "Add a 'Copy Button' to code blocks using the custom MDX component CustomPre"
+slug: "code-copy-button"
+language: en
+socialImage: ""
+date: 2022-10-01
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10302397)
+
+In the previous article, we made code blocks display titles. In this article, we continue to enhance their usability by adding a 'Copy Button'!
+
+Screenshot results as follows:
+
+![Code block copy button in dark mode](https://i.imgur.com/ByJtP4Z.jpg)
+
+![Code block copy button copied](https://i.imgur.com/eq2Ermv.jpg)
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day15-code-block-title...day16-copy-code-button
+
+---
+
+## Adding a Copy Button to Code Blocks
+
+We will use the method of customizing MDX components to add a copy button.
+
+When rendering code blocks, Markdown renders them into `<pre>` elements.
+
+We can create our own `<CustomPre/>` React component, and with a little configuration, make MDX render code blocks using our `<CustomPre/>`.
+
+The specific implementation method refers to this article: [How to add a copy code button to your blog posts - Phil Stainer](https://philstainer.io/blog/copy-code-button-markdown).
+
+### Adding `<CustomPre/>`
+
+Add `/src/components/CustomPre.tsx`:
+
+```tsx
+// ref: https://philstainer.io/blog/copy-code-button-markdown
+
+import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
+
+import { copyToClipboard } from "@/lib/copyToClipboard";
+import { removeDuplicateNewLine } from "@/lib/removeDuplicateNewLine";
+
+type Props = React.ComponentPropsWithoutRef<"pre">;
+
+function CustomPre({ children, className, ...props }: Props) {
+  const preRef = useRef<HTMLPreElement>(null);
+
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setCopied(false), 2000);
+
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+  const onClick = async () => {
+    if (preRef.current?.innerText) {
+      await copyToClipboard(removeDuplicateNewLine(preRef.current.innerText));
+      setCopied(true);
+    }
+  };
+
+  return (
+    <div className="group relative">
+      <pre
+        {...props}
+        ref={preRef}
+        className={clsx(className, "focus:outline-none")}
+      >
+        <div className="absolute top-0 right-0 m-2 flex items-center rounded-md bg-[#282a36] dark:bg-[#262626]">
+          <span
+            className={clsx("hidden px-2 text-xs text-green-400 ease-in", {
+              "group-hover:flex": copied,
+            })}
+          >
+            Copied!
+          </span>
+
+          <button
+            type="button"
+            aria-label="Copy to Clipboard"
+            onClick={onClick}
+            disabled={copied}
+            className={clsx(
+              "hidden rounded-md border bg-transparent p-2 transition ease-in focus:outline-none group-hover:flex",
+              {
+                "border-green-400": copied,
+                "border-gray-600 hover:border-gray-400 focus:ring-4 focus:ring-gray-200/50 dark:border-gray-700 dark:hover:border-gray-400":
+                  !copied,
+              }
+            )}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={clsx("pointer-events-none h-4 w-4", {
+                "text-gray-400 dark:text-gray-400": !copied,
+                "text-green-400": copied,
+              })}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 
+
+2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"
+                className={clsx({ block: !copied, hidden: copied })}
+              />
+
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+                className={clsx({ block: copied, hidden: !copied })}
+              />
+            </svg>
+          </button>
+        </div>
+
+        {children}
+      </pre>
+    </div>
+  );
+}
+
+export default CustomPre;
+```
+
+### Adding Two Functions for Copy Logic
+
+Add `/src/lib/copyToClipboard.ts`:
+
+```ts
+// ref: https://philstainer.io/blog/copy-code-button-markdown
+
+export const copyToClipboard = (text: string) => {
+  return new Promise((resolve, reject) => {
+    if (navigator?.clipboard) {
+      const cb = navigator.clipboard;
+
+      cb.writeText(text).then(resolve).catch(reject);
+    } else {
+      try {
+        const body = document.querySelector("body");
+
+        const textarea = document.createElement("textarea");
+        body?.appendChild(textarea);
+
+        textarea.value = text;
+        textarea.select();
+        document.execCommand("copy");
+
+        body?.removeChild(textarea);
+
+        resolve(void 0);
+      } catch (e) {
+        reject(e);
+      }
+    }
+  });
+};
+```
+
+Add `/src/lib/removeDuplicateNewLine.ts`:
+
+```ts
+// Workaround to work with rehype-prism-plus generated Pre block for copy to clipboard feature
+export const removeDuplicateNewLine = (text: string): string => {
+  if (!text) return text;
+
+  return text
+    .replace(/(\r\n\r\n)/gm, `\r\n`)
+    .replace(/(\n\n)/gm, `\n`)
+    .replace(/(\r\r)/gm, `\r`);
+};
+```
+
+### Replace Article Code Blocks with `<CustomPre/>`
+
+Add `/src/lib/mdxComponents.ts`:
+
+```ts
+import CustomPre from "@/components/CustomPre";
+
+// Custom components/renderers to pass to MDX.
+const mdxComponents = {
+  pre: CustomPre,
+};
+
+export default mdxComponents;
+```
+
+Modify `/src/pages/posts/[slug].tsx`, import mdxComponents and pass them to `<MDXContent>`:
+
+```tsx
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+// ...
+// Add the following line to import mdxComponents
+import mdxComponents from "@/lib/mdxComponents";
+
+// ...
+
+const PostPage: NextPage<Props> = ({ post, prevPost, nextPost }) => {
+  // ...
+  const MDXContent = useMDXComponent(code);
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <PostLayout post={post} prevPost={prevPost} nextPost={nextPost}>
+        // Modify the following line, passing mdxComponents to MDXContent
+        <MDXContent components={mdxComponents} />
+      </PostLayout>
+    </>
+  );
+};
+
+export default PostPage;
+```
+
+## Results
+
+Done! By running `pnpm dev` and entering an article containing code blocks, you'll see the code blocks now have a copy button!
+
+http://localhost:3000/posts/post-with-code
+
+Screenshot results as follows:
+
+![Code block copy button in dark mode](https://i.imgur.com/ByJtP4Z.jpg)
+
+![Code block copy button copied](https://i.imgur.com/eq2Ermv.jpg)
+
+## References
+
+- [How to add a copy code button to your blog posts - Phil Stainer](https://philstainer.io/blog/copy-code-button-markdown)
+
+## Summary & Next Article
+
+Congratulations on successfully adding a 'Copy Button' to the code blocks.
+
+This was our final article on adjusting the blog style; it's already looking pretty good.
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day15-code-block-title...day16-copy-code-button
+
+In the next article, let's use [next-seo](https://github.com/garmeeh/next-seo) to add Open Graph, meta data, and other SEO optimization techniques to the entire site!

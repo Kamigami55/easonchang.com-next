@@ -1,0 +1,109 @@
+---
+title: "Adding Titles to Code Blocks Using rehype-code-titles - Modern Next.js Blog Series #15"
+description: "Using rehype-code-titles to add titles to each code block"
+slug: "rehype-code-titles"
+language: en
+socialImage: ""
+date: 2022-09-30
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10301271)
+
+In the previous article, we enabled Syntax Highlighting for code blocks. In this article, we'll add titles to them!
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day14-code-syntax-highlight...day15-code-block-title
+
+Screenshot results as follows:
+
+![Post with code](https://i.imgur.com/FCKHNvh.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/jAr8Isc.jpg)
+
+---
+
+## Using rehype-code-titles to Add Titles to Each Code Block
+
+Install [rehype-code-titles](https://github.com/rockchalkwushock/rehype-code-titles):
+
+```shell
+pnpm add rehype-code-titles
+```
+
+Activate it by modifying `/contentlayer.config.ts`, adding rehype-code-titles to the `rehypePlugins` list:
+
+```ts
+import rehypeCodeTitles from "rehype-code-titles"; // Add this line
+import rehypePrism from "rehype-prism-plus";
+
+import { defineDocumentType, makeSource } from "./src/lib/contentLayerAdapter";
+
+// ...
+
+export default makeSource({
+  contentDirPath: "content",
+  documentTypes: [Post],
+  mdx: {
+    // Add to the rehypePlugins list
+    rehypePlugins: [rehypeCodeTitles, [rehypePrism, { ignoreMissing: true }]],
+  },
+});
+```
+
+By now, rehype-code-titles installation is complete, but it won't have any style by default. We need to specify it ourselves.
+
+Modify `/src/components/PostBody/PostBody.module.scss`:
+
+```scss
+.postBody {
+  // Add the following two sections
+  :global(.rehype-code-title) {
+    @apply -mb-3 rounded-tl rounded-tr bg-slate-600 px-4 pt-1 pb-2 font-mono text-sm text-gray-200;
+  }
+
+  div:global(.rehype-code-title) + pre {
+    @apply rounded-tl-none rounded-tr-none;
+  }
+
+  # ...
+}
+```
+
+This completes all settings!
+
+## Modify the Article to Add Titles to Code Blocks
+
+After the programming language marker in the code block Markdown, add a `:` colon and enter any text. This text will be considered as a title by rehype-code-title.
+
+For example, modify `/content/posts/20220901-post-with-code.mdx`:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/commit/4f042ea8861adaa2d53fd7fc1a461459862719de
+
+![Post modification for code title](https://i.imgur.com/fWZ72A0.jpg)
+
+## Results
+
+Done! By running `pnpm dev` and entering the recently modified article, you'll see the code blocks now have their own titles!
+
+http://localhost:3000/posts/post-with-code
+
+Screenshot results as follows:
+
+![Post with code](https://i.imgur.com/FCKHNvh.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/jAr8Isc.jpg)
+
+## References
+
+- [rockchalkwushock/rehype-code-titles: Rehype plugin for parsing code blocks and adding titles to code blocks](https://github.com/rockchalkwushock/rehype-code-titles)
+
+## Next Article
+
+Congratulations on successfully adding titles to the code blocks.
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day14-code-syntax-highlight...day15-code-block-title
+
+In the next article, the last one focusing on adjusting code blocks, we will add a 'Copy Button' for one-click code copying!

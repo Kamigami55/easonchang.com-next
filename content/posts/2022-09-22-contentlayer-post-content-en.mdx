@@ -1,0 +1,115 @@
+---
+title: "Implementing Post Page Features, Rendering Markdown Post Content - Modern Next.js Blog Series #07"
+description: "Implementing Contentlayer post pages, displaying complete article Markdown content"
+slug: "contentlayer-post-content"
+language: en
+socialImage: ""
+date: 2022-09-22
+type: Post
+isDraft: false
+---
+
+> This article is also published at [IThelp 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10296357)
+
+## TL;DR
+
+This is the 7th article in the "Modern Blog 30 Days" series. In the previous article, we completed the homepage post list feature. This article will continue to implement the post page, presenting the complete Markdown content of the article.
+
+The result screenshot is as follows:
+
+![Post Page Result](https://i.imgur.com/w6pTHUJ.jpg)
+
+The modified code for this article is as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day06-index-page-bare-bone...day07-post-apge-bare-bone
+
+---
+
+## Adding a Post Page to Display Article Content
+
+Add a new file **src/pages/posts/[slug].tsx**:
+
+```tsx
+import { format, parseISO } from "date-fns";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+
+import { allPosts, Post } from "@/lib/contentLayerAdapter";
+import styles from "@/styles/Home.module.css";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = allPosts.map((post) => post.path);
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<Props> = ({ params }) => {
+  const post = allPosts.find((post) => post.slug === params?.slug);
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      post,
+    },
+  };
+};
+
+type Props = {
+  post: Post;
+};
+
+const PostPage: NextPage<Props> = ({ post }) => {
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <h1 className={styles.title}>{post.title}</h1>
+
+        <time dateTime={post.date}>
+          {format(parseISO(post.date), "LLLL d, yyyy")}
+        </time>
+
+        <div dangerouslySetInnerHTML={{ __html: post.body.html }} />
+      </main>
+    </div>
+  );
+};
+
+export default PostPage;
+```
+
+## Result
+
+Done! Use `pnpm dev` and click on a post on the homepage to go to the post page, where you can see the Markdown content of the article displayed on the screen.
+
+The URL will look like this:
+
+http://localhost:3000/posts/markdown-demo
+
+Screenshot as follows:
+
+![Post Page Result](https://i.imgur.com/w6pTHUJ.jpg)
+
+The modified code for this article is as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day06-index-page-bare-bone...day07-post-apge-bare-bone
+
+## Next Article
+
+So far, we have been able to write articles in Markdown format!
+
+But our goal is to create a "Modern Blog," and the limited Markdown elements cannot meet our needs for writing articles.
+
+We hope to insert custom React components into the articles to make them more interactive!
+
+Therefore, in the next article, we will expand the settings of Contentlayer to support articles in [MDX](https://mdxjs.com/) format, allowing us to insert custom React components into Markdown articles!

@@ -1,0 +1,202 @@
+---
+title: "Adding Syntax Highlighting to Code Blocks Using rehype-prism-plus - Modern Next.js Blog Series #14"
+description: "Using the rehype-prism-plus package to add Syntax Highlighting effects to code blocks"
+slug: "rehype-prism-plus-syntax-highlighting"
+language: en
+socialImage: ""
+date: 2022-09-29
+type: Post
+isDraft: false
+---
+
+> This article is also published at [it 邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10301243)
+
+The soul of a tech blog lies in the code within its articles. Code blocks need to be readable for readers to want to continue reading.
+
+At a minimum, code blocks should support "**Syntax Highlighting**," displaying different keywords in different colors.
+
+In this article, we'll use [rehype-prism-plus](https://github.com/timlrx/rehype-prism-plus) to add Syntax Highlighting effects to code blocks!
+
+> The code changes for this article are as follows:
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day13-basic-post-page-ui...day14-code-syntax-highlight
+
+Screenshot results as follows:
+
+![Post with code](https://i.imgur.com/6yFw7B0.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/SyVynzH.jpg)
+
+---
+
+## Syntax Highlighting
+
+To add Syntax Highlighting to web code blocks, there are several packages available, including popular ones like [PrismJS](https://prismjs.com/) and [highlight.js](https://highlightjs.org/).
+
+Here, we'll use PrismJS.
+
+## Adding Syntax Highlighting with rehype-prism-plus
+
+Our blog uses [Contentlayer](https://www.contentlayer.dev/), which processes Markdown and MDX files using [mdx-bundler](https://github.com/kentcdodds/mdx-bundler).
+
+mdx-bundler, in turn, uses [mdx-js](https://mdxjs.com/).
+
+To customize how mdx-js processes Markdown or MDX, you can install [rehype](https://github.com/rehypejs/rehype) or [remark](https://github.com/remarkjs/remark) plugins. They are responsible for converting Markdown and MDX to HTML, and installing plugins allows us to modify the HTML as desired.
+
+We can use the [rehype-prism-plus](https://github.com/timlrx/rehype-prism-plus) rehype plugin to implement PrismJS's Syntax Highlighting.
+
+It supports a vast array of programming languages (see [PrismJS language list](https://prismjs.com/#supported-languages)) and dozens of themes (see [PrismJS theme list](https://github.com/PrismJS/prism-themes)), as well as highlighting specific lines, and showing red and green diff files.
+
+## Installing rehype-prism-plus
+
+Run the following command to install:
+
+```shell
+pnpm add rehype-prism-plus
+```
+
+Modify `contentlayer.config.ts`, adding rehypePrism to the rehypePlugins for mdx:
+
+```ts
+// Add the following line
+import rehypePrism from "rehype-prism-plus";
+
+// ...
+
+export default makeSource({
+  // ...
+  // Add the following line
+  mdx: { rehypePlugins: [[rehypePrism, { ignoreMissing: true }]] },
+});
+```
+
+Add `src/styles/prism-plus.css`, styles for line numbers highlighting by rehype-prism-plus:
+
+```css
+/* https://github.com/timlrx/rehype-prism-plus#styling */
+
+pre {
+  overflow-x: auto;
+}
+
+/**
+ * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
+ * 1. Make the element just wide enough to fit its content.
+ * 2. Always fill the visible space in .code-highlight.
+ */
+.code-highlight {
+  float: left; /* 1 */
+  min-width: 100%; /* 2 */
+}
+
+.code-line {
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-left-width: 4px;
+  border-left-color: rgba(31, 41, 55, 0); /* Set code block color */
+}
+
+.code-line.inserted {
+  background-color: rgba(16, 185, 129, 0.2); /* Set inserted line (+) color */
+}
+
+.code-line.deleted {
+  background-color: rgba(239, 68, 68, 0.2); /* Set deleted line
+
+ (-) color */
+}
+
+.highlight-line {
+  margin-left: -16px;
+  margin-right: -16px;
+  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color */
+  border-left-width: 4px;
+  border-left-color: rgb(59, 130, 246); /* Set highlight accent border color */
+}
+
+.line-number::before {
+  display: inline-block;
+  width: 1rem;
+  text-align: right;
+  margin-right: 16px;
+  margin-left: -8px;
+  color: rgb(156, 163, 175); /* Line number color */
+  content: attr(line);
+}
+```
+
+Next, you'll also need to add a basic theme for PrismJS.
+
+> You can find your preferred theme here:
+> https://github.com/PrismJS/prism-themes
+>
+> I personally use this Dracula theme:
+> https://github.com/PrismJS/prism-themes/blob/master/themes/prism-darcula.css
+
+Add `src/styles/prism-dracula.css`, a chosen theme style for PrismJS:
+
+```css
+/**
+ * Dracula Theme originally by Zeno Rocha [@zenorocha]
+ * https://draculatheme.com/
+ *
+ * Ported for PrismJS by Albert Vallverdu [@byverdu]
+ */
+/* Style content omitted for brevity */
+```
+
+Modify `src/pages/_app.tsx` to include the new CSS files:
+
+```tsx
+import "@/styles/prism-dracula.css";
+import "@/styles/prism-plus.css";
+
+// ...
+```
+
+This completes all settings!
+
+## Adding an Article Containing Code
+
+Add `/content/posts/20220901-post-with-code.mdx`:
+
+> Due to contest article restrictions, code blocks within code blocks are indented. Remember to remove the indentation when pasting into your own blog.
+>
+> Or view the original `20220901-post-with-code.mdx` content here:
+>
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/blob/0f72528c220430e21bee232dd9f81b6e175086d2/content/posts/20220901-post-with-code.mdx?plain=1
+
+## Results
+
+Done! By running `pnpm dev` and entering the newly added article, you'll see the code styling looks much better!
+
+http://localhost:3000/posts/post-with-code
+
+Screenshot results as follows:
+
+![Post with code](https://i.imgur.com/6yFw7B0.jpg)
+
+![Post with code in dark mode](https://i.imgur.com/SyVynzH.jpg)
+
+## References
+
+- [timlrx/tailwind-nextjs-starter-blog: This is a Next.js, Tailwind CSS blogging starter template. Comes out of the box configured with the latest technologies to make technical writing a breeze. Easily configurable and customizable. Perfect as a replacement to existing Jekyll and Hugo individual blogs.](https://github.com/timlrx/tailwind-nextjs-starter-blog)
+- [timlrx/rehype-prism-plus: rehype plugin to highlight code blocks in HTML with Prism (via refractor) with line highlighting and line numbers](https://github.com/timlrx/rehype-prism-plus)
+- [PrismJS/prism-themes: A wider selection of Prism themes](https://github.com/PrismJS/prism-themes)
+- [Processing MDX Files - Contentlayer](https://www.contentlayer.dev/docs/sources/files/mdx)
+- [kentcdodds/mdx-bundler: ? Give me MDX/TSX strings and I'll give you back a component you can render. Supports imports!](https://github.com/kentcdodds/mdx-bundler)
+- [Markdown for the component era | MDX](https://mdxjs.com/)
+- [remarkjs/remark: remark is a popular tool that transforms markdown with plugins. These plugins can inspect and change your markup. You can use remark on the server, the client, CLIs, deno, etc.](https://github.com/remarkjs/remark)
+- [rehypejs/rehype: HTML processor powered by plugins part of the @unifiedjs collective](https://github.com/rehypejs/rehype)
+
+## Next Article
+
+Congratulations on successfully adding Syntax Highlighting to the code blocks!
+
+> The code changes for this article are as follows:
+>
+> https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/compare/day13-basic-post-page-ui...day14-code-syntax-highlight
+
+In the next article, we'll continue to make the code blocks more readable by allowing you to add titles to each code block!
