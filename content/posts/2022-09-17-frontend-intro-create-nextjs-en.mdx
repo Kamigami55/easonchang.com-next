@@ -1,0 +1,131 @@
+---
+title: "Introduction to Front-End Development Ecosystem & Setting Up a Next.js Project - Modern Next.js Blog Series #02"
+description: "Before starting the blog, let's understand the front-end development ecosystem, install the JS package managers npm and pnpm, and set up a basic Next.js front-end project"
+slug: "frontend-intro-create-nextjs"
+language: en
+socialImage: ""
+date: "2022-09-17"
+type: Post
+isDraft: false
+---
+
+> This article is also published on [iT邦幫忙 2022 iThome Ironman Contest](https://ithelp.ithome.com.tw/articles/10292743)
+
+### Introduction to Front-End Development Ecosystem & Setting Up a Next.js Project - Modern Next.js Blog Series #02
+
+Before we start building our blog, let's first understand the front-end development ecosystem, install the JavaScript package managers npm and pnpm, and then create a basic Next.js front-end project and open it on our computer!
+
+In this article, we'll cover:
+
+- The building-blocks style of web development and the JS package ecosystem
+- Introduction to the npm JavaScript package repository
+- Installing pnpm
+- Creating a Next.js project
+
+---
+
+## Building-Blocks Style of Front-End Web Development
+
+The web development ecosystem is very mature. There are endless web development frameworks and various functional packages available for us to use, with new ones emerging every day. It's impossible to keep up with everything.
+
+Therefore, in modern web development, a significant amount of time is spent finding packages that meet our needs, learning how to use them, integrating them into our projects, and then customizing them. It's like building with blocks, combining various packages until we have a complete website.
+
+## npm: A Treasure Trove of JavaScript Packages
+
+JavaScript is the primary language of web development. JS packages developed by developers worldwide are hosted on [npm (Node Package Manager)](https://www.npmjs.com/).
+
+Once npm is installed on our computer, we can install any package from the platform with a single command.
+
+For example, if we want to add QR code generation functionality to our website and use the [qrcode](https://www.npmjs.com/package/qrcode) package, we simply follow the instructions on the package's page and enter:
+
+```shell
+npm install qrcode
+```
+
+This command installs the package into our website! Then, by following the instructions further, we can modify our web page to complete the setup!
+
+![node-qrcode](https://i.imgur.com/Qfwew7U.jpg)
+
+## pnpm: A More Efficient Package Manager, Used in This Series
+
+npm is a platform for JS packages, and there are many package managers that can install packages from npm.
+
+Currently, there are three mainstream package managers: npm, [yarn](https://yarnpkg.com/), and [pnpm](https://pnpm.io/zh-TW/). We will use pnpm in this series because it is the newest, offers faster package installation, and uses less disk space.
+
+![pnpm](https://i.imgur.com/Ff418og.jpg)
+
+### Installing pnpm
+
+The pnpm official website provides various installation methods:
+
+https://pnpm.io/zh-TW/installation
+
+I recommend [installing using npm](https://pnpm.io/zh-TW/installation#%E4%BD%BF%E7%94%A8-npm-%E5%AE%89%E8%A3%9D) by entering the following command:
+
+```
+npm install -g pnpm
+```
+
+After installation, you can check the pnpm version to verify the installation was successful:
+
+```bash
+pnpm -v
+# 7.11.0
+```
+
+## Creating a Next.js Project
+
+The Getting Started page on the Next.js official website explains the installation methods and basic usage of Next.js:
+
+https://nextjs.org/docs/getting-started
+
+The most convenient way is to use the official create-next-app tool to generate the entire project structure.
+
+Our series will be written in TypeScript, so the command to create a project is as follows:
+
+```shell
+pnpm create next-app --typescript
+```
+
+After entering the command, it will ask for the project name. Enter a name you like, and press Enter. This will create a new Next.js project in your current directory!
+
+![create-next-app](https://i.imgur.com/6Bfwz84.png)
+
+When opened with VSCode or your preferred editor, the project will include these files:
+
+![files](https://i.imgur.com/RFJ1kAk.jpg)
+
+Let's try running it!
+
+### Starting the Next.js Project
+
+Several executable commands are predefined in package.json, and we can use pnpm to execute them.
+
+To run the project on your computer, enter this command:
+
+```shell
+pnpm dev
+```
+
+This will open a web server on your computer, where you can see the current web page of the project. Usually, it runs on http://localhost:3000/. Browsing this page, you should see the following:
+
+![nextjs-project](https://i.imgur.com/vTqTtMx.png)
+
+Congratulations on successfully creating a new Next.js project!
+
+## Source Code
+
+The source code for this series will be hosted on this Github repo:
+[Kamigami55/nextjs-tailwind-contentlayer-blog-starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter)
+
+And every article that includes code will have a corresponding branch, marking the progress of each article.
+
+The source code so far is here:
+
+[Kamigami55/nextjs-tailwind-contentlayer-blog-starter's **day02-init-nextjs** branch](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day02-init-nextjs)
+
+## Conclusion & Next Article
+
+We've successfully installed the pnpm package manager and created a new Next.js project.
+
+In the next article, although we don't have any functionality yet, we'll introduce the Vercel hosting platform and deploy our Next.js project on it!

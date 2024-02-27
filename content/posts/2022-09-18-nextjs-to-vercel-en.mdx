@@ -1,0 +1,122 @@
+---
+title: "Deploying a Next.js Project on Vercel Platform - Modern Next.js Blog Series #03"
+description: "An introduction to the Vercel hosting platform, deploying the Next.js empty project from the previous article on Vercel, and integrating GitHub CI/CD"
+slug: "nextjs-to-vercel"
+language: en
+socialImage: ""
+date: 2022-09-18
+type: Post
+isDraft: false
+---
+
+> This article is also published on [it Bon Help 2022 iThome Ironman Competition](https://ithelp.ithome.com.tw/articles/10293504)
+
+This article will introduce the Vercel hosting platform, how to deploy a Next.js project onto it, and how to bind it with Github to achieve continuous deployment.
+
+Contents are as follows:
+
+- Introduction to the Vercel hosting platform
+- Deploying the empty Next.js project from the previous article on Vercel
+- Continuous deployment with Vercel x Github CI/CD
+
+---
+
+## Although we haven't developed anything yet, let's deploy the website first!
+
+Typically, "deployment" is the last step in website development.
+
+However, due to different environments, a website that runs well on your computer may not work as smoothly on your chosen hosting platform.
+
+If you develop everything at once and then deploy, only to find that it cannot be set up, it could be more difficult to trace the problem since the project is larger. The issue could be with package support, programming language versions, or programming practices, among other things!
+
+If your project doesn't need to be very secretive, it's recommended to deploy early and clear the deployment process as soon as possible. Get the blog online early and regularly check it during the development process. If any problems arise, you'll know they can only occur in the most recently modified areas, making it faster to find the root cause.
+
+So, let's get the blog deployed online first!
+
+## Vercel: The Best Hosting Platform Experience for Developers
+
+[Vercel](https://vercel.com/home) is the company that developed [Next.js](https://nextjs.org/), and they also offer a platform named "Vercel" for deploying websites.
+
+(Hereafter, when we mention Vercel, we are referring to their hosting platform.)
+
+![Vercel](https://i.imgur.com/3BIOqos.jpg)
+
+The Vercel platform supports deployment for all mainstream frontend frameworks, including Next.js, React.js, Vue.js, Nuxt.js, Anguer, Svelte, Hugo, Gatsby, etc.
+
+Vercel also supports various types of frontend projects, including pure static websites after packaging, Client-side Rendering websites, Server-side Rendering websites, Serverless functions.
+
+Lastly, Vercel also has a built-in CDN for faster webpage loading and Github CI/CD integration.
+
+Excluding the lack of a Database feature, Vercel provides everything a modern frontend project needs. We just need to focus on writing code to implement logic, and Vercel will handle the rest, such as architecture and scalability issues.
+
+Vercel's pricing ([Pricing](https://vercel.com/pricing)) is also very generous. Personal non-commercial projects with monthly traffic not exceeding 100GB are completely free under normal use, which is more than enough for a personal blog.
+
+In summary, Vercel is an excellent hosting platform for blogs and Side Projects, offering an exceptional developer experience with minimal setup required. Even if you need to migrate to another platform in the future, there's no transfer cost; you can just redeploy the same code onto the new platform.
+
+## Deploying a Next.js Project on Vercel
+
+### Code
+
+In the previous article, we created a basic Next.js project on our computer. The code is in the Github repo Kamigami55/nextjs-tailwind-contentlayer-blog-starter in the day02-init-nextjs branch, link as follows:
+
+https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter/tree/day02-init-nextjs
+
+### Vercel x Github CI/CD
+
+Vercel offers Github CI/CD functionality. CI/CD stands for Continuous Integration and Continuous Deployment, which means automatically deploying your code into a website without pressing any buttons or issuing any commands, super convenient!
+
+We will use this method for automatic website deployment.
+
+### Putting Next.js on Github
+
+First, you need to push your Next.js project code to your Github account. For example, I created the [Kamigami55/nextjs-tailwind-contentlayer-blog-starter](https://github.com/Kamigami55/nextjs-tailwind-contentlayer-blog-starter) repo.
+
+### Register a Vercel Account
+
+Next, go to the [Vercel registration page](https://vercel.com/signup) and sign up and log in using your Github account, or you can register and log in using another method, but you'll need to bind your Github account later.
+
+### Create a New Project on Vercel Dashboard from Github Repo
+
+Then, go to the [Vercel Dashboard
+
+](https://vercel.com/dashboard) page, click on the button to create a new project (Add new... -> Project):
+
+![New Project](https://i.imgur.com/ge96JN0.jpg)
+
+In the next screen, if your account is already bound with Github, you'll see all your Github projects listed here. Select the project you want to deploy and click the "Import" button:
+
+![Import](https://i.imgur.com/gTd0eiq.jpg)
+
+Next, do some basic setup. You don't need to change anything here, as Vercel will automatically detect the project's content (frameworks used and packaging commands, etc.). Just click the "Deploy" button to start the deployment:
+
+![Settings](https://i.imgur.com/ep7al5e.jpg)
+
+Vercel will start deploying your project, which takes about a minute:
+
+![Deploying](https://i.imgur.com/SAxAIqQ.jpg)
+
+When you see the confetti effect, it means the deployment was successful!
+
+![Success](https://i.imgur.com/Uc1vb2n.jpg)
+
+Vercel will automatically assign an XXX.vercel.app domain to your project. Clicking on the large box in the middle allows you to browse your webpage, congratulations!
+
+For example, my project would automatically be deployed at this URL:
+
+https://nextjs-tailwind-contentlayer-blog-starter.vercel.app/
+
+### Github CI/CD
+
+Remember CI/CD mentioned earlier? Once we complete the process just now, we also finish setting up CI/CD! In the future, when you push code to the project repo, Vercel will automatically detect it and initiate a new deployment round, deploying the latest code.
+
+When you push to the main branch, new changes will be deployed to Production for all readers to use.
+
+When you push to any other branch, Vercel will deploy it as a Preview site. It will automatically assign a random URL to this change and email notify you, allowing you to test whether the changes meet expectations.
+
+So, in the future, we almost don't need to go back to the Vercel Dashboard to operate or issue any commands. We just need to finish developing new features, push them onto Github, and a few minutes later, we can see the latest changes on the website, very convenient!
+
+## Conclusion & Next Article
+
+Now we understand the Vercel hosting platform and have set up our Next.js project on it, and it will continue to deploy based on the latest changes in Github.
+
+In the next article, we will continue to modify the Next.js project's code, doing some basic settings for ESLint, Prettier, TypeScript, etc.!
