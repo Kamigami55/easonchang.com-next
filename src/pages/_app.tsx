@@ -5,6 +5,7 @@ import '@/styles/prism-dracula.css';
 import '@/styles/prism-plus.css';
 import '@/styles/nprogress-custom.css';
 
+import { Analytics } from '@vercel/analytics/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -48,25 +49,29 @@ function App({ Component, pageProps }: AppProps) {
   // }, [router.events])
 
   return (
-    <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
-      <CommandPalette>
-        <ReactWrapBalancerProvider>
-          <Head>
-            <meta
-              content="width=device-width, initial-scale=1"
-              name="viewport"
+    <>
+      <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
+        <CommandPalette>
+          <ReactWrapBalancerProvider>
+            <Head>
+              <meta
+                content="width=device-width, initial-scale=1"
+                name="viewport"
+              />
+            </Head>
+            <PageSEO
+              title={siteMetadata.title}
+              description={siteMetadata.description}
             />
-          </Head>
-          <PageSEO
-            title={siteMetadata.title}
-            description={siteMetadata.description}
-          />
-          <LayoutWrapper>
-            <Component {...pageProps} />
-          </LayoutWrapper>
-        </ReactWrapBalancerProvider>
-      </CommandPalette>
-    </ThemeProvider>
+            <LayoutWrapper>
+              <Component {...pageProps} />
+            </LayoutWrapper>
+          </ReactWrapBalancerProvider>
+        </CommandPalette>
+      </ThemeProvider>
+
+      <Analytics />
+    </>
   );
 }
 
