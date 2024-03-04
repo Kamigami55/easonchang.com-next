@@ -25,7 +25,6 @@ specifiers:
   '@typescript-eslint/parser': ^5.50.0
   '@vercel/analytics': ^1.2.2
   '@vercel/og': ^0.0.27
-  '@vercel/speed-insights': ^1.0.10
   autoprefixer: ^10.4.13
   babel-loader: ^9.1.2
   chromatic: ^6.15.0
@@ -86,7 +85,6 @@ dependencies:
   '@heroicons/react': 2.0.14_react@18.2.0
   '@vercel/analytics': 1.2.2_next@13.1.6+react@18.2.0
   '@vercel/og': 0.0.27
-  '@vercel/speed-insights': 1.0.10_next@13.1.6+react@18.2.0
   clsx: 1.2.1
   contentlayer: 0.3.0_esbuild@0.20.1
   date-fns: 2.29.3
@@ -4807,34 +4805,6 @@ packages:
       '@resvg/resvg-wasm': 2.0.0-alpha.4
       satori: 0.0.46
       yoga-wasm-web: 0.3.0
-    dev: false
-
-  /@vercel/speed-insights/1.0.10_next@13.1.6+react@18.2.0:
-    resolution: {integrity: sha512-4uzdKB0RW6Ff2FkzshzjZ+RlJfLPxgm/00i0XXgxfMPhwnnsk92YgtqsxT9OcPLdJUyVU1DqFlSWWjIQMPkh0g==}
-    requiresBuild: true
-    peerDependencies:
-      '@sveltejs/kit': ^1 || ^2
-      next: '>= 13'
-      react: ^18 || ^19
-      svelte: ^4
-      vue: ^3
-      vue-router: ^4
-    peerDependenciesMeta:
-      '@sveltejs/kit':
-        optional: true
-      next:
-        optional: true
-      react:
-        optional: true
-      svelte:
-        optional: true
-      vue:
-        optional: true
-      vue-router:
-        optional: true
-    dependencies:
-      next: 13.1.6_fcop3xylqakmbilfhdeuva2xj4
-      react: 18.2.0
     dev: false
 
   /@webassemblyjs/ast/1.11.1:
