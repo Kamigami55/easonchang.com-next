@@ -1,0 +1,116 @@
+---
+title: "[Project] Smart Gloves"
+slug: "smart-gloves"
+tags:
+  - Project
+  - Arduino
+  - Linkit
+  - Linkit7697
+  - SVM
+  - Machine Learning
+  - AI
+  - MakeNTU
+  - Maker
+category: Project
+socialImage: "/images/smart-gloves/smart-gloves-cover.png"
+date: 2018-04-01 22:27
+type: Post
+language: en
+description: "Smart Gloves are designed to replace keyboards and mice, becoming the next generation of human-computer interface devices. They allow users to control all aspects of life, such as smart home appliances, as game controllers, playing virtual instruments, etc."
+redirect_from:
+  - /2018/04/01/smart-gloves/
+---
+
+Related links:
+
+- Code (Github): [ChiShengChen/2018makeNTU_meowmeow](https://github.com/ChiShengChen/2018makeNTU_meowmeow)
+
+## Introduction
+
+**"Smart Gloves"** was our project for the **[NTU Electrical Engineering Makerthon MakeNTU 2018](https://make.ntuee.org/)** at the end of March 2018.
+
+Smart Gloves are designed to replace keyboards and mice, becoming the next generation of human-computer interface devices. They allow users to control all aspects of life, such as smart home appliances, as game controllers, playing virtual instruments, etc.
+
+Technically, the gloves are equipped with 2 **MPU6050 6-axis accelerometers and gyroscopes** to measure hand posture, and 4 **capacitive touch switches** for customized input. They use **Linkit7697** to collect sensor data and send it back to the cloud. On the **Microsoft Azure cloud**, gesture commands are computed (currently using Python to run the **SVM (Support Vector Machine) algorithm** to match the current gesture commands with training data), then sent back to the controlled device (like a smart bulb).
+
+This project was a finalist for the **Best Tech Award at NTU Electrical Engineering Makerthon**.
+
+Team members: Qi-Sheng Chen, Shu-Ming Zhang, Ying-Xiang Zhang, Yu-Kai Wang
+
+## Demo Video
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube-nocookie.com/embed/IuPLv4no5wM"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## DEMO Presentation
+
+<iframe
+  src="//www.slideshare.net/slideshow/embed_code/key/vIXyL3S3HIDlPi"
+  width="595"
+  height="485"
+  frameborder="0"
+  marginwidth="0"
+  marginheight="0"
+  scrolling="no"
+  style={{
+    border: "1px solid #CCC",
+    borderWidth: "1px",
+    marginBottom: "5px",
+    maxWidth: "100%",
+  }}
+  allowfullscreen
+></iframe>
+
+## Smart Gloves Results
+
+Smart Gloves photo (palm side), fingertips equipped with 4 capacitive touch switches:
+![upload successful](/images/smart-gloves/pasted-5.png)
+
+Smart Gloves photo (back of the hand), the index fingertip and arm equipped with 2 MPU6050 6-axis accelerometers and gyroscopes, using Linkit7697 as the control board:
+![upload successful](/images/smart-gloves/pasted-4.png)
+
+Sensor data visualization (created with Processing), real-time display of MPU6050 raw data, calculated posture, and touch switch status:
+![upload successful](/images/smart-gloves/pasted-6.png)
+
+## Detailed Explanation
+
+### Application Scenarios
+
+- Occupational therapy aids
+- Smart home control
+- Game controllers
+- Playing air instruments
+- Human-computer interface operation
+- ...
+
+### System Architecture
+
+Smart Gloves system architecture diagram:
+![upload successful](/images/smart-gloves/pasted-7.png)
+
+### Code
+
+Code (Github): [ChiShengChen/2018makeNTU_meowmeow](https://github.com/ChiShengChen/2018makeNTU_meowmeow)
+
+Includes:
+
+- Arduino code for testing various sensors
+- Arduino code for the evolving smart gloves
+- Processing integration, data visualization code
+- Python Sci-kit Learn SVM code
+- Development code: mouse control, cloud data collection, gesture command computation
+
+## Conclusion
+
+We're proud to have made this smart gloves, and we're excited to see how it can be used in the future!
+
+We will continue to improve the smart gloves, and our goal is to use it to play the game of eating chicken 🐔
+
+If you have any thoughts on this project, or would like a more detailed tutorial, feel free to leave a comment below~
