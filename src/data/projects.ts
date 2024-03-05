@@ -28,7 +28,7 @@ export const PROJECTS_ZH = <Project[]>[
     description:
       '每日透過 Product Hunt API 爬取 Product Hunt 上熱門專案，接著用 Remotion 產生短影片（使用 React！），最後寫些簡介，透過 Twitter API 發佈到貼文到推特上。',
     links: {
-      post: '/posts/2022-04-07-product-hunt-today',
+      post: '/posts/product-hunt-today',
       github: 'https://github.com/Kamigami55/product-hunt-today',
       site: 'https://twitter.com/ProductHunToday',
     },
@@ -143,7 +143,7 @@ export const PROJECTS_EN = <Project[]>[
     description:
       'Daily fetching popular projects on Product Hunt through the Product Hunt GraphQL API, then generating short videos using Remotion (with React!), and finally writing some introductions to publish posts on Twitter through the Twitter API.',
     links: {
-      post: '/posts/2022-04-07-product-hunt-today',
+      post: '/posts/product-hunt-today',
       github: 'https://github.com/Kamigami55/product-hunt-today',
       site: 'https://twitter.com/ProductHunToday',
     },
