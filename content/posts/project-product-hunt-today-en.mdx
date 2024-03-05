@@ -1,0 +1,162 @@
+---
+title: Product Hunt Today - An Automatic Twitter Bot for Generating Short Video Introductions to Popular Product Hunt Projects
+description: "A fully automated Twitter bot. Crawls popular projects daily through the Product Hunt API, generates short videos with React.js Remotion, and publishes tweets via the Twitter API."
+slug: "product-hunt-today"
+category: "Project"
+tags:
+  - Project
+  - SideProject
+  - Remotion
+  - React
+  - TailwindCSS
+  - ProductHunt
+  - Twitter
+  - Bot
+socialImage: "/images/product-hunt-today/product-hunt-today-tweet-wide.jpg"
+date: 2022-04-07 20:00
+type: Post
+language: en
+meta:
+  title: Product Hunt Today - An Automatic Twitter Bot for Generating Short Video Introductions to Popular Product Hunt Projects
+---
+
+## TL;DR
+
+I made a side project: [Product Hunt Today](https://twitter.com/ProductHunToday), a fully automated Twitter bot.
+
+It crawls popular projects daily on [Product Hunt](https://www.producthunt.com/) through the [Product Hunt API](https://api.producthunt.com/v2/docs), then generates short videos using [Remotion](https://www.remotion.dev/) (with React!), writes some introductions, and publishes tweets via the [Twitter API](https://developer.twitter.com/en/docs/twitter-api).
+
+> Github repo: [Kamigami55/product-hunt-today](https://github.com/Kamigami55/product-hunt-today)
+>
+> Follow Product Hunt Today: [@ProductHunToday](https://twitter.com/ProductHunToday)
+
+![Tweet of Product Hunt Today](/images/product-hunt-today/product-hunt-today-tweet.jpg)
+
+---
+
+## The Origin of the Product Hunt Today Side Project
+
+In early March 2022, I joined the [100DaysOfCode Challenge](https://www.100daysofcode.com/), committing to code every day for 100 days.
+
+### Discovering Remotion, Making Videos with React
+
+As I was thinking about what to do first, I saw a [Youtube video](https://youtu.be/deg8bOoziaE) by Fireship introducing [Remotion](https://www.remotion.dev/), this cool tool.
+
+Remotion allows us to use React.js code to produce mp4 videos, where every frame's layout and animation are realized using web CSS animations. I found it very interesting, so I decided to create something cool with Remotion.
+
+### Finding the Crypto Prices Model Project
+
+I began exploring what kind of videos Remotion could produce and stumbled upon the Showcase page on their official website, where I saw the [Crypto Prices](https://www.remotion.dev/showcase#fAhMmqHE5fQg9V7H2CwNj4buFC6JhLDfgaMI9OBpYhw) project by [@tokenviz](https://twitter.com/tokenviz).
+
+This project is also a Twitter bot that publishes several short videos daily, summarizing the recent few hours' trends in cryptocurrency rises and falls.
+
+This is one of their tweets, listing the five cryptocurrencies with the largest drops within a day:
+
+![Tokenviz Tweet](/images/product-hunt-today/tokenviz-tweet.jpg)
+
+Source: [Original Tweet](https://twitter.com/tokenviz/status/1512021029220384770)
+
+I found this application form very interesting, fully leveraging Remotion's advantages, automatically generating a large number of videos by integrating external API data.
+
+I could learn several skills and tools, including: video production with Remotion, external data API integration, Twitter posting API, and cronjob for scheduling scripts.
+
+The content of the videos was simple, without overly complex animations, and the duration was short, preventing the project scope from becoming too large and reducing the risk of abandonment. The difficulty was just right.
+
+So, I started thinking about how to adapt this project's concept into my version.
+
+### The Concept of Product Hunt Today Was Born
+
+Usually, when I brainstorm project ideas, I open the Product Hunt website to browse recent cool projects to inspire creativity.
+
+[Product Hunt](https://www.producthunt.com/) is a project launch media platform where people upload various projects (mostly software) daily, ranging from independent developers' new side projects to new products from software giants, all seeking exposure to attract users.
+
+Users can vote (Upvote) on projects they are interested in to support them. Projects with more Upvotes get better exposure positions, usually indicating the best creativity or completeness. Product Hunt also awards badges to the top five upvoted projects of the day, a significant achievement for developers.
+
+While browsing, I thought, since Product Hunt also changes rapidly daily with a ranking concept, why not use Product Hunt's daily popular projects to make Remotion short videos!
+
+I also needed this project to keep track of daily popular projects while scrolling through Twitter without constantly
+
+opening the Product Hunt webpage.
+
+So, I decided to start making the Product Hunt Today Twitter bot!
+
+## What Does Product Hunt Today Do
+
+Product Hunt Today [@ProductHunToday](https://twitter.com/ProductHunToday) is a Twitter bot.
+
+![Product Hunt Today Twitter account](/images/product-hunt-today/product-hunt-today-twitter-account.jpg)
+
+Currently, it posts an article daily summarizing the previous day's top five products on Product Hunt:
+
+Source: [Original Tweet](https://twitter.com/ProductHunToday/status/1506186218714849287)
+
+![Tweet of Product Hunt Today](/images/product-hunt-today/product-hunt-today-tweet.jpg)
+
+The video looks like this:
+
+<div style={{ padding: "75% 0 0 0", position: "relative" }}>
+  <iframe
+    src="https://player.vimeo.com/video/696961349?h=9959e30b92&badge=0&autopause=0&player_id=0&app_id=58479"
+    frameBorder={0}
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowFullScreen=""
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+    }}
+    title="Product Hunt Today video"
+  />
+</div>
+
+And the discussion thread will contain the URLs of the five products, along with a more comprehensive description:
+
+![Thread of Product Hunt Today](/images/product-hunt-today/product-hunt-today-thread.jpg)
+
+It has been posting automatically since March 20, 2022, making it easy to keep up with daily popular projects.
+
+> Product Hunt Today is now also showcased on the Remotion website!
+>
+> [Remotion showcase page](https://www.remotion.dev/showcase#9vegqVB2n02YrTL3c38HoOyd7Smytz01Hl3qaXI5KCOZM)
+
+## Technology
+
+Product Hunt Today uses the following technologies and tools:
+
+- [Remotion](https://www.remotion.dev/): Generating videos with React
+- [Product Hunt API 2.0 (GraphQL)](https://api.producthunt.com/v2/docs): Fetching popular products from Product Hunt
+- [Twitter API](https://developer.twitter.com/en/docs/twitter-api): Automatically uploading videos and posting on Twitter
+- [Tailwind CSS](https://tailwindcss.com/): CSS styling for video content
+- [Github Actions](https://github.com/features/actions): Triggering scripts daily (Fetching data from Product Hunt -> Generating video -> Posting on Twitter)
+- [google/zx](https://github.com/google/zx): Writing scripts in JavaScript
+- Node.js (v16.14.0): Script execution environment
+
+The project is completely open-source, and the source code can be found on Github:
+
+Github repo: [Kamigami55/product-hunt-today](https://github.com/Kamigami55/product-hunt-today)
+
+## Next Steps
+
+I spent a week completing Product Hunt Today!
+
+I really like this project, the scale is just right, I can learn a lot of new technologies, it can operate completely free of charge automatically, and it can actually help myself and others!
+
+Next, I will continue to complete the #100DaysOfCode challenge, with the next phase goal being to optimize my personal website.
+
+When I have time, I will also continue to improve Product Hunt Today, with the expected direction as follows:
+
+- Increase the variety of tweets (weekly review, monthly review, instant hot projects of the day)
+- Optimize video styles, making the content easier to absorb (currently the carousel is too fast, and there are too many words)
+- Write more blog articles, introducing the actual code principles of Product Hunt Today, as well as introductions to various technologies (like Remotion 101)
+
+That's all!
+
+If you like this project, feel free to follow it and star the Github repo to motivate me to create more interesting projects!
+
+> Follow Product Hunt Today on Twitter to support this cool bot: [@ProductHunToday](https://twitter.com/ProductHunToday)
+>
+> Follow me on Twitter, I'll share more about the development process of side projects: [@EasonChang_me](https://twitter.com/EasonChang_me)
+>
+> Give a big star to the Github repo: [Kamigami55/product-hunt-today](https://github.com/Kamigami55/product-hunt-today)
