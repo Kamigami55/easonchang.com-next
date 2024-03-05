@@ -2,13 +2,11 @@ import { useTranslation } from 'next-i18next';
 
 import ProjectCard from '@/components/organisms/ProjectCard';
 import { PageSEO } from '@/components/SEO';
-import { PROJECTS_ZH } from '@/data/projects-zh';
+import { Project } from '@/data/projects';
 import siteMetadata from '@/data/siteMetadata';
 
-export default function ProjectLayout() {
+export default function ProjectLayout({ projects }: { projects: Project[] }) {
   const { t } = useTranslation(['common']);
-
-  const projectsData = PROJECTS_ZH;
 
   return (
     <>
@@ -26,7 +24,7 @@ export default function ProjectLayout() {
 
         <div className="py-8">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
-            {projectsData.map((project) => (
+            {projects.map((project) => (
               <ProjectCard key={project.title} project={project} />
             ))}
           </div>

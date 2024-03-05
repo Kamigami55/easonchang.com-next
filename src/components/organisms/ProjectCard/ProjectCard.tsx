@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 
 import CustomLink from '@/components/CustomLink';
-import { Project } from '@/data/projects-zh';
+import { Project } from '@/data/projects';
 
 type Props = {
   project: Project;

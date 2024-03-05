@@ -134,3 +134,118 @@ export const PROJECTS_ZH = <Project[]>[
     },
   },
 ];
+
+export const PROJECTS_EN = <Project[]>[
+  // Product Hunt Today
+  {
+    title:
+      'Product Hunt Today - Automatically Generate Short Video Introductions to Hottest Product Hunt Projects on Twitter',
+    description:
+      'Daily fetching popular projects on Product Hunt through the Product Hunt GraphQL API, then generating short videos using Remotion (with React!), and finally writing some introductions to publish posts on Twitter through the Twitter API.',
+    links: {
+      post: '/posts/2022-04-07-product-hunt-today',
+      github: 'https://github.com/Kamigami55/product-hunt-today',
+      site: 'https://twitter.com/ProductHunToday',
+    },
+    image: {
+      src: ProductHuntTodayImg,
+      alt: 'Tweet of Product Hunt Today',
+      placeholder: 'blur',
+    },
+  },
+  // 智慧手套 Smart Gloves
+  {
+    title: 'Smart Gloves - A Smart Gloves for Your Hands',
+    description: `<b>"Smart Gloves"</b>, our project at MakeNTU 2018 in late March 2018, aims to replace keyboards and mice as the next generation human-computer interface device.
+      <br/>
+      It is designed for users to control everything in their lives, such as smart home appliances, gaming controllers, and playing virtual instruments.
+      <br/>
+      This project received the **Best Tech Finalist Award** at the MakeNTU event in NTU Electrical Engineering.`,
+    links: {
+      post: '/posts/smart-gloves',
+      github: '',
+      site: '',
+    },
+    image: {
+      src: SmartGlovesImg,
+      alt: 'Smart Gloves',
+      placeholder: 'blur',
+    },
+  },
+  // 科幻風造型獎盃
+  {
+    title: 'Sci-fi Trophy',
+    description: `The Sci-fi Trophy is a Maker project developed in 2017 for Hsinchu Hackathon, showcase the scientific knowledge and innovation of the makers.<br/>
+    We used laser cutting, 3D printing, and a custom LED light circuit to make the trophy.`,
+    links: {
+      post: '/posts/scifi-trophy',
+      github: '',
+      site: '',
+    },
+    image: {
+      src: ScifiTrophyImg,
+      alt: 'Sci-fi Trophy',
+      placeholder: 'blur',
+    },
+  },
+  // 智慧釀藏酒大師 Winster
+  {
+    title: 'Winster - A Wine Master',
+    description: `
+    "Smart Winemaking Master Winster" is a winemaking and storage platform that helps you make wine and control the condition of your wine.
+    <br /><br />
+    It can mainly provide professional brewing players and small brewing companies with analysis of wine varieties and origins and error detection in the brewing process. It also instructs users on web pages and mobile devices to register, detect and display relevant information, and record it. It can provide wine condition detection and suggestions for general users who simply collect wine.
+    <br /><br />
+    Technically, through optical, temperature, humidity and weight sensing, as well as the data collection behind it, the machine learning architecture of RNN is used, and LSTM is used to analyze the original data.
+    <br /><br />
+    This work won the 2017 ARM Design Contest finalist and the Ericsson Enterprise Award in the 2nd Far EasTone IoT Application Development Competition.`,
+    links: {
+      post: '/posts/winster',
+      github: '',
+      site: '',
+    },
+    image: {
+      src: WinsterImg,
+      alt: 'Wine Master',
+      placeholder: 'blur',
+    },
+  },
+  // 智慧導盲犬 SigmaGO
+  {
+    title: 'SigmaGo - A Smart Guide Dog',
+    description: `"SigmaGO Smart Guide Dog" is a software and hardware integration project developed when we participated in the 2017 National Taiwan University Hackathon (HackNTU) in July 2017.
+    <br /><br />
+    The purpose of the project is to develop low-cost smart guide dogs to replace traditional guide dogs that require huge training costs and benefit the lives of blind friends.
+    <br /><br />
+    Technically, Raspberry Pi 3 is used for calculations, connected in series with the Olami Chinese semantic recognition platform provided by VIA Electronics, to instantly recognize the user's voice commands, and the Arduino car (the prototype of the mechanical guide dog) will take the user to the target location.
+    <br /><br />
+    This project finally won the VIA Electronics Super Hacker Award and the Conference Technology Popularity Award.`,
+    links: {
+      post: '/posts/sigmago',
+      github: '',
+      site: '',
+    },
+    image: {
+      src: 'https://i.imgur.com/8E5onDg.jpg',
+      alt: 'SigmaGO',
+      placeholder: 'empty',
+    },
+  },
+  // 100sites
+  {
+    title: '100 Sites',
+    description: `In order to become a full-end engineer, I decided to start doing a lot of side-projects, learn by doing, and effectively improve the capabilities I need.
+    <br /><br />
+    This is 100sites, from now on I will write 100 web pages and upload them, and then explain as much as possible what techniques and tools I used.`,
+    links: {
+      post: '/posts/100sites',
+      github: '',
+      site: '',
+    },
+    image: {
+      src: 'https://imgur.com/i5gPgdO.png',
+      alt: '100sites',
+      placeholder: 'empty',
+    },
+  },
+];
