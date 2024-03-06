@@ -2,7 +2,9 @@ import { StaticImageData } from 'next/image';
 
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
 import TimezoneConverterImg from '../../public/images/project-timezone-converter/timezone-converter-screenshot.png';
+import OneHundredSitesImg from '../../public/images/projects/100sites.png';
 import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';
+import SigmaGoImg from '../../public/images/projects/sigmago.jpg';
 import SmartGlovesImg from '../../public/images/projects/smart-gloves.png';
 import WinsterImg from '../../public/images/projects/winster.png';
 
@@ -127,9 +129,9 @@ export const PROJECTS_ZH = <Project[]>[
       site: '',
     },
     image: {
-      src: 'https://i.imgur.com/8E5onDg.jpg',
+      src: SigmaGoImg,
       alt: 'SigmaGO',
-      placeholder: 'empty',
+      placeholder: 'blur',
     },
   },
   // 100sites
@@ -144,9 +146,9 @@ export const PROJECTS_ZH = <Project[]>[
       site: '',
     },
     image: {
-      src: 'https://imgur.com/i5gPgdO.png',
+      src: OneHundredSitesImg,
       alt: '100sites',
-      placeholder: 'empty',
+      placeholder: 'blur',
     },
   },
 ];
@@ -258,9 +260,9 @@ export const PROJECTS_EN = <Project[]>[
       site: '',
     },
     image: {
-      src: 'https://i.imgur.com/8E5onDg.jpg',
+      src: SigmaGoImg,
       alt: 'SigmaGO',
-      placeholder: 'empty',
+      placeholder: 'blur',
     },
   },
   // 100sites
@@ -275,9 +277,9 @@ export const PROJECTS_EN = <Project[]>[
       site: '',
     },
     image: {
-      src: 'https://imgur.com/i5gPgdO.png',
+      src: OneHundredSitesImg,
       alt: '100sites',
-      placeholder: 'empty',
+      placeholder: 'blur',
     },
   },
 ];
