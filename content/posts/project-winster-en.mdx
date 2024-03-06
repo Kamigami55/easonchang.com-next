@@ -1,0 +1,101 @@
+---
+title: "[Project] Winster: The Smart Wine Brewing Master"
+slug: "winster"
+tags:
+  - Project
+  - STM
+  - Processing
+  - ARM Design Contest
+  - Web
+category: Project
+socialImage: "/images/winster/winster-cover.png"
+date: 2018-04-02 16:56
+type: Post
+language: en
+description: 'The "Winster Smart Wine Brewing Master" is a platform designed to assist in wine brewing and condition monitoring, offering variety and origin analysis for professional brewers and small-scale wineries, as well as error detection during the brewing process.'
+redirect_from:
+  - /2018/04/02/winster/
+---
+
+## Introduction
+
+**The "Winster Smart Wine Brewing Master"** is a platform designed to assist in wine brewing and condition monitoring.
+
+It primarily provides professional brewers and small-scale wineries with analysis on wine variety and origin, along with error detection during the brewing process. It also instructs users on registration, detection, and display of related information on both web and mobile devices, recording it for future reference. This platform offers condition detection and advice for collectors who are interested purely in wine collection.
+
+Technologically, it utilizes optical, temperature, humidity, and weight sensing, backed by data collection and machine learning architecture with RNN, specifically using LSTM to analyze raw data.
+
+We've collected over fifty types of wines and studied numerous related papers, using the detected values (changes in OD value of RGB, temperature, humidity, weight) and their correlation with taste. We then implemented Winster's hardware using custom detection circuits and 3D printed cases.
+
+This project was a finalist in the **[2017 ARM Design Contest](http://www.armdesigncontest.com/customers/login/)** and won the **Ericsson Enterprise Award at the 2nd FarEasTone IoT Innovation Development Contest** [第 2 屆遠傳物聯網應用開發大賽](http://promotion.fetnet.net/ebu/2017IoTHackathon/index.html).
+
+## Demo Video
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube-nocookie.com/embed/KtZpLWXkcy4"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
+
+## System Architecture
+
+System architecture diagram:
+![upload successful](/images/winster/pasted-8.png)
+
+### Hardware
+
+STM32F469NIH6 code: [ericz7000nolan/Arm-contest](https://github.com/ericz7000nolan/Arm-contest)
+
+1. Custom voltage detection module: measures resistance inversely proportional to brightness (directly proportional to the reciprocal of resistance). To determine spectral values, temperature, and weight, the resistance is measured first, followed by measuring the voltage across an appropriate resistor to deduce the condition of the wine, hence determining taste and origin.
+
+2. ADC1, ADC2, ADC3: After measuring the test voltage signal, convert the results into actual voltage values for circuit use and server calculations.
+
+3. Activating the LCD screen and touchscreen enhances user interaction with the project, allowing mode selection through the LCD interface.
+
+4. On the STM32F469NIH6 Discovery Board, we implemented functionalities such as USART, ADC, delay, key interrupt, LED control, LCD, touchscreen, FATFS.
+
+5. In this project, the STM32F469NIH6 Discovery board serves for data detection and preliminary processing (ADC data performs a Moving Average of 100 points), and the results are transmitted to the Bluetooth module via USART. Data is sent to the HC05 Bluetooth module via USART6 on the board, which then transmits the data to the host for real-time data analysis.
+
+Winster device finished product:
+![upload successful](/images/winster/pasted-11.png)
+
+### Data Processing
+
+We installed RGB three-color LEDs on the device, allowing it to be attached to both sides of a wine bottle. We utilized changes in LED light, illuminating the bottle with red, yellow, blue, green, cyan, purple, and white light, respectively. A photoresistor on the other end received the light values, analyzing the variations in light values across different types of wine for the purpose of identifying and judging wine types.
+
+We analyzed the light values of 50 bottles of wine, including 8 bottles of whiskey, 2 bottles of blended whiskey, 4 bottles of vodka, 1 bottle of rum, 3 bottles of tequila, 3 bottles of gin, 1 bottle of rosé, 1 bottle of red wine, and 27 bottles of white wine.
+
+Our findings indicated that after analyzing the spectral values, we could differentiate the wines based on these values. We observed that green light had the most significant impact, and the variations could be linked to the wine's body (such as medium body, full body, etc.), thereby determining the wine's body and possible origin. Furthermore, after detecting the raw data of the test subject, we used the optical density (OD) values of various colors absorbed by the wine types to map regression analysis with the database, selecting the closest wine type. We then rated the differences in scores (analyzed on the server) and returned the results to the board.
+
+![upload successful](/images/winster/pasted-12.png)
+
+### Software
+
+The host uses Processing to receive data (light transmission rates of various colors, temperature, weight) sent via Bluetooth from the Winster device, comparing this data with all the wine data in the SQLite3 database through regression analysis to identify the closest wine type. This result is then sent back to the device for display, and the new data is added to the database to expand its volume, making future comparison results more accurate.
+
+![upload successful](/images/winster/pasted-13.png)
+
+The web frontend is implemented using HTML, CSS, Javascript, and JqueryUI for an interactive interface.
+
+The web backend uses Ruby on Rails as the development framework, with SQLite3 as the database.
+
+When users connect to the host, Rails directly retrieves the results that have been analyzed and compared from the database, displaying them on the web page. If the user is a professional winemaker and believes there is a discrepancy in the results displayed on the web page (such as year or body of the wine), they can manually adjust the results of the regression analysis. This modification is immediately written into the database, improving the overall accuracy of the comparison results.
+
+Web code: [Kamigami55/winster-web](https://github.com/Kamigami55/winster-web)
+
+Web Interface (Homepage):
+![upload successful](/images/winster/pasted-9.png)
+
+Web Interface (Wine Cellar Details):
+![upload successful](/images/winster/pasted-10.png)
+
+## Related Media Reports
+
+- [Cultivating IoT Startups towards the International Stage, FarEasTone Plays a Supporting Role - Yahoo News](https://tw.news.yahoo.com/%E5%9F%B9%E8%82%B2iot%E6%96%B0%E5%89%B5%E5%9C%98%E9%9A%8A%E9%82%81%E5%90%91%E5%9C%8B%E9%9A%9B%E8%88%9E%E5%8F%B0-%E9%81%A0%E5%82%B3%E6%89%AE%E6%8E%A8%E6%89%8B-084206839.html)
+
+## Project Members
+
+Eason Chang, Eric Chang, Michael Chen
