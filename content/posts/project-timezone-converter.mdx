@@ -1,0 +1,64 @@
+---
+title: "Time Zone Converter 時區轉換工具"
+description: "輕鬆在不同時區之間轉換時間並比較重疊時間段"
+slug: "timezone-converter"
+language: zh-TW
+socialImage: "/images/project-timezone-converter/timezone-converter-screenshot.png"
+date: 2024-03-06
+type: Post
+isDraft: false
+---
+
+![時區轉換工具頁面截圖](/images/project-timezone-converter/timezone-converter-screenshot.png)
+
+## 專案簡介
+
+「Time Zone Converter 時區轉換工具」是一個網頁應用程式，幫助你輕鬆在不同時區之間轉換時間並比較重疊時間段。
+
+我與 [Carol Hsiao](https://carolhsiao.webflow.io/) 一起開發了這個專案，她設計使用 Figma 了整個 UI，而我將它們實作出來。
+
+## Demo & 程式碼
+
+這是一個開源專案，你可以在以下位置瀏覽 Demo 網站和程式碼：
+
+- **Demo：**[timezone.eason.ch](https://timezone.eason.ch)
+- **程式碼：**[github.com/Kamigami55/timezone-converter](https://github.com/Kamigami55/timezone-converter)
+
+## 為什麼我們要開發這個專案
+
+我們最近剛從台灣搬到加拿大。台灣（UTC+8）和加拿大（UTC-7）之間有 15 小時的時差。
+
+我們發現在台灣的家人和朋友常常不知道現在在加拿大是幾點，很難找到一個合適的時間來打電話給我們。
+
+因此我們想開發一個小工具，幫助他們更容易在不同時區之間轉換時間、和比較重疊的時間段。
+
+這就是為什麼我們決定開發「Time Zone Converter 時區轉換工具」。
+
+## 主打功能
+
+- **時區轉換：**輕鬆地在任何時區之間轉換時間。
+- **晝夜時間比較：**比較重疊的晝夜時間段，以找到最合適的溝通時間。
+- **深色模式支持：**UI 支援深色模式！
+
+## 技術架構
+
+我使用了我最喜歡的 Tech Stack 來開發這個專案：
+
+- [Next.js v14](https://nextjs.org/)：開發體驗極佳的 React.js Framework，支援 Server Side Rendering 以利於 SEO
+- [TypeScript](https://www.typescriptlang.org/)：加上型別的 JavaScript，讓長期維護更容易
+- [Tailwind CSS](https://tailwindcss.com/)：用於快速 UI 開發的 CSS 框架
+- [shadcn/ui](https://ui.shadcn.com/)：美觀且功能全面的 UI 元件
+- [luxon](https://moment.github.io/luxon/)：用來轉換日期和時間的程式庫
+- [@vvo/tzdb](https://github.com/vvo/tzdb)：時區列表的程式庫
+- [@dnd-kit](https://dndkit.com/)：實現可拖曳（Drag and Drop）的介面
+- [Vercel](https://vercel.com/)：網站架設平台
+
+## 畫面截圖
+
+![時區轉換工具操作流程 Gif](/images/project-timezone-converter/timezone-converter-demo.gif)
+
+## 結語
+
+我們希望這個小工具能幫助到你，讓你更輕鬆地在不同時區之間轉換時間，並找到最合適的溝通時間。
+
+如果你有任何建議或問題，歡迎在下方留言讓我們知道，謝謝你的支持和閱讀！
