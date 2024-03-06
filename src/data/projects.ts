@@ -1,6 +1,7 @@
 import { StaticImageData } from 'next/image';
 
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
+import TimezoneConverterImg from '../../public/images/project-timezone-converter/timezone-converter-screenshot.png';
 import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';
 import SmartGlovesImg from '../../public/images/projects/smart-gloves.png';
 import WinsterImg from '../../public/images/projects/winster.png';
@@ -21,6 +22,21 @@ export type Project = {
 };
 
 export const PROJECTS_ZH = <Project[]>[
+  // Timezone Converter
+  {
+    title: 'Time Zone Converter 時區轉換工具',
+    description: '輕鬆在不同時區之間轉換時間並比較重疊時間段',
+    links: {
+      post: '/posts/timezone-converter',
+      github: 'https://github.com/Kamigami55/timezone-converter',
+      site: 'https://timezone.eason.ch',
+    },
+    image: {
+      src: TimezoneConverterImg,
+      alt: 'Time Zone Converter 時區轉換工具',
+      placeholder: 'blur',
+    },
+  },
   // Product Hunt Today
   {
     title:
@@ -136,6 +152,22 @@ export const PROJECTS_ZH = <Project[]>[
 ];
 
 export const PROJECTS_EN = <Project[]>[
+  // Timezone Converter
+  {
+    title: 'Time Zone Converter',
+    description:
+      'Easily convert time between different timezones and compare overlapping time periods',
+    links: {
+      post: '/posts/timezone-converter',
+      github: 'https://github.com/Kamigami55/timezone-converter',
+      site: 'https://timezone.eason.ch',
+    },
+    image: {
+      src: TimezoneConverterImg,
+      alt: 'Time Zone Converter',
+      placeholder: 'blur',
+    },
+  },
   // Product Hunt Today
   {
     title:
