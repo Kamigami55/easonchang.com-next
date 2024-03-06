@@ -1,12 +1,12 @@
 ---
-to: content/posts/<%= date %>-<%= slug %>.mdx
+to: content/posts/<%= date %>-<%= slug %>-en.mdx
 ---
 
 ---
 title: ''
 description: ''
 slug: '<%= slug %>'
-language: zh-TW
+language: en
 socialImage: ''
 date: <%= date %>
 type: Post
