@@ -12,7 +12,7 @@ type CommonSEOProps = {
 const CommonSEO = ({ title, description, ogType, ogImage }: CommonSEOProps) => {
   const router = useRouter();
   const locale = router.locale;
-  const url = `${siteMetadata.siteUrl}${locale === 'en' ? '/en' : ''}${
+  const url = `${siteMetadata.siteUrl}${locale === 'en' ? '/' : `/${locale}`}${
     router.asPath
   }`;
 
