@@ -24,14 +24,14 @@ export type Project = {
 };
 
 export const PROJECTS_ZH = <Project[]>[
-  // Timezone Converter
+  // Timez - Timezone Converter
   {
-    title: 'Time Zone Converter 時區轉換工具',
+    title: 'Timez - Time Zone Converter 時區轉換工具',
     description: '輕鬆在不同時區之間轉換時間並比較重疊時間段',
     links: {
       post: '/posts/timezone-converter',
       github: 'https://github.com/Kamigami55/timezone-converter',
-      site: 'https://timezone.eason.ch',
+      site: 'https://timez.eason.ch',
     },
     image: {
       src: TimezoneConverterImg,
@@ -154,15 +154,15 @@ export const PROJECTS_ZH = <Project[]>[
 ];
 
 export const PROJECTS_EN = <Project[]>[
-  // Timezone Converter
+  // Timez - Timezone Converter
   {
-    title: 'Time Zone Converter',
+    title: 'Timez - Time Zone Converter',
     description:
       'Easily convert time between different timezones and compare overlapping time periods',
     links: {
       post: '/posts/timezone-converter',
       github: 'https://github.com/Kamigami55/timezone-converter',
-      site: 'https://timezone.eason.ch',
+      site: 'https://timez.eason.ch',
     },
     image: {
       src: TimezoneConverterImg,
