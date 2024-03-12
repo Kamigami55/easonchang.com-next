@@ -2,6 +2,12 @@ const { format } = require('date-fns');
 
 module.exports = [
   {
+    type: 'select',
+    name: 'type',
+    choices: ['post', 'project'],
+    message: 'Select post type: ',
+  },
+  {
     type: 'input',
     name: 'slug',
     message: 'Enter slug (ex: "my-post"): ',

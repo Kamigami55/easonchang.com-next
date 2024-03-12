@@ -1,3 +1,3 @@
 ---
-to: public/images/<%= date %>-<%= slug %>/.keep
+to: "public/images/<%= type === 'post' ? `${date}-${slug}` : `project-${slug}` %>/.keep"
 ---
