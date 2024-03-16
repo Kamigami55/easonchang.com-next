@@ -60,7 +60,7 @@ export default function Index({ posts, commandPalettePosts }: Props) {
         description={siteMetadata.description}
       />
 
-      <div className="prose my-12 space-y-2 transition-colors dark:prose-dark md:space-y-5 md:prose-lg">
+      <div className="prose my-12 max-w-none space-y-2 transition-colors dark:prose-dark md:space-y-5 md:prose-lg">
         <h1 className="text-center sm:text-left">{t('intro-title')}</h1>
         <p>
           <Trans
@@ -77,12 +77,35 @@ export default function Index({ posts, commandPalettePosts }: Props) {
           />
         </p>
         <p>
+          <Trans i18nKey="intro-3" t={t} />
+        </p>
+        <p>
           <Trans
-            i18nKey="intro-3"
+            i18nKey="intro-4"
             t={t}
             components={[
               <a
-                href="https://www.trendmicro.com/"
+                href="https://drive.google.com/file/d/1-RdgOpRQxKpwLDSpFHWX0rzkCdnquDZG/view"
+                target="_blank"
+                rel="noreferrer"
+              />,
+              <a
+                href="https://www.linkedin.com/in/easonchang101/"
+                target="_blank"
+                rel="noreferrer"
+              />,
+              <a
+                href="https://github.com/Kamigami55"
+                target="_blank"
+                rel="noreferrer"
+              />,
+              <a
+                href="https://twitter.com/EasonChang_me"
+                target="_blank"
+                rel="noreferrer"
+              />,
+              <a
+                href="https://fantastical.app/easonchang/chat"
                 target="_blank"
                 rel="noreferrer"
               />,
