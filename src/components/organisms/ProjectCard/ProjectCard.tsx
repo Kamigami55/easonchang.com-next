@@ -12,10 +12,11 @@ export default function ProjectCard({ project }: Props) {
   const {
     title,
     description,
-    links: { post: href },
+    links: { post, github, site },
     image: { src: imgSrc, alt: imgAlt, placeholder: imgPlaceholder },
   } = project;
   const { t } = useTranslation(['common']);
+  const href = post || site || github;
 
   return (
     <div>
