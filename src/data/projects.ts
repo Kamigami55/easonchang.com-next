@@ -1,6 +1,7 @@
 import { StaticImageData } from 'next/image';
 
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
+import TaiKerMapImg from '../../public/images/project-taiker-map/taiker-map.png';
 import TimezoneConverterImg from '../../public/images/project-timezone-converter/timezone-converter-screenshot.png';
 import TrendMicroIdProtectionImg from '../../public/images/project-trendmicro-id-protection/trendmicro-id-protection-homepage.jpg';
 import TrendMicroNewsBlogImg from '../../public/images/project-trendmicro-news-blog/trendmicro-news-blog-homepage.jpg';
@@ -98,6 +99,24 @@ export const PROJECTS_ZH = <Project[]>[
     image: {
       src: TrendMicroNewsBlogImg,
       alt: 'Trend Micro News Blog',
+      placeholder: 'blur',
+    },
+  },
+  // TaiKer Map
+  {
+    title: '台客地圖 - 台灣景點地圖編輯器',
+    description: `
+    <p>提供商家、旅行團、活動主辦者使用，簡單易用的景點地圖編輯器。選擇附近的景點、餐廳和飯店，自訂風格，並輸出印刷可靠、美麗的地圖。</p>
+    <p>開發工具：Next.js、Tailwind CSS、Google Map API、Vercel。</p>
+    `,
+    links: {
+      // post: '/posts/taiker-map',
+      github: 'https://github.com/Kamigami55/taiker-map',
+      site: 'https://taiker-map.vercel.app/',
+    },
+    image: {
+      src: TaiKerMapImg,
+      alt: 'TaiKer Map',
       placeholder: 'blur',
     },
   },
@@ -272,6 +291,23 @@ export const PROJECTS_EN = <Project[]>[
     image: {
       src: TrendMicroNewsBlogImg,
       alt: 'Trend Micro News Blog',
+      placeholder: 'blur',
+    },
+  },
+  // TaiKer Map
+  {
+    title: 'TaiKer Map - Taiwan Attraction Map Editor',
+    description: `<p>A utility-based web tool designed for accommodation businesses, tour groups, or event organizers, offering an easy-to-use map editor. Users can effortlessly select from a range of attractions, restaurants, and hotels in the vicinity, customize the style, and output the map in a print-ready, aesthetically pleasing format.</p>
+    <p>Technologies Used: Next.js, Tailwind CSS, Google Map API, Vercel.</p>
+    `,
+    links: {
+      // post: '/posts/taiker-map',
+      github: 'https://github.com/Kamigami55/taiker-map',
+      site: 'https://taiker-map.vercel.app/',
+    },
+    image: {
+      src: TaiKerMapImg,
+      alt: 'TaiKer Map',
       placeholder: 'blur',
     },
   },
