@@ -60,8 +60,11 @@ export const PROJECTS_ZH = <Project[]>[
   // Trend Micro News Blog
   {
     title: 'Trend Micro News Blog',
-    description: `<ul>
-      <li>翻新並重構趨勢科技新聞網站，使用 Next.js 和 headless WordPress，將效能分數從 20 提升到 95，並增加 200% 的搜尋引擎流量，以及改善使用者和開發者體驗。</li>
+    description: `
+    <p>趨勢科技新聞網站，提供最新的資安領域新聞和趨勢。</p>
+    <ul>
+      <li>翻新並重構舊有 WordPress 程式庫，將效能分數從 20 提升到 95，並增加 200% 的搜尋引擎流量，以及改善使用者和開發者體驗。</li>
+      <li>採用 Next.js、GraphQL 和 headless WordPress 技術，大幅提升使用者和開發者體驗。</li>
       <li>推動將 UI 元件標準化為 Web Components，減少了 60% 的維護工作量，並促進了 5 個以上開發團隊的導入。</li>
       <li>建立了 multi-stage CI/CD pipeline，用於全端網站部署，整合了 AWS 和 GitHub Actions 的安全掃描和性能監控，將部署時間縮短到 5 分鐘內。</li>
 </ul>`,
@@ -210,8 +213,11 @@ export const PROJECTS_EN = <Project[]>[
   // Trend Micro News Blog
   {
     title: 'Trend Micro News Blog',
-    description: `<ul>
-      <li>Revamped a legacy news website, elevating performance score from 20 to 95 and doubling search engine impressions by 200%. Utilized Next.js and headless WordPress to improve user and developer experiences significantly.</li>
+    description: `
+    <p>A news website with latest cybersecurity news and trends from Trend Micro.</p>
+    <ul>
+      <li>Revamped legacy WordPress codebase, elevating performance score from 20 to 95 and doubling search engine impressions by 200%.</li>
+      <li>Utilized Next.js, GraphQL, and headless WordPress to improve user and developer experiences significantly.</li>
       <li>Drove the standardization of UI modules into Web Components, reducing maintenance effort by 60% and facilitating adoption across 5+ development teams.</li>
       <li>Established a multi-stage CI/CD pipeline for full-stack website deployment, incorporating security scanning and performance monitoring with AWS and GitHub Actions, reducing deployment time to 5 minutes.</li>
       </ul>`,
