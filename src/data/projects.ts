@@ -2,6 +2,7 @@ import { StaticImageData } from 'next/image';
 
 import ProductHuntTodayImg from '../../public/images/product-hunt-today/product-hunt-today-tweet.jpg';
 import TimezoneConverterImg from '../../public/images/project-timezone-converter/timezone-converter-screenshot.png';
+import TrendMicroIdProtectionImg from '../../public/images/project-trendmicro-id-protection/trendmicro-id-protection-homepage.jpg';
 import TrendMicroNewsBlogImg from '../../public/images/project-trendmicro-news-blog/trendmicro-news-blog-homepage.jpg';
 import OneHundredSitesImg from '../../public/images/projects/100sites.png';
 import ScifiTrophyImg from '../../public/images/projects/scifi-trophy.png';
@@ -54,6 +55,27 @@ export const PROJECTS_ZH = <Project[]>[
     image: {
       src: ProductHuntTodayImg,
       alt: 'Tweet of Product Hunt Today',
+      placeholder: 'blur',
+    },
+  },
+  // Trend Micro ID Protection - Password Manager
+  {
+    title: 'Trend Micro ID Protection - 密碼管理工具',
+    description: `
+    <p>跨平台的機敏資料管理工具，可以管理密碼、信用卡資訊等重要資料。</p>
+    <ul>
+      <li>主導並開發核心密碼學加解密 TypeScript 模組，讓跨平台應用程式（網頁、瀏覽器擴充套件、手機應用程式）能夠使用，減少 70% 的開發負荷。</li>
+      <li>設計了核心的加密協定和身份驗證流程，達到零知識（Zero-knowledge）加密標準。</li>
+      <li>將 Next.js 前端和 Golang 後端轉移到 Nx Monorepo，提高 60% 的開發迭代速度。</li>
+    </ul>`,
+    links: {
+      // post: '/posts/trendmicro-id-protection',
+      github: '',
+      site: 'https://idprotect.trendmicro.com/vault',
+    },
+    image: {
+      src: TrendMicroIdProtectionImg,
+      alt: 'Trend Micro ID Protection',
       placeholder: 'blur',
     },
   },
@@ -207,6 +229,27 @@ export const PROJECTS_EN = <Project[]>[
     image: {
       src: ProductHuntTodayImg,
       alt: 'Tweet of Product Hunt Today',
+      placeholder: 'blur',
+    },
+  },
+  // Trend Micro ID Protection - Password Manager
+  {
+    title: 'Trend Micro ID Protection - Password Manager',
+    description: `
+    <p>A cross-platform vault for managing sensitive data like passwords.</p>
+    <ul>
+      <li>Led the development of a critical cryptography module for cross-platform applications (web, browser extension, and mobile app) in TypeScript, cutting development effort by 70%.</li>
+      <li>Designed core data encryption protocol and authentication flow, achieving zero-knowledge encryption standards.</li>
+      <li>Transitioned Next.js frontend and Golang backend to Nx monorepo, enhancing development iteration speed by 60%.</li>
+    </ul>`,
+    links: {
+      // post: '/posts/trendmicro-id-protection',
+      github: '',
+      site: 'https://idprotect.trendmicro.com/vault',
+    },
+    image: {
+      src: TrendMicroIdProtectionImg,
+      alt: 'Trend Micro ID Protection',
       placeholder: 'blur',
     },
   },
