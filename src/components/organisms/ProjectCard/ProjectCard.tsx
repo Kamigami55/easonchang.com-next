@@ -49,7 +49,7 @@ export default function ProjectCard({ project }: Props) {
               {title}
             </CustomLink>
           </h2>
-          <p
+          <div
             className="prose mb-3 max-w-none text-gray-500 transition-colors dark:text-gray-400"
             dangerouslySetInnerHTML={{
               __html: description,
